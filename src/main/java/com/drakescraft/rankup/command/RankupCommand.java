@@ -53,6 +53,15 @@ public class RankupCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        if (sub.equals("kit") || sub.equals("reclamarkit")) {
+            if (!(sender instanceof Player player)) {
+                sender.sendMessage("§cSolo jugadores en el servidor pueden reclamar kits.");
+                return true;
+            }
+            plugin.getKitManager().claimKit(player);
+            return true;
+        }
+
         if (sub.equals("max")) {
             if (!(sender instanceof Player player)) {
                 sender.sendMessage("§cSolo los jugadores pueden ejecutar /rankup max.");
@@ -196,6 +205,7 @@ public class RankupCommand implements CommandExecutor, TabCompleter {
 
         sender.sendMessage("§eComandos de DrakesRankup:");
         sender.sendMessage(" §6/rankup §7- Asciende al siguiente rango");
+        sender.sendMessage(" §6/rankup kit §7- Reclama el kit diario de tu división anime con objetos custom");
         sender.sendMessage(" §6/rankup max §7- Sube al rango máximo que puedas pagar");
         sender.sendMessage(" §6/rankup gui §7- Abre el menú visual de las 5 divisiones");
         sender.sendMessage(" §6/rankup info §7- Consulta tus habilidades y progreso");
@@ -211,7 +221,7 @@ public class RankupCommand implements CommandExecutor, TabCompleter {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         List<String> list = new ArrayList<>();
         if (args.length == 1) {
-            list.addAll(Arrays.asList("gui", "max", "info", "toggle", "admin"));
+            list.addAll(Arrays.asList("gui", "kit", "max", "info", "toggle", "admin"));
             if (sender.hasPermission("drakesrankup.staff")) {
                 list.add("test");
             }

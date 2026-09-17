@@ -163,6 +163,24 @@ public class RankupMenu implements InventoryHolder {
             inv.setItem(50, createItem(Material.ARROW, "&aDivisión Siguiente ▶", "&7Ir a " + DIVISION_NAMES[page + 1]));
         }
 
+        // Rankup Kit Button (Slot 51)
+        int div = currentTier > 0 ? Math.min(5, ((currentTier - 1) / 10) + 1) : 0;
+        boolean canClaimKit = div > 0 && plugin.getKitManager() != null && plugin.getKitManager().canClaim(player.getUniqueId(), div);
+        long remMs = (div > 0 && plugin.getKitManager() != null) ? plugin.getKitManager().getRemainingCooldownMs(player.getUniqueId(), div) : 0;
+        long h = remMs / (1000 * 60 * 60);
+        long m = (remMs % (1000 * 60 * 60)) / (1000 * 60);
+
+        inv.setItem(51, createItem(Material.CHEST_MINECART, "&6&l🎁 Reclamar Kit de Rankup",
+                "&7Obtén el kit diario de tu división actual con",
+                "&7armaduras, armas con encantamientos custom y",
+                "&7Semillas del Ermitaño curativas.",
+                "",
+                div == 0 ? "&c✖ Requiere tener al menos Rango Tier 1" :
+                        (canClaimKit ? "&a✔ ¡DISPONIBLE! Haz clic para reclamar" : "&c⏳ Disponible en &e" + h + "h " + m + "m"),
+                "",
+                "&eClic para ejecutar /rankup kit"
+        ));
+
         // Max Rankup Button (Slot 52)
         inv.setItem(52, createItem(Material.EMERALD, "&a&lSUBIR AL MAXIMO POSIBLE",
                 "&7Calcula tu saldo bancario y asciende",
@@ -228,6 +246,15 @@ public class RankupMenu implements InventoryHolder {
         // Next Page
         if (slot == 50 && page < 4) {
             new RankupMenu(plugin, p, page + 1).open();
+            return;
+        }
+
+        // Claim Kit Button (Slot 51)
+        if (slot == 51) {
+            if (plugin.getKitManager() != null) {
+                plugin.getKitManager().claimKit(p);
+                new RankupMenu(plugin, p, page).open();
+            }
             return;
         }
 

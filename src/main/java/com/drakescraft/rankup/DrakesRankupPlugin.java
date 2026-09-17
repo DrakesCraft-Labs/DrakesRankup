@@ -11,6 +11,8 @@ import com.drakescraft.rankup.gui.RankupGuiListener;
 import com.drakescraft.rankup.gui.TransformationGuiListener;
 import com.drakescraft.rankup.manager.RankManager;
 import com.drakescraft.rankup.manager.StaffManager;
+import com.drakescraft.rankup.manager.KitManager;
+import com.drakescraft.rankup.ability.CustomKitItemListener;
 import com.drakescraft.rankup.papi.DrakesRankupExpansion;
 import com.drakescraft.rankup.task.AuraTask;
 import lombok.Getter;
@@ -35,6 +37,8 @@ public class DrakesRankupPlugin extends JavaPlugin {
     private OnePieceListener onePieceListener;
     @Getter
     private StaffManager staffManager;
+    @Getter
+    private KitManager kitManager;
 
     private AuraTask auraTask;
 
@@ -47,6 +51,7 @@ public class DrakesRankupPlugin extends JavaPlugin {
 
         rankManager = new RankManager(this);
         staffManager = new StaffManager(this);
+        kitManager = new KitManager(this);
 
         RankupCommand cmd = new RankupCommand(this);
         if (getCommand("rankup") != null) {
@@ -76,6 +81,7 @@ public class DrakesRankupPlugin extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(dragonBallListener, this);
         Bukkit.getPluginManager().registerEvents(onePieceListener, this);
         Bukkit.getPluginManager().registerEvents(staffManager, this);
+        Bukkit.getPluginManager().registerEvents(new CustomKitItemListener(this), this);
 
         // Start aura particle task every second (20 ticks)
         auraTask = new AuraTask(this);

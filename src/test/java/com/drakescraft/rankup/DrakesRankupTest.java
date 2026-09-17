@@ -37,6 +37,7 @@ class DrakesRankupTest {
         assertNotNull(plugin.getStaffManager());
         assertNotNull(plugin.getDragonBallListener());
         assertNotNull(plugin.getOnePieceListener());
+        assertNotNull(plugin.getKitManager());
     }
 
     @Test
@@ -143,7 +144,6 @@ class DrakesRankupTest {
     void testStaffAngelAndTestMode() {
         PlayerMock staff = server.addPlayer("WhisStaff");
 
-        // Test Angel mode toggle
         assertFalse(plugin.getStaffManager().isAngel(staff.getUniqueId()));
         assertTrue(plugin.getStaffManager().toggleAngel(staff));
         assertTrue(plugin.getStaffManager().isAngel(staff.getUniqueId()));
@@ -153,7 +153,6 @@ class DrakesRankupTest {
         assertFalse(plugin.getStaffManager().isAngel(staff.getUniqueId()));
         assertFalse(staff.isInvulnerable());
 
-        // Test Rank Test mode
         assertEquals(0, plugin.getRankManager().getPlayerTier(staff.getUniqueId()));
         assertTrue(plugin.getStaffManager().setTestTier(staff, 46));
         assertEquals(46, plugin.getRankManager().getPlayerTier(staff.getUniqueId()));
@@ -178,5 +177,20 @@ class DrakesRankupTest {
         assertDoesNotThrow(menu::open);
         assertNotNull(player.getOpenInventory().getTopInventory());
         assertEquals(54, player.getOpenInventory().getTopInventory().getSize());
+    }
+
+    @Test
+    void testRankupKitClaim() {
+        PlayerMock player = server.addPlayer("NarutoKit");
+        assertFalse(plugin.getKitManager().claimKit(player));
+
+        plugin.getRankManager().setPlayerTier(player.getUniqueId(), 5);
+        assertTrue(plugin.getKitManager().claimKit(player));
+
+        assertFalse(plugin.getKitManager().claimKit(player));
+        assertFalse(plugin.getKitManager().canClaim(player.getUniqueId(), 1));
+
+        assertTrue(player.getInventory().contains(org.bukkit.Material.DIAMOND_PICKAXE));
+        assertTrue(player.getInventory().contains(org.bukkit.Material.IRON_SWORD));
     }
 }
