@@ -16,6 +16,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -172,6 +173,11 @@ public class OnePieceListener implements Listener {
             player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 40, 1, false, false));
             player.sendActionBar(Component.text("§c🌊 ¡MALDICIÓN DEL OCÉANO! §7El agua drena toda tu fuerza vital."));
         }
+    }
+
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        activeGearSecond.remove(event.getPlayer().getUniqueId());
     }
 
     @EventHandler

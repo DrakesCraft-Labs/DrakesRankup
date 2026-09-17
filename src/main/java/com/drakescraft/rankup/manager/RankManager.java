@@ -32,6 +32,7 @@ public class RankManager {
     private final Map<String, Rank> ranksById = new HashMap<>();
     private final Map<UUID, Integer> playerTiers = new HashMap<>();
     private final Map<UUID, PlayerSettings> playerSettings = new HashMap<>();
+    private final Set<UUID> activeTransactions = Collections.synchronizedSet(new HashSet<>());
 
     private FileConfiguration ranksConfig;
     private File playersFile;
@@ -123,7 +124,7 @@ public class RankManager {
         }
     }
 
-    public void savePlayerData() {
+    public synchronized void savePlayerData() {
         if (playersConfig == null || playersFile == null) return;
         for (Map.Entry<UUID, Integer> entry : playerTiers.entrySet()) {
             String path = entry.getKey().toString();
@@ -168,6 +169,19 @@ public class RankManager {
     }
 
     public boolean processRankup(Player player) {
+        if (player == null || !player.isOnline()) return false;
+        UUID uuid = player.getUniqueId();
+        if (!activeTransactions.add(uuid)) {
+            return false;
+        }
+        try {
+            return doProcessRankup(player);
+        } finally {
+            activeTransactions.remove(uuid);
+        }
+    }
+
+    private boolean doProcessRankup(Player player) {
         UUID uuid = player.getUniqueId();
         Rank next = getNextRank(uuid);
         if (next == null) {
@@ -237,6 +251,19 @@ public class RankManager {
     }
 
     public int processRankupMax(Player player) {
+        if (player == null || !player.isOnline()) return 0;
+        UUID uuid = player.getUniqueId();
+        if (!activeTransactions.add(uuid)) {
+            return 0;
+        }
+        try {
+            return doProcessRankupMax(player);
+        } finally {
+            activeTransactions.remove(uuid);
+        }
+    }
+
+    private int doProcessRankupMax(Player player) {
         UUID uuid = player.getUniqueId();
         int currentTier = getPlayerTier(uuid);
         if (currentTier >= 50) {

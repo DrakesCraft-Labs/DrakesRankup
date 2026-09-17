@@ -20,6 +20,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -590,6 +591,24 @@ public class DragonBallListener implements Listener {
             loc.getWorld().playSound(loc, Sound.ENTITY_ENDERMAN_TELEPORT, 0.8f, 1.8f);
             player.sendActionBar(Component.text("§f⚡ ¡ESQUIVE INSTINTIVO! §7(Doctrina Egoísta)"));
         } catch (Exception ignored) {}
+    }
+
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        Player player = event.getPlayer();
+        UUID uuid = player.getUniqueId();
+        BukkitTask task = chargingTasks.remove(uuid);
+        if (task != null) task.cancel();
+        activeMUI.remove(uuid);
+        activeUltraEgo.remove(uuid);
+        activeSSJGod.remove(uuid);
+        activeSSJBlue.remove(uuid);
+        activeGohanBeast.remove(uuid);
+        activeBroly.remove(uuid);
+        if (player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
+            player.setAllowFlight(false);
+            player.setFlying(false);
+        }
     }
 
     @EventHandler

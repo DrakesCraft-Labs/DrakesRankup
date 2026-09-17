@@ -1,8 +1,8 @@
 ranks:
   senku:
     tier: 1
-    display-name: '&aSenku'
-    division: 'División I: Ciencia & Nen'
+    display-name: '&asᴇɴᴋᴜ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪ · ᴄɪᴇɴᴄɪᴀ & ɴᴇɴ'
     cost: 10000
     icon: STONE
     permissions:
@@ -19,8 +19,8 @@ ranks:
     particle: SPARK
   chrome:
     tier: 2
-    display-name: '&eChrome'
-    division: 'División I: Ciencia & Nen'
+    display-name: '&eᴄʜʀᴏᴍᴇ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪ · ᴄɪᴇɴᴄɪᴀ & ɴᴇɴ'
     cost: 20000
     icon: FLINT
     permissions:
@@ -37,8 +37,8 @@ ranks:
     particle: SPARK
   kohaku:
     tier: 3
-    display-name: '&6Kohaku'
-    division: 'División I: Ciencia & Nen'
+    display-name: '&6ᴋᴏʜᴀᴋᴜ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪ · ᴄɪᴇɴᴄɪᴀ & ɴᴇɴ'
     cost: 35000
     icon: FEATHER
     permissions:
@@ -55,8 +55,8 @@ ranks:
     particle: SPARK
   gen:
     tier: 4
-    display-name: '&dGen'
-    division: 'División I: Ciencia & Nen'
+    display-name: '&dɢᴇɴ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪ · ᴄɪᴇɴᴄɪᴀ & ɴᴇɴ'
     cost: 55000
     icon: GOLD_NUGGET
     permissions:
@@ -73,8 +73,8 @@ ranks:
     particle: SPARK
   tsukasa:
     tier: 5
-    display-name: '&cTsukasa'
-    division: 'División I: Ciencia & Nen'
+    display-name: '&cᴛsᴜᴋᴀsᴀ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪ · ᴄɪᴇɴᴄɪᴀ & ɴᴇɴ'
     cost: 80000
     icon: IRON_CHESTPLATE
     permissions:
@@ -91,8 +91,8 @@ ranks:
     particle: SPARK
   gon:
     tier: 6
-    display-name: '&2Gon'
-    division: 'División I: Ciencia & Nen'
+    display-name: '&2ɢᴏɴ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪ · ᴄɪᴇɴᴄɪᴀ & ɴᴇɴ'
     cost: 120000
     icon: FISHING_ROD
     permissions:
@@ -109,8 +109,8 @@ ranks:
     particle: SPARK
   killua:
     tier: 7
-    display-name: '&bKillua'
-    division: 'División I: Ciencia & Nen'
+    display-name: '&bᴋɪʟʟᴜᴀ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪ · ᴄɪᴇɴᴄɪᴀ & ɴᴇɴ'
     cost: 175000
     icon: LIGHTNING_ROD
     permissions:
@@ -127,8 +127,8 @@ ranks:
     particle: ELECTRIC
   kurapika:
     tier: 8
-    display-name: '&eKurapika'
-    division: 'División I: Ciencia & Nen'
+    display-name: '&eᴋᴜʀᴀᴘɪᴋᴀ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪ · ᴄɪᴇɴᴄɪᴀ & ɴᴇɴ'
     cost: 250000
     icon: CHAIN
     permissions:
@@ -145,8 +145,8 @@ ranks:
     particle: SPARK
   netero:
     tier: 9
-    display-name: '&6Netero'
-    division: 'División I: Ciencia & Nen'
+    display-name: '&6ɴᴇᴛᴇʀᴏ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪ · ᴄɪᴇɴᴄɪᴀ & ɴᴇɴ'
     cost: 350000
     icon: GOLDEN_APPLE
     permissions:
@@ -163,8 +163,8 @@ ranks:
     particle: SPARK
   meruem:
     tier: 10
-    display-name: '&5&lMeruem'
-    division: 'División I: Ciencia & Nen'
+    display-name: '&5&lᴍᴇʀᴜᴇᴍ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪ · ᴄɪᴇɴᴄɪᴀ & ɴᴇɴ'
     cost: 500000
     icon: NETHERITE_HELMET
     permissions:
@@ -181,8 +181,8 @@ ranks:
     particle: GOLDEN_KI
   genin:
     tier: 11
-    display-name: '&7Genin'
-    division: 'División II: Shinobi & Hechicería'
+    display-name: '&7ɢᴇɴɪɴ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪɪ · sʜɪɴᴏʙɪ & ʜᴇᴄʜɪᴄᴇʀɪ́ᴀ'
     cost: 750000
     icon: WOODEN_SWORD
     permissions:
@@ -199,8 +199,8 @@ ranks:
     particle: SHADOW
   chunin:
     tier: 12
-    display-name: '&aChunin'
-    division: 'División II: Shinobi & Hechicería'
+    display-name: '&aᴄʜᴜɴɪɴ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪɪ · sʜɪɴᴏʙɪ & ʜᴇᴄʜɪᴄᴇʀɪ́ᴀ'
     cost: 1000000
     icon: IRON_SWORD
     permissions:
@@ -217,8 +217,8 @@ ranks:
     particle: SHADOW
   jonin:
     tier: 13
-    display-name: '&2Jonin'
-    division: 'División II: Shinobi & Hechicería'
+    display-name: '&2ᴊᴏɴɪɴ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪɪ · sʜɪɴᴏʙɪ & ʜᴇᴄʜɪᴄᴇʀɪ́ᴀ'
     cost: 1350000
     icon: DIAMOND_SWORD
     permissions:
@@ -235,8 +235,8 @@ ranks:
     particle: SHADOW
   anbu:
     tier: 14
-    display-name: '&8&lANBU'
-    division: 'División II: Shinobi & Hechicería'
+    display-name: '&8&lᴀɴʙᴜ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪɪ · sʜɪɴᴏʙɪ & ʜᴇᴄʜɪᴄᴇʀɪ́ᴀ'
     cost: 1800000
     icon: WITHER_SKELETON_SKULL
     permissions:
@@ -253,8 +253,8 @@ ranks:
     particle: SHADOW
   kage:
     tier: 15
-    display-name: '&6&lKage'
-    division: 'División II: Shinobi & Hechicería'
+    display-name: '&6&lᴋᴀɢᴇ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪɪ · sʜɪɴᴏʙɪ & ʜᴇᴄʜɪᴄᴇʀɪ́ᴀ'
     cost: 2400000
     icon: GOLDEN_HELMET
     permissions:
@@ -271,8 +271,8 @@ ranks:
     particle: SHADOW
   megumi:
     tier: 16
-    display-name: '&3Megumi'
-    division: 'División II: Shinobi & Hechicería'
+    display-name: '&3ᴍᴇɢᴜᴍɪ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪɪ · sʜɪɴᴏʙɪ & ʜᴇᴄʜɪᴄᴇʀɪ́ᴀ'
     cost: 3200000
     icon: BONE
     permissions:
@@ -289,8 +289,8 @@ ranks:
     particle: SHADOW
   nobara:
     tier: 17
-    display-name: '&dNobara'
-    division: 'División II: Shinobi & Hechicería'
+    display-name: '&dɴᴏʙᴀʀᴀ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪɪ · sʜɪɴᴏʙɪ & ʜᴇᴄʜɪᴄᴇʀɪ́ᴀ'
     cost: 4000000
     icon: IRON_HOE
     permissions:
@@ -307,8 +307,8 @@ ranks:
     particle: SHADOW
   yuji:
     tier: 18
-    display-name: '&c&lYuji'
-    division: 'División II: Shinobi & Hechicería'
+    display-name: '&c&lʏᴜᴊɪ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪɪ · sʜɪɴᴏʙɪ & ʜᴇᴄʜɪᴄᴇʀɪ́ᴀ'
     cost: 5000000
     icon: CRIMSON_FUNGUS
     permissions:
@@ -325,8 +325,8 @@ ranks:
     particle: SHADOW
   gojo:
     tier: 19
-    display-name: '&b&lGojo'
-    division: 'División II: Shinobi & Hechicería'
+    display-name: '&b&lɢᴏᴊᴏ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪɪ · sʜɪɴᴏʙɪ & ʜᴇᴄʜɪᴄᴇʀɪ́ᴀ'
     cost: 6200000
     icon: END_ROD
     permissions:
@@ -343,8 +343,8 @@ ranks:
     particle: SHADOW
   sukuna:
     tier: 20
-    display-name: '&4&lSukuna'
-    division: 'División II: Shinobi & Hechicería'
+    display-name: '&4&lsᴜᴋᴜɴᴀ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪɪ · sʜɪɴᴏʙɪ & ʜᴇᴄʜɪᴄᴇʀɪ́ᴀ'
     cost: 7500000
     icon: SOUL_CAMPFIRE
     permissions:
@@ -361,8 +361,8 @@ ranks:
     particle: CURSED_FLAME
   grumete:
     tier: 21
-    display-name: '&bGrumete'
-    division: 'División III: Ruta Pirata & Segadores'
+    display-name: '&bɢʀᴜᴍᴇᴛᴇ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪɪɪ · ʀᴜᴛᴀ ᴘɪʀᴀᴛᴀ & sᴇɢᴀᴅᴏʀᴇs'
     cost: 10000000
     icon: PRISMARINE_SHARD
     permissions:
@@ -379,8 +379,8 @@ ranks:
     particle: WHITE_SMOKE
   pirata:
     tier: 22
-    display-name: '&3Pirata'
-    division: 'División III: Ruta Pirata & Segadores'
+    display-name: '&3ᴘɪʀᴀᴛᴀ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪɪɪ · ʀᴜᴛᴀ ᴘɪʀᴀᴛᴀ & sᴇɢᴀᴅᴏʀᴇs'
     cost: 12500000
     icon: HEART_OF_THE_SEA
     permissions:
@@ -397,8 +397,8 @@ ranks:
     particle: WHITE_SMOKE
   supernova:
     tier: 23
-    display-name: '&cSupernova'
-    division: 'División III: Ruta Pirata & Segadores'
+    display-name: '&csᴜᴘᴇʀɴᴏᴠᴀ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪɪɪ · ʀᴜᴛᴀ ᴘɪʀᴀᴛᴀ & sᴇɢᴀᴅᴏʀᴇs'
     cost: 15500000
     icon: COMPASS
     permissions:
@@ -415,8 +415,8 @@ ranks:
     particle: WHITE_SMOKE
   shichibukai:
     tier: 24
-    display-name: '&6Shichibukai / Zoro'
-    division: 'División III: Ruta Pirata & Segadores'
+    display-name: '&6sʜɪᴄʜɪʙᴜᴋᴀɪ ︱ ᴢᴏʀᴏ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪɪɪ · ʀᴜᴛᴀ ᴘɪʀᴀᴛᴀ & sᴇɢᴀᴅᴏʀᴇs'
     cost: 19000000
     icon: IRON_SWORD
     permissions:
@@ -434,8 +434,8 @@ ranks:
     particle: WHITE_SMOKE
   yonkou:
     tier: 25
-    display-name: '&4&lYonkou'
-    division: 'División III: Ruta Pirata & Segadores'
+    display-name: '&4&lʏᴏɴᴋᴏᴜ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪɪɪ · ʀᴜᴛᴀ ᴘɪʀᴀᴛᴀ & sᴇɢᴀᴅᴏʀᴇs'
     cost: 24000000
     icon: NETHERITE_SWORD
     permissions:
@@ -452,8 +452,8 @@ ranks:
     particle: WHITE_SMOKE
   shinigami:
     tier: 26
-    display-name: '&fShinigami'
-    division: 'División III: Ruta Pirata & Segadores'
+    display-name: '&fsʜɪɴɪɢᴀᴍɪ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪɪɪ · ʀᴜᴛᴀ ᴘɪʀᴀᴛᴀ & sᴇɢᴀᴅᴏʀᴇs'
     cost: 30000000
     icon: IRON_SWORD
     permissions:
@@ -470,8 +470,8 @@ ranks:
     particle: WHITE_SMOKE
   teniente:
     tier: 27
-    display-name: '&bTeniente'
-    division: 'División III: Ruta Pirata & Segadores'
+    display-name: '&bᴛᴇɴɪᴇɴᴛᴇ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪɪɪ · ʀᴜᴛᴀ ᴘɪʀᴀᴛᴀ & sᴇɢᴀᴅᴏʀᴇs'
     cost: 35000000
     icon: GHAST_TEAR
     permissions:
@@ -488,8 +488,8 @@ ranks:
     particle: WHITE_SMOKE
   capitan:
     tier: 28
-    display-name: '&f&lCapitán'
-    division: 'División III: Ruta Pirata & Segadores'
+    display-name: '&f&lᴄᴀᴘɪᴛáɴ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪɪɪ · ʀᴜᴛᴀ ᴘɪʀᴀᴛᴀ & sᴇɢᴀᴅᴏʀᴇs'
     cost: 40000000
     icon: WHITE_BANNER
     permissions:
@@ -506,8 +506,8 @@ ranks:
     particle: WHITE_SMOKE
   bankai:
     tier: 29
-    display-name: '&c&lBankai'
-    division: 'División III: Ruta Pirata & Segadores'
+    display-name: '&c&lʙᴀɴᴋᴀɪ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪɪɪ · ʀᴜᴛᴀ ᴘɪʀᴀᴛᴀ & sᴇɢᴀᴅᴏʀᴇs'
     cost: 45000000
     icon: DIAMOND_SWORD
     permissions:
@@ -524,8 +524,8 @@ ranks:
     particle: WHITE_SMOKE
   joyboy:
     tier: 30
-    display-name: '&e&lJoyBoy / Luffy'
-    division: 'División III: Ruta Pirata & Segadores'
+    display-name: '&e&lᴊᴏʏʙᴏʏ ︱ ʟᴜғғʏ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪɪɪ · ʀᴜᴛᴀ ᴘɪʀᴀᴛᴀ & sᴇɢᴀᴅᴏʀᴇs'
     cost: 50000000
     icon: SUNFLOWER
     permissions:
@@ -544,8 +544,8 @@ ranks:
     particle: WHITE_SMOKE
   saiyajin:
     tier: 31
-    display-name: '&6Saiyajin'
-    division: 'División IV: Guerreros Z & Monarca'
+    display-name: '&6sᴀɪʏᴀᴊɪɴ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪᴠ · ɢᴜᴇʀʀᴇʀᴏs ᴢ & ᴍᴏɴᴀʀᴄᴀ'
     cost: 65000000
     icon: DRAGON_BREATH
     permissions:
@@ -562,8 +562,8 @@ ranks:
     particle: GOLDEN_KI
   supersaiyajin:
     tier: 32
-    display-name: '&e&lSuperSaiyajin'
-    division: 'División IV: Guerreros Z & Monarca'
+    display-name: '&e&lsᴜᴘᴇʀsᴀɪʏᴀᴊɪɴ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪᴠ · ɢᴜᴇʀʀᴇʀᴏs ᴢ & ᴍᴏɴᴀʀᴄᴀ'
     cost: 85000000
     icon: GLOWSTONE_DUST
     permissions:
@@ -580,8 +580,8 @@ ranks:
     particle: GOLDEN_KI
   ssj2:
     tier: 33
-    display-name: '&e&lSSJ2'
-    division: 'División IV: Guerreros Z & Monarca'
+    display-name: '&e&lssᴊ2'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪᴠ · ɢᴜᴇʀʀᴇʀᴏs ᴢ & ᴍᴏɴᴀʀᴄᴀ'
     cost: 110000000
     icon: LIGHTNING_ROD
     permissions:
@@ -598,8 +598,8 @@ ranks:
     particle: GOLDEN_KI
   ssj3:
     tier: 34
-    display-name: '&6&lSSJ3 / Broly'
-    division: 'División IV: Guerreros Z & Monarca'
+    display-name: '&6&lssᴊ3 ︱ ʙʀᴏʟʏ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪᴠ · ɢᴜᴇʀʀᴇʀᴏs ᴢ & ᴍᴏɴᴀʀᴄᴀ'
     cost: 140000000
     icon: GOLD_BLOCK
     permissions:
@@ -617,8 +617,8 @@ ranks:
     particle: GOLDEN_KI
   ssjgod:
     tier: 35
-    display-name: '&c&lSSJGod'
-    division: 'División IV: Guerreros Z & Monarca'
+    display-name: '&c&lssᴊɢᴏᴅ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪᴠ · ɢᴜᴇʀʀᴇʀᴏs ᴢ & ᴍᴏɴᴀʀᴄᴀ'
     cost: 180000000
     icon: REDSTONE_BLOCK
     permissions:
@@ -635,8 +635,8 @@ ranks:
     particle: RED_GOD_KI
   ssjblue:
     tier: 36
-    display-name: '&9&lSSJBlue'
-    division: 'División IV: Guerreros Z & Monarca'
+    display-name: '&9&lssᴊʙʟᴜᴇ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪᴠ · ɢᴜᴇʀʀᴇʀᴏs ᴢ & ᴍᴏɴᴀʀᴄᴀ'
     cost: 230000000
     icon: LAPIS_BLOCK
     permissions:
@@ -653,8 +653,8 @@ ranks:
     particle: BLUE_GOD_KI
   cazadore:
     tier: 37
-    display-name: '&7Cazador-E'
-    division: 'División IV: Guerreros Z & Monarca'
+    display-name: '&7ᴄᴀᴢᴀᴅᴏʀ-ᴇ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪᴠ · ɢᴜᴇʀʀᴇʀᴏs ᴢ & ᴍᴏɴᴀʀᴄᴀ'
     cost: 260000000
     icon: WOODEN_PICKAXE
     permissions:
@@ -671,8 +671,8 @@ ranks:
     particle: SHADOW
   cazadors:
     tier: 38
-    display-name: '&6&lCazador-S'
-    division: 'División IV: Guerreros Z & Monarca'
+    display-name: '&6&lᴄᴀᴢᴀᴅᴏʀ-s'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪᴠ · ɢᴜᴇʀʀᴇʀᴏs ᴢ & ᴍᴏɴᴀʀᴄᴀ'
     cost: 290000000
     icon: DIAMOND_PICKAXE
     permissions:
@@ -689,8 +689,8 @@ ranks:
     particle: SHADOW
   monarcasombras:
     tier: 39
-    display-name: '&8&lMonarcaSombras'
-    division: 'División IV: Guerreros Z & Monarca'
+    display-name: '&8&lᴍᴏɴᴀʀᴄᴀsᴏᴍʙʀᴀs'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪᴠ · ɢᴜᴇʀʀᴇʀᴏs ᴢ & ᴍᴏɴᴀʀᴄᴀ'
     cost: 320000000
     icon: OBSIDIAN
     permissions:
@@ -707,8 +707,8 @@ ranks:
     particle: SHADOW
   sungjinwoo:
     tier: 40
-    display-name: '&5&lSungJinwoo'
-    division: 'División IV: Guerreros Z & Monarca'
+    display-name: '&5&lsᴜɴɢᴊɪɴᴡᴏᴏ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪᴠ · ɢᴜᴇʀʀᴇʀᴏs ᴢ & ᴍᴏɴᴀʀᴄᴀ'
     cost: 350000000
     icon: NETHERITE_INGOT
     permissions:
@@ -725,8 +725,8 @@ ranks:
     particle: SHADOW
   saitama:
     tier: 41
-    display-name: '&e&lSaitama'
-    division: 'División V: Trascendencia Suprema'
+    display-name: '&e&lsᴀɪᴛᴀᴍᴀ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠ · ᴛʀᴀsᴄᴇɴᴅᴇɴᴄɪᴀ sᴜᴘʀᴇᴍᴀ'
     cost: 400000000
     icon: RAW_GOLD
     permissions:
@@ -743,8 +743,8 @@ ranks:
     particle: GOLDEN_KI
   rimuru:
     tier: 42
-    display-name: '&b&lRimuru'
-    division: 'División V: Trascendencia Suprema'
+    display-name: '&b&lʀɪᴍᴜʀᴜ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠ · ᴛʀᴀsᴄᴇɴᴅᴇɴᴄɪᴀ sᴜᴘʀᴇᴍᴀ'
     cost: 480000000
     icon: SLIME_BALL
     permissions:
@@ -761,8 +761,8 @@ ranks:
     particle: BLUE_GOD_KI
   anos:
     tier: 43
-    display-name: '&4&lAnos'
-    division: 'División V: Trascendencia Suprema'
+    display-name: '&4&lᴀɴᴏs'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠ · ᴛʀᴀsᴄᴇɴᴅᴇɴᴄɪᴀ sᴜᴘʀᴇᴍᴀ'
     cost: 580000000
     icon: DRAGON_HEAD
     permissions:
@@ -779,8 +779,8 @@ ranks:
     particle: CURSED_FLAME
   alquimistaestatal:
     tier: 44
-    display-name: '&6&lAlquimista'
-    division: 'División V: Trascendencia Suprema'
+    display-name: '&6&lᴀʟǫᴜɪᴍɪsᴛᴀ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠ · ᴛʀᴀsᴄᴇɴᴅᴇɴᴄɪᴀ sᴜᴘʀᴇᴍᴀ'
     cost: 700000000
     icon: BEACON
     permissions:
@@ -797,8 +797,8 @@ ranks:
     particle: GOLDEN_KI
   hakari:
     tier: 45
-    display-name: '&d&lGohan Beast / Hakari'
-    division: 'División V: Trascendencia Suprema'
+    display-name: '&d&lɢᴏʜᴀɴ ʙᴇᴀsᴛ ︱ ʜᴀᴋᴀʀɪ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠ · ᴛʀᴀsᴄᴇɴᴅᴇɴᴄɪᴀ sᴜᴘʀᴇᴍᴀ'
     cost: 850000000
     icon: AMETHYST_SHARD
     permissions:
@@ -816,8 +816,8 @@ ranks:
     particle: GOLDEN_KI
   ultrainstinto:
     tier: 46
-    display-name: '&f&lUltraInstinto'
-    division: 'División V: Trascendencia Suprema'
+    display-name: '&f&lᴜʟᴛʀᴀɪɴsᴛɪɴᴛᴏ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠ · ᴛʀᴀsᴄᴇɴᴅᴇɴᴄɪᴀ sᴜᴘʀᴇᴍᴀ'
     cost: 1000000000
     icon: NETHER_STAR
     permissions:
@@ -835,8 +835,8 @@ ranks:
     particle: SILVER_DIVINE
   beerus:
     tier: 47
-    display-name: '&5&lBeerus / UltraEgo'
-    division: 'División V: Trascendencia Suprema'
+    display-name: '&5&lʙᴇᴇʀᴜs ︱ ᴜʟᴛʀᴀᴇɢᴏ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠ · ᴛʀᴀsᴄᴇɴᴅᴇɴᴄɪᴀ sᴜᴘʀᴇᴍᴀ'
     cost: 1150000000
     icon: END_CRYSTAL
     permissions:
@@ -854,8 +854,8 @@ ranks:
     particle: PURPLE_HAKAI
   whis:
     tier: 48
-    display-name: '&b&lWhis / Vegetto'
-    division: 'División V: Trascendencia Suprema'
+    display-name: '&b&lᴡʜɪs ︱ ᴠᴇɢᴇᴛᴛᴏ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠ · ᴛʀᴀsᴄᴇɴᴅᴇɴᴄɪᴀ sᴜᴘʀᴇᴍᴀ'
     cost: 1300000000
     icon: ELYTRA
     permissions:
@@ -873,8 +873,8 @@ ranks:
     particle: SILVER_DIVINE
   zeno:
     tier: 49
-    display-name: '&e&lZeno'
-    division: 'División V: Trascendencia Suprema'
+    display-name: '&e&lᴢᴇɴᴏ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠ · ᴛʀᴀsᴄᴇɴᴅᴇɴᴄɪᴀ sᴜᴘʀᴇᴍᴀ'
     cost: 1400000000
     icon: ENCHANTED_GOLDEN_APPLE
     permissions:
@@ -891,8 +891,8 @@ ranks:
     particle: SUPREME_GOD
   kamisama:
     tier: 50
-    display-name: '&6&l&nKamiSama'
-    division: 'División V: Trascendencia Suprema'
+    display-name: '&6&l&nᴋᴀᴍɪsᴀᴍᴀ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠ · ᴛʀᴀsᴄᴇɴᴅᴇɴᴄɪᴀ sᴜᴘʀᴇᴍᴀ'
     cost: 1500000000
     icon: TOTEM_OF_UNDYING
     permissions:
