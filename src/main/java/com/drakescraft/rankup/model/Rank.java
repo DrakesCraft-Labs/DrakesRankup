@@ -17,4 +17,10 @@ public class Rank {
     private final Material icon;
     private final List<String> permissions;
     private final List<String> perks;
+    private final List<String> rewardCommands;
+    private final boolean hasKineticPush;
+    private final double pushMultiplier;
+    private final int pushCooldownSeconds;
+    private final AbilityType abilityType;
+    private final String particleType;
 }

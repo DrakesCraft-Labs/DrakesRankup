@@ -1,14 +1,16 @@
 package com.drakescraft.rankup.manager;
 
 import com.drakescraft.rankup.DrakesRankupPlugin;
+import com.drakescraft.rankup.model.AbilityType;
+import com.drakescraft.rankup.model.PlayerSettings;
 import com.drakescraft.rankup.model.Rank;
-import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.economy.EconomyResponse;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.types.InheritanceNode;
 import net.luckperms.api.node.types.PermissionNode;
+import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -29,6 +31,8 @@ public class RankManager {
     private final Map<Integer, Rank> ranksByTier = new TreeMap<>();
     private final Map<String, Rank> ranksById = new HashMap<>();
     private final Map<UUID, Integer> playerTiers = new HashMap<>();
+    private final Map<UUID, PlayerSettings> playerSettings = new HashMap<>();
+
     private File playersFile;
     private FileConfiguration playersConfig;
     private static final DecimalFormat MONEY_FORMAT = new DecimalFormat("#,###,###,###.##");
@@ -59,8 +63,22 @@ public class RankManager {
                 if (mat == null) mat = Material.STONE;
                 List<String> perms = sec.getStringList(key + ".permissions");
                 List<String> perks = sec.getStringList(key + ".perks");
+                List<String> rewardCommands = sec.getStringList(key + ".reward-commands");
+                boolean hasPush = sec.getBoolean(key + ".kinetic-push", false);
+                double pushMult = sec.getDouble(key + ".push-multiplier", 1.2);
+                int pushCd = sec.getInt(key + ".push-cooldown", 5);
 
-                Rank rank = new Rank(tier, key, displayName, division, cost, mat, perms, perks);
+                String abName = sec.getString(key + ".ability", "NONE");
+                AbilityType abilityType;
+                try {
+                    abilityType = AbilityType.valueOf(abName.toUpperCase());
+                } catch (Exception e) {
+                    abilityType = AbilityType.NONE;
+                }
+
+                String particleType = sec.getString(key + ".particle", "NONE");
+
+                Rank rank = new Rank(tier, key, displayName, division, cost, mat, perms, perks, rewardCommands, hasPush, pushMult, pushCd, abilityType, particleType);
                 ranksByTier.put(tier, rank);
                 ranksById.put(key.toLowerCase(), rank);
             }
@@ -68,7 +86,7 @@ public class RankManager {
         plugin.getLogger().info("Se han cargado " + ranksByTier.size() + " rangos de DrakesRankup exitosamente.");
     }
 
-    private void loadPlayerData() {
+    public void loadPlayerData() {
         playersFile = new File(plugin.getDataFolder(), "players.yml");
         if (!playersFile.exists()) {
             try {
@@ -79,10 +97,24 @@ public class RankManager {
             }
         }
         playersConfig = YamlConfiguration.loadConfiguration(playersFile);
+        playerTiers.clear();
+        playerSettings.clear();
+
         for (String uuidStr : playersConfig.getKeys(false)) {
             try {
                 UUID uuid = UUID.fromString(uuidStr);
-                playerTiers.put(uuid, playersConfig.getInt(uuidStr));
+                if (playersConfig.isConfigurationSection(uuidStr)) {
+                    int tier = playersConfig.getInt(uuidStr + ".tier", 0);
+                    boolean particles = playersConfig.getBoolean(uuidStr + ".particles", true);
+                    boolean push = playersConfig.getBoolean(uuidStr + ".kinetic-push", true);
+                    boolean abilities = playersConfig.getBoolean(uuidStr + ".abilities", true);
+                    playerTiers.put(uuid, tier);
+                    playerSettings.put(uuid, new PlayerSettings(particles, push, abilities));
+                } else {
+                    int tier = playersConfig.getInt(uuidStr, 0);
+                    playerTiers.put(uuid, tier);
+                    playerSettings.put(uuid, new PlayerSettings());
+                }
             } catch (IllegalArgumentException ignored) {}
         }
     }
@@ -90,7 +122,12 @@ public class RankManager {
     public void savePlayerData() {
         if (playersConfig == null || playersFile == null) return;
         for (Map.Entry<UUID, Integer> entry : playerTiers.entrySet()) {
-            playersConfig.set(entry.getKey().toString(), entry.getValue());
+            String path = entry.getKey().toString();
+            playersConfig.set(path + ".tier", entry.getValue());
+            PlayerSettings s = getPlayerSettings(entry.getKey());
+            playersConfig.set(path + ".particles", s.isParticlesEnabled());
+            playersConfig.set(path + ".kinetic-push", s.isKineticPushEnabled());
+            playersConfig.set(path + ".abilities", s.isAbilitiesEnabled());
         }
         try {
             playersConfig.save(playersFile);
@@ -113,6 +150,10 @@ public class RankManager {
         return ranksByTier.get(currentTier + 1);
     }
 
+    public PlayerSettings getPlayerSettings(UUID uuid) {
+        return playerSettings.computeIfAbsent(uuid, k -> new PlayerSettings());
+    }
+
     public void setPlayerTier(UUID uuid, int tier) {
         playerTiers.put(uuid, tier);
         savePlayerData();
@@ -122,7 +163,7 @@ public class RankManager {
         UUID uuid = player.getUniqueId();
         Rank next = getNextRank(uuid);
         if (next == null) {
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("messages.max-rank")));
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("messages.max-rank", "&aYa has alcanzado el rango máximo.")));
             return false;
         }
 
@@ -131,7 +172,7 @@ public class RankManager {
             double balance = eco.getBalance(player);
             if (balance < next.getCost()) {
                 double missing = next.getCost() - balance;
-                String msg = plugin.getConfig().getString("messages.insufficient-funds")
+                String msg = plugin.getConfig().getString("messages.insufficient-funds", "&cTe faltan ${missing}")
                         .replace("{rank}", next.getDisplayName())
                         .replace("{missing}", MONEY_FORMAT.format(missing));
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
@@ -149,8 +190,9 @@ public class RankManager {
         setPlayerTier(uuid, next.getTier());
 
         applyLuckPermsRank(player, previousTier, next);
+        dispatchRewards(player, next);
 
-        String successMsg = plugin.getConfig().getString("messages.success")
+        String successMsg = plugin.getConfig().getString("messages.success", "&a¡Has ascendido a {rank}!")
                 .replace("{rank}", next.getDisplayName())
                 .replace("{cost}", MONEY_FORMAT.format(next.getCost()));
         player.sendMessage(ChatColor.translateAlternateColorCodes('&', successMsg));
@@ -180,6 +222,85 @@ public class RankManager {
         }
 
         return true;
+    }
+
+    public int processRankupMax(Player player) {
+        UUID uuid = player.getUniqueId();
+        int currentTier = getPlayerTier(uuid);
+        if (currentTier >= 50) {
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("messages.max-rank", "&aYa has alcanzado el rango máximo.")));
+            return 0;
+        }
+
+        Economy eco = plugin.getEconomy();
+        double balance = eco != null ? eco.getBalance(player) : Double.MAX_VALUE;
+
+        int targetTier = currentTier;
+        double totalCost = 0.0;
+
+        for (int t = currentTier + 1; t <= 50; t++) {
+            Rank r = ranksByTier.get(t);
+            if (r == null) break;
+            if (totalCost + r.getCost() <= balance) {
+                totalCost += r.getCost();
+                targetTier = t;
+            } else {
+                break;
+            }
+        }
+
+        if (targetTier == currentTier) {
+            Rank next = ranksByTier.get(currentTier + 1);
+            double missing = next != null ? next.getCost() - balance : 0.0;
+            String msg = plugin.getConfig().getString("messages.insufficient-funds", "&cTe faltan ${missing}")
+                    .replace("{rank}", next != null ? next.getDisplayName() : "")
+                    .replace("{missing}", MONEY_FORMAT.format(missing));
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
+            return 0;
+        }
+
+        if (eco != null && totalCost > 0) {
+            EconomyResponse r = eco.withdrawPlayer(player, totalCost);
+            if (!r.transactionSuccess()) {
+                player.sendMessage(ChatColor.RED + "Error procesando cobro acumulado en Vault: " + r.errorMessage);
+                return 0;
+            }
+        }
+
+        int previousTier = currentTier;
+        setPlayerTier(uuid, targetTier);
+        Rank finalRank = ranksByTier.get(targetTier);
+
+        applyLuckPermsRank(player, previousTier, finalRank);
+
+        for (int t = previousTier + 1; t <= targetTier; t++) {
+            Rank r = ranksByTier.get(t);
+            if (r != null) {
+                dispatchRewards(player, r);
+            }
+        }
+
+        int ranksGained = targetTier - previousTier;
+        player.sendMessage("§a§l¡ASCENSO MULTIPLE COMPLETADO! §eHas ascendido §6" + ranksGained + " §erangos hasta §b" + (finalRank != null ? finalRank.getDisplayName() : "") + "§e por un total de §a$" + MONEY_FORMAT.format(totalCost) + "§e.");
+        try {
+            player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 1.0f);
+        } catch (Exception ignored) {}
+
+        return ranksGained;
+    }
+
+    private void dispatchRewards(Player player, Rank rank) {
+        if (rank.getRewardCommands() == null || rank.getRewardCommands().isEmpty()) return;
+        for (String cmd : rank.getRewardCommands()) {
+            if (cmd != null && !cmd.trim().isEmpty()) {
+                String formattedCmd = cmd.replace("{player}", player.getName());
+                try {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), formattedCmd);
+                } catch (Exception e) {
+                    plugin.getLogger().warning("Error ejecutando comando de recompensa: " + formattedCmd + " (" + e.getMessage() + ")");
+                }
+            }
+        }
     }
 
     private void applyLuckPermsRank(Player player, int prevTier, Rank newRank) {
@@ -218,5 +339,9 @@ public class RankManager {
 
     public Rank getRankByTier(int tier) {
         return ranksByTier.get(tier);
+    }
+
+    public Rank getRankById(String id) {
+        return ranksById.get(id != null ? id.toLowerCase() : "");
     }
 }

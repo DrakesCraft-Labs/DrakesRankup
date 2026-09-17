@@ -1,5 +1,6 @@
 package com.drakescraft.rankup;
 
+import com.drakescraft.rankup.model.AbilityType;
 import com.drakescraft.rankup.model.Rank;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
@@ -34,7 +35,7 @@ class DrakesRankupTest {
     }
 
     @Test
-    void testFiftyRanksLoaded() {
+    void testFiftyAnimeRanksLoaded() {
         assertEquals(50, plugin.getRankManager().getAllRanks().size(), "Deben cargarse exactamente 50 rangos");
 
         for (int i = 1; i <= 50; i++) {
@@ -48,12 +49,32 @@ class DrakesRankupTest {
         }
 
         Rank tier1 = plugin.getRankManager().getRankByTier(1);
-        assertEquals("primitivo", tier1.getId());
+        assertEquals("senku", tier1.getId());
         assertEquals(10000.0, tier1.getCost());
+        assertEquals(AbilityType.DOUBLE_DROP, tier1.getAbilityType());
+        assertFalse(tier1.isHasKineticPush());
+
+        Rank tier11 = plugin.getRankManager().getRankByTier(11);
+        assertEquals("genin", tier11.getId());
+        assertTrue(tier11.isHasKineticPush());
+
+        Rank tier18 = plugin.getRankManager().getRankByTier(18);
+        assertEquals("yuji", tier18.getId());
+        assertEquals(AbilityType.BLACK_FLASH, tier18.getAbilityType());
+
+        Rank tier19 = plugin.getRankManager().getRankByTier(19);
+        assertEquals("gojo", tier19.getId());
+        assertEquals(AbilityType.MUGEN_DEFENSE, tier19.getAbilityType());
+
+        Rank tier46 = plugin.getRankManager().getRankByTier(46);
+        assertEquals("ultrainstinto", tier46.getId());
+        assertEquals(AbilityType.ULTRA_INSTINCT, tier46.getAbilityType());
 
         Rank tier50 = plugin.getRankManager().getRankByTier(50);
-        assertEquals("rey_de_los_piratas", tier50.getId());
+        assertEquals("kamisama", tier50.getId());
         assertEquals(1500000000.0, tier50.getCost());
+        assertEquals(AbilityType.KAMI_DIVINE, tier50.getAbilityType());
+        assertTrue(tier50.isHasKineticPush());
     }
 
     @Test
@@ -66,15 +87,16 @@ class DrakesRankupTest {
         Rank next = plugin.getRankManager().getNextRank(player.getUniqueId());
         assertNotNull(next);
         assertEquals(1, next.getTier());
-        assertEquals("primitivo", next.getId());
+        assertEquals("senku", next.getId());
 
         plugin.getRankManager().setPlayerTier(player.getUniqueId(), 25);
         assertEquals(25, plugin.getRankManager().getPlayerTier(player.getUniqueId()));
-        assertEquals("supernova", plugin.getRankManager().getPlayerRank(player.getUniqueId()).getId());
+        assertEquals("yonkou", plugin.getRankManager().getPlayerRank(player.getUniqueId()).getId());
 
         Rank nextAfter25 = plugin.getRankManager().getNextRank(player.getUniqueId());
         assertNotNull(nextAfter25);
         assertEquals(26, nextAfter25.getTier());
+        assertEquals("shinigami", nextAfter25.getId());
 
         plugin.getRankManager().setPlayerTier(player.getUniqueId(), 50);
         assertNull(plugin.getRankManager().getNextRank(player.getUniqueId()), "En tier 50 no debe haber siguiente rango");

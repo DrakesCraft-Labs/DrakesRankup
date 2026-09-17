@@ -1,549 +1,906 @@
-# DrakesRankup - Definicion oficial de los 50 Rangos Anime/Shonen
 ranks:
-  primitivo:
+  senku:
     tier: 1
-    display-name: "&7Primitivo"
-    division: "Division I: El Amanecer Shonen"
+    display-name: '&aSenku'
+    division: 'División I: Ciencia & Nen'
     cost: 10000
-    icon: "STONE"
+    icon: STONE
     permissions:
-      - "essentials.sethome.multiple.primitivo"
+    - essentials.sethome.multiple.senku
     perks:
-      - "+1 Home (/sethome)"
-      - "Titulo de Chat [Primitivo]"
-  artesano:
+    - +1 Home (/sethome)
+    - Acceso a /recipe
+    - Título [Senku]
+    reward-commands: []
+    kinetic-push: false
+    push-multiplier: 0.0
+    push-cooldown: 0
+    ability: DOUBLE_DROP
+    particle: SPARK
+  chrome:
     tier: 2
-    display-name: "&6Artesano"
-    division: "Division I: El Amanecer Shonen"
-    cost: 25000
-    icon: "CRAFTING_TABLE"
+    display-name: '&eChrome'
+    division: 'División I: Ciencia & Nen'
+    cost: 20000
+    icon: FLINT
     permissions:
-      - "essentials.hat"
+    - essentials.hat
     perks:
-      - "Acceso a comando /hat"
-      - "Kit de herramientas y semillas"
-  cientifico_novato:
+    - Visión de recolector astuto
+    - Acceso a /hat
+    - Título [Chrome]
+    reward-commands: []
+    kinetic-push: false
+    push-multiplier: 0.0
+    push-cooldown: 0
+    ability: DOUBLE_DROP
+    particle: SPARK
+  kohaku:
     tier: 3
-    display-name: "&bCientifico Novato"
-    division: "Division I: El Amanecer Shonen"
-    cost: 50000
-    icon: "GLASS_BOTTLE"
+    display-name: '&6Kohaku'
+    division: 'División I: Ciencia & Nen'
+    cost: 35000
+    icon: FEATHER
     permissions:
-      - "playervaults.amount.2"
+    - playervaults.amount.2
     perks:
-      - "+1 Boveda (/pv 2)"
-      - "5% Descuento XP Slimefun"
-  quimico:
+    - Resistencia a caídas -50%
+    - +1 Bóveda (/pv 2)
+    - Título [Kohaku]
+    reward-commands: []
+    kinetic-push: false
+    push-multiplier: 0.0
+    push-cooldown: 0
+    ability: FEATHER_STEP
+    particle: SPARK
+  gen:
     tier: 4
-    display-name: "&eQuimico"
-    division: "Division I: El Amanecer Shonen"
-    cost: 90000
-    icon: "BREWING_STAND"
+    display-name: '&dGen'
+    division: 'División I: Ciencia & Nen'
+    cost: 55000
+    icon: GOLD_NUGGET
     permissions:
-      - "essentials.workbench"
+    - essentials.workbench
     perks:
-      - "Acceso a mesa de trabajo /craft"
-  aspirante_cazador:
+    - Elocuencia del Mentalista
+    - Acceso a mesa /craft
+    - Título [Gen]
+    reward-commands: []
+    kinetic-push: false
+    push-multiplier: 0.0
+    push-cooldown: 0
+    ability: NONE
+    particle: SPARK
+  tsukasa:
     tier: 5
-    display-name: "&aAspirante a Cazador"
-    division: "Division I: El Amanecer Shonen"
-    cost: 150000
-    icon: "WOODEN_SWORD"
+    display-name: '&cTsukasa'
+    division: 'División I: Ciencia & Nen'
+    cost: 80000
+    icon: IRON_CHESTPLATE
     permissions:
-      - "essentials.sethome.multiple.cazador"
+    - essentials.sethome.multiple.tsukasa
     perks:
-      - "+1 Home (Total: 3 homes)"
-      - "Particulas de aura inicial"
-  cazador_novato:
+    - Fuerza primitiva y resistencia pasiva
+    - +1 Home
+    - Título [Tsukasa]
+    reward-commands: []
+    kinetic-push: false
+    push-multiplier: 0.0
+    push-cooldown: 0
+    ability: FEATHER_STEP
+    particle: SPARK
+  gon:
     tier: 6
-    display-name: "&2Cazador Novato"
-    division: "Division I: El Amanecer Shonen"
-    cost: 230000
-    icon: "IRON_SWORD"
+    display-name: '&2Gon'
+    division: 'División I: Ciencia & Nen'
+    cost: 120000
+    icon: FISHING_ROD
     permissions:
-      - "essentials.near"
+    - essentials.near
     perks:
-      - "Acceso a comando /near (50 bloques)"
-  usuario_ten:
+    - Aura de Nen (Ten y Ren)
+    - Acceso a /near básico
+    - Título [Gon]
+    reward-commands: []
+    kinetic-push: false
+    push-multiplier: 0.0
+    push-cooldown: 0
+    ability: NONE
+    particle: SPARK
+  killua:
     tier: 7
-    display-name: "&9Usuario de Ten"
-    division: "Division I: El Amanecer Shonen"
-    cost: 330000
-    icon: "SHIELD"
+    display-name: '&bKillua'
+    division: 'División I: Ciencia & Nen'
+    cost: 175000
+    icon: LIGHTNING_ROD
     permissions:
-      - "playervaults.amount.3"
+    - playervaults.amount.3
     perks:
-      - "+1 Boveda (/pv 3)"
-      - "Regeneracion pasiva I en spawn"
-  usuario_ren:
+    - 'Transmutación de rayo: velocidad pasiva'
+    - +1 Bóveda (/pv 3)
+    - Título [Killua]
+    reward-commands: []
+    kinetic-push: false
+    push-multiplier: 0.0
+    push-cooldown: 0
+    ability: ELECTRIC_SPEED
+    particle: ELECTRIC
+  kurapika:
     tier: 8
-    display-name: "&cUsuario de Ren"
-    division: "Division I: El Amanecer Shonen"
-    cost: 460000
-    icon: "BLAZE_POWDER"
+    display-name: '&eKurapika'
+    division: 'División I: Ciencia & Nen'
+    cost: 250000
+    icon: CHAIN
     permissions:
-      - "drakescraft.chatcolor.gray"
+    - essentials.condense
     perks:
-      - "10% Descuento XP Slimefun"
-      - "Color de chat gris (&7)"
-  usuario_hatsu:
+    - Cadenas del juicio espectral
+    - Acceso a /condense
+    - Título [Kurapika]
+    reward-commands: []
+    kinetic-push: false
+    push-multiplier: 0.0
+    push-cooldown: 0
+    ability: NONE
+    particle: SPARK
+  netero:
     tier: 9
-    display-name: "&5Usuario de Hatsu"
-    division: "Division I: El Amanecer Shonen"
-    cost: 620000
-    icon: "AMETHYST_SHARD"
+    display-name: '&6Netero'
+    division: 'División I: Ciencia & Nen'
+    cost: 350000
+    icon: GOLDEN_APPLE
     permissions:
-      - "essentials.sethome.multiple.hatsu"
+    - essentials.sethome.multiple.netero
     perks:
-      - "+1 Home (Total: 4 homes)"
-      - "Trail de particulas Nen"
-  cazador_1_estrella:
+    - 'Bodhisattva Guanyin: bono de XP'
+    - +1 Home
+    - Título [Netero]
+    reward-commands: []
+    kinetic-push: false
+    push-multiplier: 0.0
+    push-cooldown: 0
+    ability: NONE
+    particle: SPARK
+  meruem:
     tier: 10
-    display-name: "&e&lCazador de 1 Estrella"
-    division: "Division I: El Amanecer Shonen"
-    cost: 850000
-    icon: "NETHER_STAR"
+    display-name: '&5&lMeruem'
+    division: 'División I: Ciencia & Nen'
+    cost: 500000
+    icon: NETHERITE_HELMET
     permissions:
-      - "playervaults.amount.4"
-      - "drakescraft.anvil"
+    - essentials.ptime
     perks:
-      - "+1 Boveda (/pv 4)"
-      - "Acceso a /anvil portatil"
+    - 'Cima División I: Título dorado [Meruem]'
+    - Efecto sonoro al conectar
+    - Acceso a /ptime
+    reward-commands: []
+    kinetic-push: false
+    push-multiplier: 0.0
+    push-cooldown: 0
+    ability: NONE
+    particle: GOLDEN_KI
   genin:
     tier: 11
-    display-name: "&aGenin"
-    division: "Division II: El Camino del Shinobi"
-    cost: 1200000
-    icon: "IRON_NUGGET"
+    display-name: '&7Genin'
+    division: 'División II: Shinobi & Hechicería'
+    cost: 750000
+    icon: WOODEN_SWORD
     permissions:
-      - "essentials.sethome.multiple.genin"
+    - drakesrankup.push.genin
     perks:
-      - "+1 Home (Total: 5 homes)"
-      - "Kit Ninja basico"
+    - Desbloquea Empuje Cinético (Salto Shinobi)
+    - Salto potenciado
+    - Título [Genin]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 1.15
+    push-cooldown: 6
+    ability: NONE
+    particle: SHADOW
   chunin:
     tier: 12
-    display-name: "&2Chunin"
-    division: "Division II: El Camino del Shinobi"
-    cost: 1700000
-    icon: "CHAINMAIL_CHESTPLATE"
+    display-name: '&aChunin'
+    division: 'División II: Shinobi & Hechicería'
+    cost: 1000000
+    icon: IRON_SWORD
     permissions:
-      - "drakescraft.market.boost.5"
+    - essentials.near.chunin
     perks:
-      - "+5% Ganancias en venta de Mercado"
-  chaman_grado_4:
-    tier: 13
-    display-name: "&9Chaman Grado 4"
-    division: "Division II: El Camino del Shinobi"
-    cost: 2350000
-    icon: "PHANTOM_MEMBRANE"
-    permissions:
-      - "playervaults.amount.5"
-    perks:
-      - "+1 Boveda (/pv 5)"
-      - "Reduccion leve de dano de caida"
-  chaman_grado_3:
-    tier: 14
-    display-name: "&3Chaman Grado 3"
-    division: "Division II: El Camino del Shinobi"
-    cost: 3150000
-    icon: "CARTOGRAPHY_TABLE"
-    permissions:
-      - "drakescraft.cartography"
-    perks:
-      - "Mesa de cartografia portatil /cartography"
-  jonin_especial:
-    tier: 15
-    display-name: "&eJonin Especial"
-    division: "Division II: El Camino del Shinobi"
-    cost: 4100000
-    icon: "CROSSBOW"
-    permissions:
-      - "essentials.sethome.multiple.joninespecial"
-    perks:
-      - "+1 Home (Total: 6 homes)"
-      - "15% Descuento XP Slimefun"
+    - 'Empuje Cinético mejorado (CD: 6s)'
+    - Percepción táctica
+    - Título [Chunin]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 1.2
+    push-cooldown: 6
+    ability: NONE
+    particle: SHADOW
   jonin:
-    tier: 16
-    display-name: "&6Jonin"
-    division: "Division II: El Camino del Shinobi"
-    cost: 5250000
-    icon: "DIAMOND_SWORD"
+    tier: 13
+    display-name: '&2Jonin'
+    division: 'División II: Shinobi & Hechicería'
+    cost: 1350000
+    icon: DIAMOND_SWORD
     permissions:
-      - "auraskills.multiplier.5"
+    - playervaults.amount.4
     perks:
-      - "+5% Multiplicador de AuraSkills XP"
-  chaman_grado_1:
-    tier: 17
-    display-name: "&bChaman Grado 1"
-    division: "Division II: El Camino del Shinobi"
-    cost: 6650000
-    icon: "SOUL_LANTERN"
-    permissions:
-      - "playervaults.amount.6"
-      - "drakescraft.chatcolor.aqua"
-    perks:
-      - "+1 Boveda (/pv 6)"
-      - "Color de chat Aqua (&b)"
+    - 'Empuje Cinético mejorado (CD: 5s)'
+    - +1 Bóveda (/pv 4)
+    - Título [Jonin]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 1.25
+    push-cooldown: 5
+    ability: NONE
+    particle: SHADOW
   anbu:
+    tier: 14
+    display-name: '&8&lANBU'
+    division: 'División II: Shinobi & Hechicería'
+    cost: 1800000
+    icon: WITHER_SKELETON_SKULL
+    permissions:
+    - essentials.ext
+    perks:
+    - 'Empuje Cinético sigiloso (CD: 5s)'
+    - Acceso a /ext
+    - Título [ANBU]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 1.3
+    push-cooldown: 5
+    ability: NONE
+    particle: SHADOW
+  kage:
+    tier: 15
+    display-name: '&6&lKage'
+    division: 'División II: Shinobi & Hechicería'
+    cost: 2400000
+    icon: GOLDEN_HELMET
+    permissions:
+    - essentials.sethome.multiple.kage
+    perks:
+    - 'Mandatario Shinobi: Anuncio especial en chat'
+    - +1 Home
+    - Título [Kage]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 1.35
+    push-cooldown: 5
+    ability: NONE
+    particle: SHADOW
+  megumi:
+    tier: 16
+    display-name: '&3Megumi'
+    division: 'División II: Shinobi & Hechicería'
+    cost: 3200000
+    icon: BONE
+    permissions:
+    - essentials.pweather
+    perks:
+    - Técnica de Diez Sombras
+    - Acceso a /pweather
+    - Título [Megumi]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 1.35
+    push-cooldown: 5
+    ability: NONE
+    particle: SHADOW
+  nobara:
+    tier: 17
+    display-name: '&dNobara'
+    division: 'División II: Shinobi & Hechicería'
+    cost: 4000000
+    icon: IRON_HOE
+    permissions:
+    - playervaults.amount.5
+    perks:
+    - Técnica de Resonancia Maldita
+    - +1 Bóveda (/pv 5)
+    - Título [Nobara]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 1.35
+    push-cooldown: 5
+    ability: NONE
+    particle: SHADOW
+  yuji:
     tier: 18
-    display-name: "&8&lANBU"
-    division: "Division II: El Camino del Shinobi"
-    cost: 8350000
-    icon: "SMITHING_TABLE"
+    display-name: '&c&lYuji'
+    division: 'División II: Shinobi & Hechicería'
+    cost: 5000000
+    icon: CRIMSON_FUNGUS
     permissions:
-      - "drakescraft.smithing"
+    - essentials.recipe
     perks:
-      - "Mesa de herreria portatil /smithing"
-      - "Particulas de sombra Ninja"
-  chaman_grado_especial:
+    - 'Destello Negro (Black Flash: 15% daño x1.5)'
+    - Empuje Cinético x1.4
+    - Título [Yuji]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 1.4
+    push-cooldown: 4
+    ability: BLACK_FLASH
+    particle: SHADOW
+  gojo:
     tier: 19
-    display-name: "&d&lChaman Grado Especial"
-    division: "Division II: El Camino del Shinobi"
-    cost: 10400000
-    icon: "CRYING_OBSIDIAN"
+    display-name: '&b&lGojo'
+    division: 'División II: Shinobi & Hechicería'
+    cost: 6200000
+    icon: END_ROD
     permissions:
-      - "essentials.sethome.multiple.chamanesp"
+    - essentials.speed
     perks:
-      - "+1 Home (Total: 7 homes)"
-      - "+10% Ganancias en Mercado"
-  sannin_legendario:
+    - 'Infinito (Mugen: 15% desvía proyectiles)'
+    - Aura de Seis Ojos
+    - Título [Gojo]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 1.4
+    push-cooldown: 4
+    ability: MUGEN_DEFENSE
+    particle: SHADOW
+  sukuna:
     tier: 20
-    display-name: "&6&lSannin Legendario"
-    division: "Division II: El Camino del Shinobi"
-    cost: 12900000
-    icon: "DRAGON_BREATH"
+    display-name: '&4&lSukuna'
+    division: 'División II: Shinobi & Hechicería'
+    cost: 7500000
+    icon: SOUL_CAMPFIRE
     permissions:
-      - "playervaults.amount.7"
+    - essentials.sethome.multiple.sukuna
     perks:
-      - "+1 Boveda (/pv 7)"
-      - "Kit Legendario de Pergaminos Sannin"
-  grumete_east_blue:
+    - 'Cima División II: Fuego Maldito cuerpo a cuerpo'
+    - Título Carmesí [Sukuna]
+    - +1 Home
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 1.45
+    push-cooldown: 4
+    ability: CURSED_FLAME
+    particle: CURSED_FLAME
+  grumete:
     tier: 21
-    display-name: "&eGrumete del East Blue"
-    division: "Division III: La Gran Ruta Pirata"
-    cost: 15900000
-    icon: "OAK_BOAT"
+    display-name: '&bGrumete'
+    division: 'División III: Ruta Pirata & Segadores'
+    cost: 10000000
+    icon: PRISMARINE_SHARD
     permissions:
-      - "essentials.sethome.multiple.grumete"
+    - essentials.sethome.multiple.grumete
     perks:
-      - "+1 Home (Total: 8 homes)"
-      - "Respiracion acuatica prolongada"
-  shinigami_raso:
+    - Respiración acuática ilimitada
+    - Paso Marino
+    - Título [Grumete]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 1.4
+    push-cooldown: 5
+    ability: WATER_GRACE
+    particle: WHITE_SMOKE
+  pirata:
     tier: 22
-    display-name: "&7Shinigami Raso"
-    division: "Division III: La Gran Ruta Pirata"
-    cost: 19500000
-    icon: "GRINDSTONE"
+    display-name: '&3Pirata'
+    division: 'División III: Ruta Pirata & Segadores'
+    cost: 12500000
+    icon: HEART_OF_THE_SEA
     permissions:
-      - "drakescraft.grindstone"
+    - playervaults.amount.6
     perks:
-      - "Afiladora portatil /grindstone"
-  pirata_novato:
-    tier: 23
-    display-name: "&6Pirata Novato"
-    division: "Division III: La Gran Ruta Pirata"
-    cost: 23800000
-    icon: "SPYGLASS"
-    permissions:
-      - "auraskills.multiplier.10"
-    perks:
-      - "+10% Multiplicador de AuraSkills XP"
-  oficial_shikai:
-    tier: 24
-    display-name: "&bOficial Shikai"
-    division: "Division III: La Gran Ruta Pirata"
-    cost: 28900000
-    icon: "IRON_SWORD"
-    permissions:
-      - "playervaults.amount.8"
-    perks:
-      - "+1 Boveda (/pv 8)"
-      - "Efecto de impacto critico con chispas"
+    - Gracia del Delfín en océanos
+    - +1 Bóveda (/pv 6)
+    - Título [Pirata]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 1.45
+    push-cooldown: 5
+    ability: WATER_GRACE
+    particle: WHITE_SMOKE
   supernova:
+    tier: 23
+    display-name: '&cSupernova'
+    division: 'División III: Ruta Pirata & Segadores'
+    cost: 15500000
+    icon: COMPASS
+    permissions:
+    - essentials.compass
+    perks:
+    - 'La Peor Generación: Cartel de recompensa'
+    - Acceso a /compass
+    - Título [Supernova]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 1.45
+    push-cooldown: 5
+    ability: NONE
+    particle: WHITE_SMOKE
+  shichibukai:
+    tier: 24
+    display-name: '&6Shichibukai'
+    division: 'División III: Ruta Pirata & Segadores'
+    cost: 19000000
+    icon: EMERALD
+    permissions:
+    - essentials.dispose
+    perks:
+    - 'Corsario del Gobierno: 0% aranceles'
+    - Acceso a /dispose
+    - Título [Shichibukai]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 1.45
+    push-cooldown: 5
+    ability: NONE
+    particle: WHITE_SMOKE
+  yonkou:
     tier: 25
-    display-name: "&e&lSupernova"
-    division: "Division III: La Gran Ruta Pirata"
-    cost: 35000000
-    icon: "GOLD_INGOT"
+    display-name: '&4&lYonkou'
+    division: 'División III: Ruta Pirata & Segadores'
+    cost: 24000000
+    icon: NETHERITE_SWORD
     permissions:
-      - "essentials.sethome.multiple.supernova"
+    - essentials.sethome.multiple.yonkou
     perks:
-      - "+1 Home (Total: 9 homes)"
-      - "20% Descuento XP Slimefun"
-  teniente_escuadron:
+    - 'Haki del Conquistador: ralentiza hostiles'
+    - +1 Home
+    - Título [Yonkou]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 1.5
+    push-cooldown: 4
+    ability: HAKI_CONQUEROR
+    particle: WHITE_SMOKE
+  shinigami:
     tier: 26
-    display-name: "&dTeniente de Escuadron"
-    division: "Division III: La Gran Ruta Pirata"
-    cost: 42200000
-    icon: "STONECUTTER"
+    display-name: '&fShinigami'
+    division: 'División III: Ruta Pirata & Segadores'
+    cost: 30000000
+    icon: IRON_SWORD
     permissions:
-      - "drakescraft.stonecutter"
-      - "drakescraft.chatcolor.pink"
+    - playervaults.amount.7
     perks:
-      - "Cortapiedras portatil"
-      - "Color de chat Rosa (&d)"
-  comandante_nuevo_mundo:
+    - 'Segador de Almas: Zanpakuto cosmética'
+    - +1 Bóveda (/pv 7)
+    - Título [Shinigami]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 1.5
+    push-cooldown: 4
+    ability: NONE
+    particle: WHITE_SMOKE
+  teniente:
     tier: 27
-    display-name: "&3Comandante del Nuevo Mundo"
-    division: "Division III: La Gran Ruta Pirata"
-    cost: 50600000
-    icon: "HEART_OF_THE_SEA"
+    display-name: '&bTeniente'
+    division: 'División III: Ruta Pirata & Segadores'
+    cost: 35000000
+    icon: GHAST_TEAR
     permissions:
-      - "playervaults.amount.9"
+    - essentials.back
     perks:
-      - "+1 Boveda (/pv 9)"
-      - "+15% Ganancias en Mercado"
-  capitan_bankai:
+    - 'Oficial del Gotei 13: Shunpo en /back'
+    - Acceso a /back rápido
+    - Título [Teniente]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 1.55
+    push-cooldown: 4
+    ability: NONE
+    particle: WHITE_SMOKE
+  capitan:
     tier: 28
-    display-name: "&c&lCapitan Bankai"
-    division: "Division III: La Gran Ruta Pirata"
-    cost: 60400000
-    icon: "NETHERITE_SWORD"
+    display-name: '&f&lCapitán'
+    division: 'División III: Ruta Pirata & Segadores'
+    cost: 40000000
+    icon: WHITE_BANNER
     permissions:
-      - "essentials.sethome.multiple.bankai"
+    - essentials.anvil
     perks:
-      - "+1 Home (Total: 10 homes)"
-      - "Particulas Bankai espirituales"
-  haki_conquistador:
+    - 'Haori blanco de capitán: Reiatsu visible'
+    - Acceso virtual a /anvil
+    - Título [Capitán]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 1.55
+    push-cooldown: 4
+    ability: NONE
+    particle: WHITE_SMOKE
+  bankai:
     tier: 29
-    display-name: "&4&lHaki del Conquistador"
-    division: "Division III: La Gran Ruta Pirata"
-    cost: 71800000
-    icon: "DRAGON_EGG"
+    display-name: '&c&lBankai'
+    division: 'División III: Ruta Pirata & Segadores'
+    cost: 45000000
+    icon: DIAMOND_SWORD
     permissions:
-      - "drakescraft.haki.wave"
+    - essentials.grindstone
     perks:
-      - "Onda de choque cosmetica al entrar"
-  emperador_del_mar:
+    - 'Liberación Definitiva: Sonido y partículas al desenvainar'
+    - Acceso a /grindstone
+    - Título [Bankai]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 1.6
+    push-cooldown: 4
+    ability: NONE
+    particle: WHITE_SMOKE
+  joyboy:
     tier: 30
-    display-name: "&e&lEmperador del Mar"
-    division: "Division III: La Gran Ruta Pirata"
-    cost: 85000000
-    icon: "BEACON"
+    display-name: '&e&lJoyBoy'
+    division: 'División III: Ruta Pirata & Segadores'
+    cost: 50000000
+    icon: SUNFLOWER
     permissions:
-      - "playervaults.amount.10"
-      - "drakescraft.condense"
+    - essentials.sethome.multiple.joyboy
     perks:
-      - "+1 Boveda (/pv 10)"
-      - "Acceso a /condense"
-  cazador_rango_e:
+    - 'Cima División III: Nubes de Gear 5 y Haki Supremo'
+    - Tambores de la Liberación
+    - +1 Home
+    - Título [JoyBoy]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 1.65
+    push-cooldown: 4
+    ability: HAKI_CONQUEROR
+    particle: WHITE_SMOKE
+  saiyajin:
     tier: 31
-    display-name: "&7Cazador Rango E"
-    division: "Division IV: Guerreros Z y Despertar"
-    cost: 100500000
-    icon: "COAL"
+    display-name: '&6Saiyajin'
+    division: 'División IV: Guerreros Z & Monarca'
+    cost: 65000000
+    icon: DRAGON_BREATH
     permissions:
-      - "essentials.sethome.multiple.cazadore"
+    - playervaults.amount.8
     perks:
-      - "+1 Home (Total: 11 homes)"
-      - "Vision nocturna pasiva en minas"
-  guerrero_z:
+    - 'Zenkai Boost: Fuerza y Regen al bajar de 3 corazones'
+    - +1 Bóveda (/pv 8)
+    - Título [Saiyajin]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 1.65
+    push-cooldown: 4
+    ability: ZENKAI_BOOST
+    particle: GOLDEN_KI
+  supersaiyajin:
     tier: 32
-    display-name: "&eGuerrero Z"
-    division: "Division IV: Guerreros Z y Despertar"
-    cost: 118500000
-    icon: "GOLDEN_APPLE"
+    display-name: '&e&lSuperSaiyajin'
+    division: 'División IV: Guerreros Z & Monarca'
+    cost: 85000000
+    icon: GLOWSTONE_DUST
     permissions:
-      - "auraskills.multiplier.15"
+    - essentials.smithingtable
     perks:
-      - "+15% Multiplicador de AuraSkills XP"
-  cazador_rango_c:
+    - Aura de Llamas Doradas continua
+    - Acceso a /smithingtable
+    - Título [SSJ]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 1.7
+    push-cooldown: 4
+    ability: ZENKAI_BOOST
+    particle: GOLDEN_KI
+  ssj2:
     tier: 33
-    display-name: "&9Cazador Rango C"
-    division: "Division IV: Guerreros Z y Despertar"
-    cost: 139500000
-    icon: "LAPIS_LAZULI"
+    display-name: '&e&lSSJ2'
+    division: 'División IV: Guerreros Z & Monarca'
+    cost: 110000000
+    icon: LIGHTNING_ROD
     permissions:
-      - "playervaults.amount.11"
+    - essentials.stonecutter
     perks:
-      - "+1 Boveda (/pv 11)"
-      - "25% Descuento XP Slimefun"
-  kaioken:
+    - 'Rayo Ascendente: Chispas eléctricas azules continuas'
+    - Acceso a /stonecutter
+    - Título [SSJ2]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 1.7
+    push-cooldown: 4
+    ability: ZENKAI_BOOST
+    particle: GOLDEN_KI
+  ssj3:
     tier: 34
-    display-name: "&c&lKaioken"
-    division: "Division IV: Guerreros Z y Despertar"
-    cost: 163800000
-    icon: "REDSTONE_BLOCK"
+    display-name: '&6&lSSJ3'
+    division: 'División IV: Guerreros Z & Monarca'
+    cost: 140000000
+    icon: GOLD_BLOCK
     permissions:
-      - "drakescraft.kaioken.aura"
+    - essentials.sethome.multiple.ssj3
     perks:
-      - "Aura roja de combate llameante"
-  cazador_rango_a:
+    - 'Poder Desatado: Estela cósmica masiva al desplazarse'
+    - +1 Home
+    - Título [SSJ3]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 1.75
+    push-cooldown: 3
+    ability: ZENKAI_BOOST
+    particle: GOLDEN_KI
+  ssjgod:
     tier: 35
-    display-name: "&b&lCazador Rango A"
-    division: "Division IV: Guerreros Z y Despertar"
-    cost: 191800000
-    icon: "DIAMOND"
+    display-name: '&c&lSSJGod'
+    division: 'División IV: Guerreros Z & Monarca'
+    cost: 180000000
+    icon: REDSTONE_BLOCK
     permissions:
-      - "essentials.sethome.multiple.cazadora"
+    - playervaults.amount.9
     perks:
-      - "+1 Home (Total: 12 homes)"
-      - "+20% Ganancias en Mercado"
-  super_saiyan:
+    - 'Ki Divino: Llamas puras de fuego rojo celestial'
+    - +1 Bóveda (/pv 9)
+    - Título [SSJGod]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 1.75
+    push-cooldown: 3
+    ability: ZENKAI_BOOST
+    particle: GOLDEN_KI
+  ssjblue:
     tier: 36
-    display-name: "&e&lSuper Saiyan"
-    division: "Division IV: Guerreros Z y Despertar"
-    cost: 224000000
-    icon: "GLOWSTONE"
+    display-name: '&9&lSSJBlue'
+    division: 'División IV: Guerreros Z & Monarca'
+    cost: 230000000
+    icon: LAPIS_BLOCK
     permissions:
-      - "playervaults.amount.12"
-      - "drakescraft.chatcolor.yellow"
+    - essentials.loom
     perks:
-      - "+1 Boveda (/pv 12)"
-      - "Aura dorada y Chat Amarillo (&e)"
-  cazador_rango_s:
+    - 'Calma Trascendental: Aura de deidad azul zafiro'
+    - Acceso a /loom
+    - Título [SSJBlue]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 1.8
+    push-cooldown: 3
+    ability: ZENKAI_BOOST
+    particle: BLUE_GOD_KI
+  cazadore:
     tier: 37
-    display-name: "&5&lCazador Rango S"
-    division: "Division IV: Guerreros Z y Despertar"
-    cost: 260800000
-    icon: "ENDER_CHEST"
+    display-name: '&7Cazador-E'
+    division: 'División IV: Guerreros Z & Monarca'
+    cost: 260000000
+    icon: WOODEN_PICKAXE
     permissions:
-      - "essentials.enderchest"
+    - essentials.cartographytable
     perks:
-      - "Acceso a /enderchest portatil"
-  super_saiyan_2:
+    - 'El más débil de la humanidad: Perseverancia inquebrantable'
+    - Acceso a /cartographytable
+    - Título [Cazador-E]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 1.75
+    push-cooldown: 4
+    ability: NONE
+    particle: SHADOW
+  cazadors:
     tier: 38
-    display-name: "&e&lSuper Saiyan 2"
-    division: "Division IV: Guerreros Z y Despertar"
-    cost: 302800000
-    icon: "LIGHTNING_ROD"
+    display-name: '&6&lCazador-S'
+    division: 'División IV: Guerreros Z & Monarca'
+    cost: 290000000
+    icon: DIAMOND_PICKAXE
     permissions:
-      - "essentials.sethome.multiple.ssj2"
+    - essentials.sethome.multiple.cazadors
     perks:
-      - "+1 Home (Total: 13 homes)"
-      - "Rayos electricos SSJ2"
-  cazador_nivel_nacional:
+    - 'Rango S Nacional: Aura opresiva'
+    - +1 Home
+    - Título [Cazador-S]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 1.8
+    push-cooldown: 3
+    ability: NONE
+    particle: SHADOW
+  monarcasombras:
     tier: 39
-    display-name: "&6&lCazador Nivel Nacional"
-    division: "Division IV: Guerreros Z y Despertar"
-    cost: 350500000
-    icon: "NETHERITE_SCRAP"
+    display-name: '&8&lMonarcaSombras'
+    division: 'División IV: Guerreros Z & Monarca'
+    cost: 320000000
+    icon: OBSIDIAN
     permissions:
-      - "playervaults.amount.13"
+    - playervaults.amount.10
     perks:
-      - "+1 Boveda (/pv 13)"
-      - "30% Descuento XP Slimefun"
-  super_saiyan_3:
+    - 'Extracción de Sombras: 10% al matar mobs de invocar sombra aliada'
+    - +1 Bóveda (/pv 10)
+    - Título [MonarcaSombras]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 1.85
+    push-cooldown: 3
+    ability: SHADOW_EXTRACTION
+    particle: SHADOW
+  sungjinwoo:
     tier: 40
-    display-name: "&6&lSuper Saiyan 3"
-    division: "Division IV: Guerreros Z y Despertar"
-    cost: 404600000
-    icon: "SEA_LANTERN"
+    display-name: '&5&lSungJinwoo'
+    division: 'División IV: Guerreros Z & Monarca'
+    cost: 350000000
+    icon: NETHERITE_INGOT
     permissions:
-      - "drakescraft.ssj3.aura"
+    - essentials.repair
     perks:
-      - "Aura de energia titanica SSJ3"
-  monarca_sombras:
+    - 'Cima División IV: Ojos morados ardientes y ''SURGE'''
+    - Acceso a /repair
+    - Título [SungJinwoo]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 1.85
+    push-cooldown: 3
+    ability: SHADOW_EXTRACTION
+    particle: SHADOW
+  saitama:
     tier: 41
-    display-name: "&8&lMonarca de las Sombras"
-    division: "Division V: Trascendencia y Deidades"
-    cost: 466000000
-    icon: "ECHO_SHARD"
+    display-name: '&e&lSaitama'
+    division: 'División V: Trascendencia Suprema'
+    cost: 400000000
+    icon: RAW_GOLD
     permissions:
-      - "essentials.sethome.multiple.monarca"
+    - essentials.sethome.multiple.saitama
     perks:
-      - "+1 Home (Total: 14 homes)"
-      - "Aura de sombras oscuras"
-  super_saiyan_dios:
+    - 'Golpe Serio: 12% de empuje colosal cinematográfico'
+    - +1 Home
+    - Título [Saitama]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 1.85
+    push-cooldown: 3
+    ability: SERIOUS_PUNCH
+    particle: GOLDEN_KI
+  rimuru:
     tier: 42
-    display-name: "&c&lSuper Saiyan Dios"
-    division: "Division V: Trascendencia y Deidades"
-    cost: 535500000
-    icon: "MAGMA_BLOCK"
+    display-name: '&b&lRimuru'
+    division: 'División V: Trascendencia Suprema'
+    cost: 480000000
+    icon: SLIME_BALL
     permissions:
-      - "auraskills.multiplier.20"
-      - "drakescraft.chatcolor.red"
+    - playervaults.amount.12
     perks:
-      - "+20% AuraSkills XP"
-      - "Color de chat Rojo (&c)"
-  kage_supremo:
+    - 'Gobernante Slime: Compañero flotante personalizado'
+    - +2 Bóvedas (/pv 12)
+    - Título [Rimuru]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 1.85
+    push-cooldown: 3
+    ability: NONE
+    particle: BLUE_GOD_KI
+  anos:
     tier: 43
-    display-name: "&6&lKage Supremo"
-    division: "Division V: Trascendencia y Deidades"
-    cost: 614000000
-    icon: "TOTEM_OF_UNDYING"
+    display-name: '&4&lAnos'
+    division: 'División V: Trascendencia Suprema'
+    cost: 580000000
+    icon: DRAGON_HEAD
     permissions:
-      - "playervaults.amount.14"
+    - essentials.heal
     perks:
-      - "+1 Boveda (/pv 14)"
-      - "+25% Ganancias en Mercado"
-  super_saiyan_blue:
+    - 'Rey Demonio de la Tiranía: Ojos mágicos de destrucción'
+    - Acceso a /heal
+    - Título [Anos]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 1.9
+    push-cooldown: 3
+    ability: CURSED_FLAME
+    particle: CURSED_FLAME
+  alquimistaestatal:
     tier: 44
-    display-name: "&b&lSuper Saiyan Blue"
-    division: "Division V: Trascendencia y Deidades"
-    cost: 702500000
-    icon: "DIAMOND_BLOCK"
+    display-name: '&6&lAlquimista'
+    division: 'División V: Trascendencia Suprema'
+    cost: 700000000
+    icon: BEACON
     permissions:
-      - "essentials.sethome.multiple.ssjblue"
+    - essentials.repair.all
     perks:
-      - "+1 Home (Total: 15 homes)"
-      - "Aura azul celeste divina"
-  guerrero_solar_nika:
+    - 'Círculo de Transmutación: Duplica drops y crafteos'
+    - Acceso a /repair all
+    - Título [Alquimista]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 1.9
+    push-cooldown: 3
+    ability: DOUBLE_DROP
+    particle: GOLDEN_KI
+  hakari:
     tier: 45
-    display-name: "&e&lGuerrero Solar Nika (Gear 5)"
-    division: "Division V: Trascendencia y Deidades"
-    cost: 802000000
-    icon: "HONEY_BLOCK"
+    display-name: '&a&lHakari'
+    division: 'División V: Trascendencia Suprema'
+    cost: 850000000
+    icon: GOLDEN_HORSE_ARMOR
     permissions:
-      - "playervaults.amount.15"
+    - essentials.sethome.multiple.hakari
     perks:
-      - "+1 Boveda (/pv 15)"
-      - "Salto impulsado y sonido tambores"
-  sabio_seis_caminos:
+    - 'Jackpot Inmortal: Suerte multiplicada al abrir cofres'
+    - +1 Home
+    - Título [Hakari]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 1.9
+    push-cooldown: 3
+    ability: NONE
+    particle: GOLDEN_KI
+  ultrainstinto:
     tier: 46
-    display-name: "&f&lSabio de los Seis Caminos"
-    division: "Division V: Trascendencia y Deidades"
-    cost: 913500000
-    icon: "END_CRYSTAL"
+    display-name: '&f&lUltraInstinto'
+    division: 'División V: Trascendencia Suprema'
+    cost: 1000000000
+    icon: NETHER_STAR
     permissions:
-      - "drakescraft.gudodama"
+    - playervaults.amount.15
     perks:
-      - "40% Descuento XP Slimefun"
-      - "Gudodamas flotantes"
-  ultra_ego:
+    - 'Doctrina Egoísta: 15% de esquivar cualquier ataque'
+    - Aura plateada etérea
+    - +3 Bóvedas (/pv 15)
+    - Título [UltraInstinto]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 1.95
+    push-cooldown: 2
+    ability: ULTRA_INSTINCT
+    particle: SILVER_DIVINE
+  beerus:
     tier: 47
-    display-name: "&5&lUltra Ego"
-    division: "Division V: Trascendencia y Deidades"
-    cost: 1038500000
-    icon: "AMETHYST_CLUSTER"
+    display-name: '&5&lBeerus'
+    division: 'División V: Trascendencia Suprema'
+    cost: 1150000000
+    icon: END_CRYSTAL
     permissions:
-      - "essentials.sethome.multiple.ultraego"
+    - essentials.feed
     perks:
-      - "+1 Home (Total: 16 homes)"
-      - "Aura purpura destructiva"
-  ultra_instinto_senal:
+    - 'Hakai Aura: Inmunidad total a fuego/lava y daño de retorno'
+    - Acceso a /feed
+    - Título [Beerus]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 1.95
+    push-cooldown: 2
+    ability: HAKAI_AURA
+    particle: PURPLE_HAKAI
+  whis:
     tier: 48
-    display-name: "&7&lUltra Instinto Senal"
-    division: "Division V: Trascendencia y Deidades"
-    cost: 1178500000
-    icon: "IRON_BLOCK"
+    display-name: '&b&lWhis'
+    division: 'División V: Trascendencia Suprema'
+    cost: 1300000000
+    icon: ELYTRA
     permissions:
-      - "drakescraft.ui.dodge"
+    - essentials.fly
     perks:
-      - "Particulas plateadas y Chat &f&l"
-  ultra_instinto_dominado:
+    - 'Guía Angelical: Halo orbital de ángel y paz absoluta'
+    - 'Empuje divino (CD: 2s)'
+    - Título [Whis]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 2.0
+    push-cooldown: 2
+    ability: ULTRA_INSTINCT
+    particle: SILVER_DIVINE
+  zeno:
     tier: 49
-    display-name: "&f&lUltra Instinto Dominado"
-    division: "Division V: Trascendencia y Deidades"
-    cost: 1335000000
-    icon: "NETHERITE_BLOCK"
+    display-name: '&e&lZeno'
+    division: 'División V: Trascendencia Suprema'
+    cost: 1400000000
+    icon: ENCHANTED_GOLDEN_APPLE
     permissions:
-      - "playervaults.amount.16"
+    - essentials.sethome.multiple.zeno
     perks:
-      - "+1 Boveda (/pv 16)"
-      - "Aura plateada trascendente"
-  rey_de_los_piratas:
+    - 'Omni-Rey del Multiverso: Corona celestial universal'
+    - +2 Homes
+    - Título [Zeno]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 2.0
+    push-cooldown: 2
+    ability: ULTRA_INSTINCT
+    particle: SUPREME_GOD
+  kamisama:
     tier: 50
-    display-name: "&6&l&nRey de los Piratas"
-    division: "Division V: Trascendencia y Deidades"
+    display-name: '&6&l&nKamiSama'
+    division: 'División V: Trascendencia Suprema'
     cost: 1500000000
-    icon: "CONDUIT"
+    icon: TOTEM_OF_UNDYING
     permissions:
-      - "essentials.sethome.multiple.rey"
-      - "playervaults.amount.20"
+    - essentials.god
+    - playervaults.amount.20
     perks:
-      - "Corona Cosmica"
-      - "Tag Legendario"
-      - "+20 Homes"
-      - "+20 Vaults"
-      - "Broadcast dorado permanente"
+    - CIMA ABSOLUTA DE DRAKESRANKUP
+    - Corona Divina Suprema de Oro Puro
+    - Presencia Divina Inmortal
+    - +5 Bóvedas (/pv 20)
+    - Título Supremo [KamiSama]
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 2.1
+    push-cooldown: 2
+    ability: KAMI_DIVINE
+    particle: SUPREME_GOD
