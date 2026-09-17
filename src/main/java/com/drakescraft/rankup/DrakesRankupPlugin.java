@@ -9,12 +9,14 @@ import com.drakescraft.rankup.command.RankupCommand;
 import com.drakescraft.rankup.command.TransformationCommand;
 import com.drakescraft.rankup.gui.RankupGuiListener;
 import com.drakescraft.rankup.gui.TransformationGuiListener;
+import com.drakescraft.rankup.listener.RankDecayListener;
 import com.drakescraft.rankup.manager.RankManager;
 import com.drakescraft.rankup.manager.StaffManager;
 import com.drakescraft.rankup.manager.KitManager;
 import com.drakescraft.rankup.ability.CustomKitItemListener;
 import com.drakescraft.rankup.papi.DrakesRankupExpansion;
 import com.drakescraft.rankup.task.AuraTask;
+import com.drakescraft.rankup.task.RankDecayTask;
 import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -41,6 +43,7 @@ public class DrakesRankupPlugin extends JavaPlugin {
     private KitManager kitManager;
 
     private AuraTask auraTask;
+    private RankDecayTask rankDecayTask;
 
     @Override
     public void onEnable() {
@@ -82,23 +85,35 @@ public class DrakesRankupPlugin extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(onePieceListener, this);
         Bukkit.getPluginManager().registerEvents(staffManager, this);
         Bukkit.getPluginManager().registerEvents(new CustomKitItemListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new RankDecayListener(this), this);
 
         // Start aura particle task every second (20 ticks)
         auraTask = new AuraTask(this);
         auraTask.runTaskTimerAsynchronously(this, 20L, 20L);
+
+        // Start periodic rank decay check task
+        if (getConfig().getBoolean("settings.maintenance.enabled", true)) {
+            rankDecayTask = new RankDecayTask(this);
+            long intervalMinutes = getConfig().getLong("settings.maintenance.check-interval-minutes", 30L);
+            long intervalTicks = Math.max(1200L, intervalMinutes * 60L * 20L);
+            rankDecayTask.runTaskTimer(this, 200L, intervalTicks);
+        }
 
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             new DrakesRankupExpansion(this).register();
             getLogger().info("PlaceholderAPI expansion %drakesrankup_*% registrada.");
         }
 
-        getLogger().info("DrakesRankup v" + getPluginMeta().getVersion() + " habilitado exitosamente. Motor de 50 Rangos Anime, GUI de Transformaciones, Ki, One Piece y Staff Celestial activo.");
+        getLogger().info("DrakesRankup v" + getPluginMeta().getVersion() + " habilitado exitosamente. Motor de 50 Rangos Anime, Sistema de Mantención/Decay, GUI de Transformaciones, Ki y Staff Celestial activo.");
     }
 
     @Override
     public void onDisable() {
         if (auraTask != null) {
             auraTask.cancel();
+        }
+        if (rankDecayTask != null) {
+            rankDecayTask.cancel();
         }
         if (rankManager != null) {
             rankManager.savePlayerData();

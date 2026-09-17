@@ -108,6 +108,7 @@ public class RankupMenu implements InventoryHolder {
             List<String> lore = new ArrayList<>();
             lore.add("&8" + r.getDivision());
             lore.add("&7Costo: &6$" + MONEY_FORMAT.format(r.getCost()));
+            lore.add("&7Tipo: " + (r.isPermanent() ? "&aPermanente (Ancla)" : "&eTemporal (14 días)"));
             lore.add("");
             lore.add("&e&nVentajas y Beneficios:&r");
             for (String perk : r.getPerks()) {
@@ -142,6 +143,81 @@ public class RankupMenu implements InventoryHolder {
         }
 
         // Bottom Controls
+        // Slot 45: Núcleo de Estabilidad de Rango (Mantención)
+        if (currentRank == null || currentTier == 0) {
+            inv.setItem(45, createItem(Material.RESPAWN_ANCHOR, "&8🏺 Núcleo de Estabilidad",
+                    "&7No posees ningún rango activo.",
+                    "&7Asciende al Tier 1 para iniciar tu camino."));
+        } else if (currentRank.isPermanent()) {
+            inv.setItem(45, createItem(Material.BEACON, "&a&l🏺 Rango Permanente",
+                    "&7Tu rango: " + currentRank.getDisplayName(),
+                    "&8" + currentRank.getDivision(),
+                    "",
+                    "&a✔ ¡RANGO ETERNO (ANCLA)!",
+                    "&7Este rango actúa como un ancla sagrada.",
+                    "&7No requiere tributo ni sufre desgaste."));
+        } else {
+            long remainingMs = plugin.getRankManager().getRemainingMaintenanceMs(player.getUniqueId());
+            long days = remainingMs / 86400000L;
+            long hours = (remainingMs % 86400000L) / 3600000L;
+            double mCost = currentRank.getMaintenanceCost();
+            boolean affordM = balance >= mCost;
+
+            Material mIcon;
+            String statusColor;
+            String statusText;
+            if (days >= 3) {
+                mIcon = Material.RESPAWN_ANCHOR;
+                statusColor = "&a";
+                statusText = "ÓPTIMO";
+            } else if (days >= 1) {
+                mIcon = Material.CRYING_OBSIDIAN;
+                statusColor = "&e";
+                statusText = "INESTABLE";
+            } else {
+                mIcon = Material.REDSTONE_BLOCK;
+                statusColor = "&c";
+                statusText = "CRÍTICO";
+            }
+
+            int filledBars = (int) Math.max(0, Math.min(10, (days * 10) / 14));
+            StringBuilder bar = new StringBuilder("&8[");
+            for (int b = 0; b < 10; b++) {
+                if (b < filledBars) {
+                    bar.append(statusColor).append("▮");
+                } else {
+                    bar.append("&8▯");
+                }
+            }
+            bar.append("&8]");
+
+            inv.setItem(45, createItem(mIcon, "&6&l🏺 Núcleo de Estabilidad de Rango",
+                    "&7Rango: " + currentRank.getDisplayName() + " &8(Temporal)",
+                    "&7Estabilidad: " + statusColor + statusText + " " + bar.toString(),
+                    "&7Tiempo restante: " + statusColor + days + "d " + hours + "h",
+                    "",
+                    "&7Costo de mantención: &6$" + MONEY_FORMAT.format(mCost) + " &7(+14 días)",
+                    "",
+                    affordM ? "&a▶ Clic para alimentar el Núcleo y renovar" : "&c✖ Fondos insuficientes para renovar"));
+        }
+
+        // Help & Info Button (Slot 46)
+        inv.setItem(46, createItem(Material.BOOK, "&e&lInformación de Rankup",
+                "&750 Rangos Anime Shonen",
+                "&7Economía 100% in-game (Dragmas)",
+                "&7Totalmente compatible con VIP Dioses",
+                "",
+                "&fComandos útiles: &6/rankup&f, &6/rankup max, &6/rankup mantener"
+        ));
+
+        // Transformation Menu Button (Slot 47)
+        inv.setItem(47, createItem(Material.DRAGON_BREATH, "&d&l⚡ Menú de Transformaciones",
+                "&7Accede al selector de transformaciones anime,",
+                "&7habilidades, vuelo de Ki y técnicas especiales.",
+                "",
+                "&eClic para abrir /transform"
+        ));
+
         if (page > 0) {
             inv.setItem(48, createItem(Material.ARROW, "&a◀ División Anterior", "&7Ir a " + DIVISION_NAMES[page - 1]));
         }
@@ -189,23 +265,6 @@ public class RankupMenu implements InventoryHolder {
                 "&eClic para ejecutar /rankup max"
         ));
 
-        // Help & Info Button (Slot 46)
-        inv.setItem(46, createItem(Material.BOOK, "&e&lInformación de Rankup",
-                "&750 Rangos Anime Shonen",
-                "&7Economía 100% in-game (Dragmas)",
-                "&7Totalmente compatible con VIP Dioses",
-                "",
-                "&fComandos útiles: &6/rankup&f, &6/rankup max"
-        ));
-
-        // Transformation Menu Button (Slot 47)
-        inv.setItem(47, createItem(Material.DRAGON_BREATH, "&d&l⚡ Menú de Transformaciones",
-                "&7Accede al selector de transformaciones anime,",
-                "&7habilidades, vuelo de Ki y técnicas especiales.",
-                "",
-                "&eClic para abrir /transform"
-        ));
-
         player.openInventory(inv);
     }
 
@@ -228,6 +287,24 @@ public class RankupMenu implements InventoryHolder {
             plugin.getRankManager().savePlayerData();
             p.sendMessage("§b[Rankup] §7Empuje cinético: " + (s.isKineticPushEnabled() ? "§aActivado" : "§cDesactivado"));
             new RankupMenu(plugin, p, page).open();
+            return;
+        }
+
+        // Maintenance Núcleo Button (Slot 45)
+        if (slot == 45) {
+            Rank rank = plugin.getRankManager().getPlayerRank(p.getUniqueId());
+            if (rank == null || rank.getTier() == 0) {
+                p.sendMessage("§cNo tienes un rango activo que requiera mantención.");
+                return;
+            }
+            if (rank.isPermanent()) {
+                p.sendMessage("§aTu rango actual (" + rank.getDisplayName() + "§a) es permanente y no requiere mantención.");
+                return;
+            }
+            boolean ok = plugin.getRankManager().processMaintenance(p);
+            if (ok) {
+                new RankupMenu(plugin, p, page).open();
+            }
             return;
         }
 
@@ -258,32 +335,31 @@ public class RankupMenu implements InventoryHolder {
             return;
         }
 
-        // Single Rankup (Slot 49)
-        if (slot == 49) {
-            if (plugin.getRankManager().processRankup(p)) {
-                new RankupMenu(plugin, p, page).open();
-            }
-            return;
-        }
-
-        // Max Rankup (Slot 52)
+        // Max Rankup Button (Slot 52)
         if (slot == 52) {
-            plugin.getRankManager().processRankupMax(p);
-            new RankupMenu(plugin, p, page).open();
+            p.closeInventory();
+            p.performCommand("rankup max");
             return;
         }
 
-        // Click on specific tier slot to buy if next
-        int[] slots = {19, 20, 21, 22, 23, 28, 29, 30, 31, 32};
-        int currentTier = plugin.getRankManager().getPlayerTier(p.getUniqueId());
+        // Rankup Next Button (Slot 49)
+        if (slot == 49) {
+            p.closeInventory();
+            p.performCommand("rankup");
+            return;
+        }
+
+        // Click on current available rank to buy directly
+        int[] rankSlots = {19, 20, 21, 22, 23, 28, 29, 30, 31, 32};
         int startTier = (page * 10) + 1;
-        for (int i = 0; i < slots.length; i++) {
-            if (slot == slots[i]) {
+        int currentTier = plugin.getRankManager().getPlayerTier(p.getUniqueId());
+
+        for (int i = 0; i < rankSlots.length; i++) {
+            if (slot == rankSlots[i]) {
                 int clickedTier = startTier + i;
                 if (clickedTier == currentTier + 1) {
-                    if (plugin.getRankManager().processRankup(p)) {
-                        new RankupMenu(plugin, p, page).open();
-                    }
+                    p.closeInventory();
+                    p.performCommand("rankup");
                 }
                 return;
             }
@@ -295,13 +371,13 @@ public class RankupMenu implements InventoryHolder {
     }
 
     private ItemStack createItem(Material mat, String name, List<String> lore) {
-        ItemStack item = new ItemStack(mat != null ? mat : Material.STONE);
+        ItemStack item = new ItemStack(mat);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
             meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
             List<String> coloredLore = new ArrayList<>();
-            for (String l : lore) {
-                coloredLore.add(ChatColor.translateAlternateColorCodes('&', l));
+            for (String line : lore) {
+                coloredLore.add(ChatColor.translateAlternateColorCodes('&', line));
             }
             meta.setLore(coloredLore);
             item.setItemMeta(meta);

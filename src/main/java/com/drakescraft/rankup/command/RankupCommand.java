@@ -29,7 +29,7 @@ public class RankupCommand implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0) {
             if (!(sender instanceof Player player)) {
-                sender.sendMessage("§cSolo los jugadores pueden ejecutar /rankup directamente.");
+                sender.sendMessage("§cEste comando solo puede ser ejecutado por un jugador.");
                 return true;
             }
             plugin.getRankManager().processRankup(player);
@@ -38,51 +38,54 @@ public class RankupCommand implements CommandExecutor, TabCompleter {
 
         String sub = args[0].toLowerCase();
 
-        if (sub.equals("gui") || sub.equals("menu") || sub.equals("ranks") || sub.equals("ver")) {
+        if (sub.equals("gui") || sub.equals("menu")) {
             if (!(sender instanceof Player player)) {
-                sender.sendMessage("§cSolo los jugadores pueden abrir el menú visual.");
+                sender.sendMessage("§cEste comando solo puede ser ejecutado por un jugador.");
                 return true;
             }
-            int page = 0;
-            if (args.length >= 2) {
-                try {
-                    page = Integer.parseInt(args[1]) - 1;
-                } catch (NumberFormatException ignored) {}
-            }
-            new RankupMenu(plugin, player, page).open();
+            new RankupMenu(plugin, player, 0).open();
             return true;
         }
 
-        if (sub.equals("kit") || sub.equals("reclamarkit")) {
+        if (sub.equals("kit")) {
             if (!(sender instanceof Player player)) {
-                sender.sendMessage("§cSolo jugadores en el servidor pueden reclamar kits.");
+                sender.sendMessage("§cSolo jugadores pueden reclamar kits de rankup.");
                 return true;
             }
-            plugin.getKitManager().claimKit(player);
+            if (plugin.getKitManager() != null) {
+                plugin.getKitManager().claimKit(player);
+            }
             return true;
         }
 
         if (sub.equals("max")) {
             if (!(sender instanceof Player player)) {
-                sender.sendMessage("§cSolo los jugadores pueden ejecutar /rankup max.");
+                sender.sendMessage("§cEste comando solo puede ser ejecutado por un jugador.");
                 return true;
             }
             plugin.getRankManager().processRankupMax(player);
             return true;
         }
 
+        if (sub.equals("maintain") || sub.equals("mantener")) {
+            if (!(sender instanceof Player player)) {
+                sender.sendMessage("§cSolo jugadores pueden mantener su rango.");
+                return true;
+            }
+            plugin.getRankManager().processMaintenance(player);
+            return true;
+        }
+
         if (sub.equals("toggle")) {
             if (!(sender instanceof Player player)) {
-                sender.sendMessage("§cSolo jugadores.");
+                sender.sendMessage("§cSolo jugadores pueden usar toggle.");
                 return true;
             }
             PlayerSettings s = plugin.getRankManager().getPlayerSettings(player.getUniqueId());
-            String target = args.length >= 2 ? args[1].toLowerCase() : "empuje";
-
-            if (target.contains("part")) {
+            if (args.length >= 2 && args[1].equalsIgnoreCase("particulas")) {
                 s.setParticlesEnabled(!s.isParticlesEnabled());
-                player.sendMessage("§b[Rankup] §7Partículas y Auras: " + (s.isParticlesEnabled() ? "§aActivadas" : "§cDesactivadas"));
-            } else if (target.contains("hab") || target.contains("abil")) {
+                player.sendMessage("§b[Rankup] §7Partículas de Rango: " + (s.isParticlesEnabled() ? "§aActivadas" : "§cDesactivadas"));
+            } else if (args.length >= 2 && args[1].equalsIgnoreCase("habilidades")) {
                 s.setAbilitiesEnabled(!s.isAbilitiesEnabled());
                 player.sendMessage("§b[Rankup] §7Habilidades Pasivas: " + (s.isAbilitiesEnabled() ? "§aActivadas" : "§cDesactivadas"));
             } else {
@@ -152,6 +155,16 @@ public class RankupCommand implements CommandExecutor, TabCompleter {
             sender.sendMessage(" §7División: §8" + (rank != null ? rank.getDivision() : "§7Ninguna"));
             sender.sendMessage(" §7Habilidad: §e" + (rank != null ? rank.getAbilityType().getName() : "§7Ninguna"));
             sender.sendMessage(" §7Empuje: §f" + (rank != null && rank.isHasKineticPush() ? "§aSí (x" + rank.getPushMultiplier() + ")" : "§cNo"));
+            if (rank != null) {
+                if (rank.isPermanent()) {
+                    sender.sendMessage(" §7Estabilidad: §a✔ Permanente (Inmune a desgaste)");
+                } else {
+                    long remMs = plugin.getRankManager().getRemainingMaintenanceMs(targetPlayer.getUniqueId());
+                    long d = remMs / 86400000L;
+                    long h = (remMs % 86400000L) / 3600000L;
+                    sender.sendMessage(" §7Estabilidad: §e" + d + "d " + h + "h restantes §8(Costo: $" + MONEY_FORMAT.format(rank.getMaintenanceCost()) + ")");
+                }
+            }
             if (next != null) {
                 sender.sendMessage(" §7Siguiente: §6" + next.getDisplayName() + " §7(Costo: §e$" + MONEY_FORMAT.format(next.getCost()) + "§7)");
             } else {
@@ -181,6 +194,7 @@ public class RankupCommand implements CommandExecutor, TabCompleter {
                 try {
                     int newTier = Integer.parseInt(args[3]);
                     plugin.getRankManager().setPlayerTier(target.getUniqueId(), Math.max(0, Math.min(50, newTier)));
+                    plugin.getRankManager().resetMaintenance(target.getUniqueId());
                     sender.sendMessage("§a[Rankup] Nivel de " + target.getName() + " establecido en " + newTier + ".");
                     target.sendMessage("§a[Rankup] Tu nivel de rango ha sido actualizado a " + newTier + " por un administrador.");
                 } catch (NumberFormatException e) {
@@ -206,9 +220,10 @@ public class RankupCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage("§eComandos de DrakesRankup:");
         sender.sendMessage(" §6/rankup §7- Asciende al siguiente rango");
         sender.sendMessage(" §6/rankup kit §7- Reclama el kit diario de tu división anime con objetos custom");
+        sender.sendMessage(" §6/rankup maintain §7(o /rankup mantener) - Alimenta el Núcleo y renueva la estabilidad");
         sender.sendMessage(" §6/rankup max §7- Sube al rango máximo que puedas pagar");
         sender.sendMessage(" §6/rankup gui §7- Abre el menú visual de las 5 divisiones");
-        sender.sendMessage(" §6/rankup info §7- Consulta tus habilidades y progreso");
+        sender.sendMessage(" §6/rankup info §7- Consulta tus habilidades, estabilidad y progreso");
         sender.sendMessage(" §6/rankup toggle [particulas|empuje|habilidades] §7- Ajustes personales");
         if (sender.hasPermission("drakesrankup.staff")) {
             sender.sendMessage(" §b/rankup test <1-50> §7- Modo Staff de pruebas de rango instantáneo");
@@ -221,7 +236,7 @@ public class RankupCommand implements CommandExecutor, TabCompleter {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         List<String> list = new ArrayList<>();
         if (args.length == 1) {
-            list.addAll(Arrays.asList("gui", "kit", "max", "info", "toggle", "admin"));
+            list.addAll(Arrays.asList("gui", "kit", "max", "maintain", "mantener", "info", "toggle", "admin"));
             if (sender.hasPermission("drakesrankup.staff")) {
                 list.add("test");
             }

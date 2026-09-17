@@ -30,13 +30,32 @@ settings:
       - "&8&m--------------------------------------------------"
 
   # Integración LuckPerms (Cero colisión con Dioses VIP)
-  # Los grupos de rankup usan prefijo de grupo "rankup_"
   luckperms:
     enabled: true
     apply-group: true
     group-prefix: "rankup_"
-    # Si true, remueve el grupo anterior de rankup para no acumular 50 grupos
     remove-previous-rankup-group: true
+
+  # Sistema de Mantención y Desgaste (Rank Maintenance & Decay)
+  maintenance:
+    enabled: true
+    # Duración base de cada periodo de mantención (en días)
+    period-days: 14
+    # Máximo acumulable de días de mantención al renovar
+    max-accumulated-days: 30
+    # Modo de desgaste al expirar:
+    # CHECKPOINT = Vuelve al último hito/ancla permanente de su división (o a tier 0 si no tiene)
+    # RESET = Vuelve directamente a Tier 0
+    # SINGLE_TIER = Pierde 1 tier
+    decay-mode: "CHECKPOINT"
+    # Porcentaje del costo del rango que se cobra como mantención por 14 días (0.05 = 5%)
+    cost-percentage: 0.05
+    # Costo mínimo de mantención en Dragmas
+    min-cost: 1000.0
+    # Avisar al jugador al conectar si le quedan menos de X horas
+    warning-threshold-hours: 72
+    # Frecuencia de verificación en minutos
+    check-interval-minutes: 30
 
 messages:
   prefix: "&8[&6Rankup&8] "

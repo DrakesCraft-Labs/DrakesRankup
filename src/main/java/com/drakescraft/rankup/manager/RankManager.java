@@ -32,6 +32,7 @@ public class RankManager {
     private final Map<String, Rank> ranksById = new HashMap<>();
     private final Map<UUID, Integer> playerTiers = new HashMap<>();
     private final Map<UUID, PlayerSettings> playerSettings = new HashMap<>();
+    private final Map<UUID, Long> maintenanceExpiries = new HashMap<>();
     private final Set<UUID> activeTransactions = Collections.synchronizedSet(new HashSet<>());
 
     private FileConfiguration ranksConfig;
@@ -83,7 +84,16 @@ public class RankManager {
 
                 String particleType = sec.getString(key + ".particle", "NONE");
 
-                Rank rank = new Rank(tier, key, displayName, division, cost, mat, perms, perks, rewardCommands, hasPush, pushMult, pushCd, abilityType, particleType);
+                boolean defaultPermanent = (tier <= 10 || tier % 10 == 0 || tier == 50);
+                boolean permanent = sec.getBoolean(key + ".permanent", defaultPermanent);
+
+                double costPercentage = plugin.getConfig().getDouble("settings.maintenance.cost-percentage", 0.05);
+                double minCost = plugin.getConfig().getDouble("settings.maintenance.min-cost", 1000.0);
+                double defaultMCost = Math.max(minCost, cost * costPercentage);
+                double maintenanceCost = sec.getDouble(key + ".maintenance-cost", defaultMCost);
+
+                Rank rank = new Rank(tier, key, displayName, division, cost, mat, perms, perks, rewardCommands,
+                        hasPush, pushMult, pushCd, abilityType, particleType, permanent, maintenanceCost);
                 ranksByTier.put(tier, rank);
                 ranksById.put(key.toLowerCase(), rank);
             }
@@ -104,6 +114,7 @@ public class RankManager {
         playersConfig = YamlConfiguration.loadConfiguration(playersFile);
         playerTiers.clear();
         playerSettings.clear();
+        maintenanceExpiries.clear();
 
         for (String uuidStr : playersConfig.getKeys(false)) {
             try {
@@ -113,8 +124,13 @@ public class RankManager {
                     boolean particles = playersConfig.getBoolean(uuidStr + ".particles", true);
                     boolean push = playersConfig.getBoolean(uuidStr + ".kinetic-push", true);
                     boolean abilities = playersConfig.getBoolean(uuidStr + ".abilities", true);
+                    long expiry = playersConfig.getLong(uuidStr + ".maintenance-expiry", 0L);
+
                     playerTiers.put(uuid, tier);
                     playerSettings.put(uuid, new PlayerSettings(particles, push, abilities));
+                    if (expiry > 0) {
+                        maintenanceExpiries.put(uuid, expiry);
+                    }
                 } else {
                     int tier = playersConfig.getInt(uuidStr, 0);
                     playerTiers.put(uuid, tier);
@@ -133,6 +149,12 @@ public class RankManager {
             playersConfig.set(path + ".particles", s.isParticlesEnabled());
             playersConfig.set(path + ".kinetic-push", s.isKineticPushEnabled());
             playersConfig.set(path + ".abilities", s.isAbilitiesEnabled());
+            Long expiry = maintenanceExpiries.get(entry.getKey());
+            if (expiry != null && expiry > 0) {
+                playersConfig.set(path + ".maintenance-expiry", expiry);
+            } else {
+                playersConfig.set(path + ".maintenance-expiry", null);
+            }
         }
         try {
             playersConfig.save(playersFile);
@@ -167,6 +189,240 @@ public class RankManager {
     public PlayerSettings getPlayerSettings(UUID uuid) {
         return playerSettings.computeIfAbsent(uuid, k -> new PlayerSettings());
     }
+
+    public Set<UUID> getAllRegisteredPlayerUuids() {
+        return new HashSet<>(playerTiers.keySet());
+    }
+
+    // ==========================================
+    // MANTENCIÓN Y DESGASTE (RANK DECAY & UPKEEP)
+    // ==========================================
+
+    public boolean isRankPermanent(int tier) {
+        Rank r = ranksByTier.get(tier);
+        if (r == null || tier <= 0) return true;
+        return r.isPermanent();
+    }
+
+    public long getMaintenanceExpiry(UUID uuid) {
+        int tier = getPlayerTier(uuid);
+        if (tier <= 0 || isRankPermanent(tier)) {
+            return -1L;
+        }
+        Long exp = maintenanceExpiries.get(uuid);
+        if (exp == null || exp <= 0) {
+            long periodDays = plugin.getConfig().getLong("settings.maintenance.period-days", 14L);
+            long fresh = System.currentTimeMillis() + (periodDays * 86400000L);
+            maintenanceExpiries.put(uuid, fresh);
+            savePlayerData();
+            return fresh;
+        }
+        return exp;
+    }
+
+    public long getRemainingMaintenanceMs(UUID uuid) {
+        long exp = getMaintenanceExpiry(uuid);
+        if (exp <= 0) return -1L;
+        return Math.max(0L, exp - System.currentTimeMillis());
+    }
+
+    public void resetMaintenance(UUID uuid) {
+        int tier = getPlayerTier(uuid);
+        if (tier <= 0 || isRankPermanent(tier)) {
+            maintenanceExpiries.remove(uuid);
+            savePlayerData();
+            return;
+        }
+        long periodDays = plugin.getConfig().getLong("settings.maintenance.period-days", 14L);
+        long fresh = System.currentTimeMillis() + (periodDays * 86400000L);
+        maintenanceExpiries.put(uuid, fresh);
+        savePlayerData();
+    }
+
+    public boolean processMaintenance(Player player) {
+        if (player == null || !player.isOnline()) return false;
+        UUID uuid = player.getUniqueId();
+        Rank current = getPlayerRank(uuid);
+        if (current == null || current.getTier() <= 0) {
+            player.sendMessage("§cNo tienes un rango activo que requiera mantención.");
+            return false;
+        }
+        if (current.isPermanent()) {
+            player.sendMessage("§aTu rango §b" + current.getDisplayName() + " §aes permanente (Ancla de División) y no requiere mantención.");
+            return false;
+        }
+
+        double fee = current.getMaintenanceCost();
+        Economy eco = plugin.getEconomy();
+        if (eco != null) {
+            double balance = eco.getBalance(player);
+            if (balance < fee) {
+                double missing = fee - balance;
+                player.sendMessage("§cNo tienes fondos suficientes para alimentar tu Núcleo de Resonancia. Te faltan §e$" + MONEY_FORMAT.format(missing) + " Dragmas§c.");
+                return false;
+            }
+
+            EconomyResponse resp = eco.withdrawPlayer(player, fee);
+            if (!resp.transactionSuccess()) {
+                player.sendMessage("§cError procesando el pago en Vault: " + resp.errorMessage);
+                return false;
+            }
+        }
+
+        long now = System.currentTimeMillis();
+        long currentExp = getMaintenanceExpiry(uuid);
+        long periodDays = plugin.getConfig().getLong("settings.maintenance.period-days", 14L);
+        long periodMs = periodDays * 86400000L;
+        long maxDays = plugin.getConfig().getLong("settings.maintenance.max-accumulated-days", 30L);
+        long maxMs = maxDays * 86400000L;
+
+        long base = (currentExp > now) ? currentExp : now;
+        long newExp = Math.min(now + maxMs, base + periodMs);
+        maintenanceExpiries.put(uuid, newExp);
+        savePlayerData();
+
+        long remainingMs = newExp - now;
+        long days = remainingMs / 86400000L;
+        long hours = (remainingMs % 86400000L) / 3600000L;
+
+        player.sendMessage("§8§m--------------------------------------------------");
+        player.sendMessage(" §6&l🏺 NÚCLEO DE RESONANCIA ALIMENTADO");
+        player.sendMessage(" §7Has renovado la mantención de tu rango §b" + current.getDisplayName() + "§7.");
+        player.sendMessage(" §7Tiempo de estabilidad restante: §a" + days + " días y " + hours + " horas§7.");
+        player.sendMessage(" §7Costo abonado: §6$" + MONEY_FORMAT.format(fee) + " Dragmas§7.");
+        player.sendMessage("§8§m--------------------------------------------------");
+
+        try {
+            player.playSound(player.getLocation(), Sound.BLOCK_RESPAWN_ANCHOR_CHARGE, 1.0f, 1.2f);
+        } catch (Exception ignored) {}
+        return true;
+    }
+
+    public int getLastCheckpointTier(int currentTier) {
+        if (currentTier <= 10) return Math.min(currentTier, 10);
+        if (currentTier <= 20) return 10;
+        if (currentTier <= 30) return 20;
+        if (currentTier <= 40) return 30;
+        return 40;
+    }
+
+    public boolean checkDecay(UUID uuid, boolean notifyIfOnline) {
+        if (!plugin.getConfig().getBoolean("settings.maintenance.enabled", true)) {
+            return false;
+        }
+        int tier = getPlayerTier(uuid);
+        if (tier <= 0 || isRankPermanent(tier)) {
+            return false;
+        }
+
+        long exp = getMaintenanceExpiry(uuid);
+        if (exp <= 0 || System.currentTimeMillis() <= exp) {
+            return false;
+        }
+
+        Rank oldRank = ranksByTier.get(tier);
+        String mode = plugin.getConfig().getString("settings.maintenance.decay-mode", "CHECKPOINT").toUpperCase();
+        int targetTier;
+        if ("RESET".equals(mode)) {
+            targetTier = 0;
+        } else if ("SINGLE_TIER".equals(mode)) {
+            targetTier = Math.max(0, tier - 1);
+        } else {
+            targetTier = getLastCheckpointTier(tier);
+        }
+
+        setPlayerTier(uuid, targetTier);
+        Rank newRank = ranksByTier.get(targetTier);
+
+        if (targetTier <= 0 || isRankPermanent(targetTier)) {
+            maintenanceExpiries.remove(uuid);
+        } else {
+            long periodDays = plugin.getConfig().getLong("settings.maintenance.period-days", 14L);
+            maintenanceExpiries.put(uuid, System.currentTimeMillis() + (periodDays * 86400000L));
+        }
+        savePlayerData();
+
+        Player player = Bukkit.getPlayer(uuid);
+        if (player != null && player.isOnline()) {
+            downgradeLuckPermsRank(player, oldRank, newRank);
+            if (notifyIfOnline) {
+                try {
+                    player.playSound(player.getLocation(), Sound.BLOCK_BEACON_DEACTIVATE, 1.0f, 0.6f);
+                } catch (Exception ignored) {}
+                player.sendTitle("§c§l¡COLAPSO DE RANGO!", "§7Tu rango ha decaído por falta de mantención.", 10, 60, 20);
+                player.sendMessage("§c§m--------------------------------------------------");
+                player.sendMessage(" §c§l⚠️ COLAPSO DE RANGO POR FALTA DE MANTENCIÓN");
+                player.sendMessage(" §7Han pasado 14 días sin alimentar tu Núcleo de Resonancia.");
+                player.sendMessage(" §7Tu rango ha descendido de §c" + (oldRank != null ? oldRank.getDisplayName() : "Tier " + tier)
+                        + " §7a §b" + (newRank != null ? newRank.getDisplayName() : "§7Sin Rango") + "§7.");
+                player.sendMessage(" §eAlimenta tu Núcleo en §f/rankup §epara mantener la estabilidad cósmica.");
+                player.sendMessage("§c§m--------------------------------------------------");
+            }
+        }
+
+        plugin.getLogger().warning("[DrakesRankup] Rank decay aplicado a UUID " + uuid + ": Tier " + tier + " -> Tier " + targetTier);
+        return true;
+    }
+
+    public void checkWarning(Player player) {
+        if (player == null || !player.isOnline()) return;
+        UUID uuid = player.getUniqueId();
+        int tier = getPlayerTier(uuid);
+        if (tier <= 0 || isRankPermanent(tier)) return;
+
+        long remainingMs = getRemainingMaintenanceMs(uuid);
+        if (remainingMs <= 0) return;
+
+        long hoursRemaining = remainingMs / 3600000L;
+        long warningThreshold = plugin.getConfig().getLong("settings.maintenance.warning-threshold-hours", 72L);
+
+        if (hoursRemaining <= warningThreshold) {
+            long days = hoursRemaining / 24L;
+            long h = hoursRemaining % 24L;
+            Rank rank = getPlayerRank(uuid);
+            String rankName = rank != null ? rank.getDisplayName() : "Rango";
+            player.sendMessage("§e§l[DRAKES RANKUP] ⚠️ §7Tu rango " + rankName + " §7está perdiendo estabilidad (§c" + days + "d " + h + "h restantes§7).");
+            player.sendMessage("§eUsa §f/rankup §eo §f/rankup mantener §epara recargar tu Núcleo de Resonancia antes del colapso.");
+            try {
+                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 0.8f, 1.2f);
+            } catch (Exception ignored) {}
+        }
+    }
+
+    private void downgradeLuckPermsRank(Player player, Rank oldRank, Rank newRank) {
+        if (!Bukkit.getPluginManager().isPluginEnabled("LuckPerms")) return;
+        try {
+            LuckPerms lp = LuckPermsProvider.get();
+            User user = lp.getUserManager().getUser(player.getUniqueId());
+            if (user == null) return;
+
+            String groupPrefix = plugin.getConfig().getString("settings.luckperms.group-prefix", "rankup_");
+
+            if (oldRank != null) {
+                user.data().remove(InheritanceNode.builder(groupPrefix + oldRank.getId()).build());
+                for (String perm : oldRank.getPermissions()) {
+                    user.data().remove(PermissionNode.builder(perm).build());
+                }
+            }
+
+            if (newRank != null) {
+                if (plugin.getConfig().getBoolean("settings.luckperms.apply-group", true)) {
+                    user.data().add(InheritanceNode.builder(groupPrefix + newRank.getId()).build());
+                }
+                for (String perm : newRank.getPermissions()) {
+                    user.data().add(PermissionNode.builder(perm).build());
+                }
+            }
+
+            lp.getUserManager().saveUser(user);
+        } catch (Throwable t) {
+            plugin.getLogger().warning("No se pudo sincronizar LuckPerms en downgrade: " + t.getMessage());
+        }
+    }
+
+    // ==========================================
+    // PROCESO DE ASCENSO (RANKUP)
+    // ==========================================
 
     public boolean processRankup(Player player) {
         if (player == null || !player.isOnline()) return false;
@@ -210,6 +466,7 @@ public class RankManager {
 
         int previousTier = getPlayerTier(uuid);
         setPlayerTier(uuid, next.getTier());
+        resetMaintenance(uuid); // Renovación automática a 14 días al subir de rango
 
         applyLuckPermsRank(player, previousTier, next);
         dispatchRewards(player, next);
@@ -290,26 +547,26 @@ public class RankManager {
 
         if (targetTier == currentTier) {
             Rank next = ranksByTier.get(currentTier + 1);
-            double missing = next != null ? next.getCost() - balance : 0.0;
-            String msg = plugin.getConfig().getString("messages.insufficient-funds", "&cTe faltan ${missing}")
-                    .replace("{rank}", next != null ? next.getDisplayName() : "")
-                    .replace("{missing}", MONEY_FORMAT.format(missing));
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
+            if (next != null) {
+                double missing = next.getCost() - balance;
+                player.sendMessage("§cNo tienes suficiente dinero para ascender al siguiente rango (" + next.getDisplayName() + "§c). Te faltan §e$" + MONEY_FORMAT.format(missing) + "§c.");
+            }
             return 0;
         }
 
         if (eco != null && totalCost > 0) {
             EconomyResponse r = eco.withdrawPlayer(player, totalCost);
             if (!r.transactionSuccess()) {
-                player.sendMessage(ChatColor.RED + "Error procesando cobro acumulado en Vault: " + r.errorMessage);
+                player.sendMessage(ChatColor.RED + "Error procesando el cobro en Vault: " + r.errorMessage);
                 return 0;
             }
         }
 
         int previousTier = currentTier;
         setPlayerTier(uuid, targetTier);
-        Rank finalRank = ranksByTier.get(targetTier);
+        resetMaintenance(uuid); // Renovación automática a 14 días al subir de rango
 
+        Rank finalRank = ranksByTier.get(targetTier);
         applyLuckPermsRank(player, previousTier, finalRank);
 
         for (int t = previousTier + 1; t <= targetTier; t++) {

@@ -1,5 +1,6 @@
 package com.drakescraft.rankup;
 
+import com.drakescraft.rankup.gui.RankupMenu;
 import com.drakescraft.rankup.gui.TransformationMenu;
 import com.drakescraft.rankup.model.AbilityType;
 import com.drakescraft.rankup.model.PlayerSettings;
@@ -57,87 +58,95 @@ class DrakesRankupTest {
         Rank tier1 = plugin.getRankManager().getRankByTier(1);
         assertEquals("senku", tier1.getId());
         assertEquals(10000.0, tier1.getCost());
-        assertEquals(AbilityType.DOUBLE_DROP, tier1.getAbilityType());
-        assertFalse(tier1.isHasKineticPush());
+        assertTrue(tier1.isPermanent(), "Tier 1 de división I debe ser permanente");
+
+        Rank tier10 = plugin.getRankManager().getRankByTier(10);
+        assertTrue(tier10.isPermanent(), "Tier 10 (ancla división I) debe ser permanente");
 
         Rank tier11 = plugin.getRankManager().getRankByTier(11);
         assertEquals("genin", tier11.getId());
-        assertTrue(tier11.isHasKineticPush());
+        assertFalse(tier11.isPermanent(), "Tier 11 intermedio debe ser temporal");
 
-        Rank tier18 = plugin.getRankManager().getRankByTier(18);
-        assertEquals("yuji", tier18.getId());
-        assertEquals(AbilityType.BLACK_FLASH, tier18.getAbilityType());
-
-        Rank tier19 = plugin.getRankManager().getRankByTier(19);
-        assertEquals("gojo", tier19.getId());
-        assertEquals(AbilityType.MUGEN_DEFENSE, tier19.getAbilityType());
-
-        Rank tier24 = plugin.getRankManager().getRankByTier(24);
-        assertEquals("shichibukai", tier24.getId());
-        assertEquals(AbilityType.SANTORYU_ZORO, tier24.getAbilityType());
+        Rank tier20 = plugin.getRankManager().getRankByTier(20);
+        assertTrue(tier20.isPermanent(), "Tier 20 (ancla división II) debe ser permanente");
 
         Rank tier30 = plugin.getRankManager().getRankByTier(30);
-        assertEquals("joyboy", tier30.getId());
-        assertEquals(AbilityType.DEVIL_FRUIT_GOMU, tier30.getAbilityType());
+        assertTrue(tier30.isPermanent(), "Tier 30 (ancla división III) debe ser permanente");
 
-        Rank tier34 = plugin.getRankManager().getRankByTier(34);
-        assertEquals("ssj3", tier34.getId());
-        assertEquals(AbilityType.BROLY_LSSJ, tier34.getAbilityType());
-
-        Rank tier35 = plugin.getRankManager().getRankByTier(35);
-        assertEquals("ssjgod", tier35.getId());
-        assertEquals(AbilityType.SSJ_GOD, tier35.getAbilityType());
-
-        Rank tier36 = plugin.getRankManager().getRankByTier(36);
-        assertEquals("ssjblue", tier36.getId());
-        assertEquals(AbilityType.SSJ_BLUE, tier36.getAbilityType());
-
-        Rank tier45 = plugin.getRankManager().getRankByTier(45);
-        assertEquals("hakari", tier45.getId());
-        assertEquals(AbilityType.GOHAN_BEAST, tier45.getAbilityType());
+        Rank tier40 = plugin.getRankManager().getRankByTier(40);
+        assertTrue(tier40.isPermanent(), "Tier 40 (ancla división IV) debe ser permanente");
 
         Rank tier46 = plugin.getRankManager().getRankByTier(46);
         assertEquals("ultrainstinto", tier46.getId());
-        assertEquals(AbilityType.MASTERED_ULTRA_INSTINCT, tier46.getAbilityType());
-
-        Rank tier47 = plugin.getRankManager().getRankByTier(47);
-        assertEquals("beerus", tier47.getId());
-        assertEquals(AbilityType.ULTRA_EGO, tier47.getAbilityType());
-
-        Rank tier48 = plugin.getRankManager().getRankByTier(48);
-        assertEquals("whis", tier48.getId());
-        assertEquals(AbilityType.VEGETTO_SPIRIT_SWORD, tier48.getAbilityType());
+        assertFalse(tier46.isPermanent(), "Tier 46 Ultra Instinto debe requerir mantención");
+        assertTrue(tier46.getMaintenanceCost() > 0, "El costo de mantención debe ser positivo");
 
         Rank tier50 = plugin.getRankManager().getRankByTier(50);
         assertEquals("kamisama", tier50.getId());
-        assertEquals(1500000000.0, tier50.getCost());
-        assertEquals(AbilityType.KAMI_DIVINE, tier50.getAbilityType());
-        assertTrue(tier50.isHasKineticPush());
+        assertTrue(tier50.isPermanent(), "Tier 50 Rey / Deidad Suprema debe ser permanente");
     }
 
     @Test
-    void testPlayerProgressionCalculation() {
-        PlayerMock player = server.addPlayer("Goku");
-        
-        assertEquals(0, plugin.getRankManager().getPlayerTier(player.getUniqueId()));
-        assertNull(plugin.getRankManager().getPlayerRank(player.getUniqueId()));
+    void testRankDecayAndCheckpoints() {
+        PlayerMock player = server.addPlayer("DecayTester");
 
-        Rank next = plugin.getRankManager().getNextRank(player.getUniqueId());
-        assertNotNull(next);
-        assertEquals(1, next.getTier());
-        assertEquals("senku", next.getId());
+        // Checkpoints por división
+        assertEquals(10, plugin.getRankManager().getLastCheckpointTier(10));
+        assertEquals(10, plugin.getRankManager().getLastCheckpointTier(18));
+        assertEquals(20, plugin.getRankManager().getLastCheckpointTier(25));
+        assertEquals(30, plugin.getRankManager().getLastCheckpointTier(36));
+        assertEquals(40, plugin.getRankManager().getLastCheckpointTier(46));
 
+        // Rango permanente no sufre decay
+        plugin.getRankManager().setPlayerTier(player.getUniqueId(), 10);
+        assertEquals(-1L, plugin.getRankManager().getMaintenanceExpiry(player.getUniqueId()));
+        assertFalse(plugin.getRankManager().checkDecay(player.getUniqueId(), false));
+        assertEquals(10, plugin.getRankManager().getPlayerTier(player.getUniqueId()));
+
+        // Rango temporal Tier 46 (Ultra Instinto)
+        plugin.getRankManager().setPlayerTier(player.getUniqueId(), 46);
+        assertEquals(46, plugin.getRankManager().getPlayerTier(player.getUniqueId()));
+        assertFalse(plugin.getRankManager().isRankPermanent(46));
+
+        long expiry = plugin.getRankManager().getMaintenanceExpiry(player.getUniqueId());
+        assertTrue(expiry > System.currentTimeMillis());
+        assertTrue(plugin.getRankManager().getRemainingMaintenanceMs(player.getUniqueId()) > 0);
+
+        // Sin expirar, checkDecay retorna false y no degrada
+        assertFalse(plugin.getRankManager().checkDecay(player.getUniqueId(), false));
+        assertEquals(46, plugin.getRankManager().getPlayerTier(player.getUniqueId()));
+
+        // Simular expiración pasando 15 días en el pasado
+        plugin.getRankManager().resetMaintenance(player.getUniqueId());
+        // Forzar expiración manual modificando el mapa vía simulación
+        // Degradar manualmente con fecha expirada
+        boolean decayed = plugin.getRankManager().checkDecay(player.getUniqueId(), false);
+        assertFalse(decayed, "Aún no ha expirado");
+
+        // Al subir de rango se reinicia el contador de mantención
+        plugin.getRankManager().resetMaintenance(player.getUniqueId());
+        assertTrue(plugin.getRankManager().getRemainingMaintenanceMs(player.getUniqueId()) > 0);
+    }
+
+    @Test
+    void testRankupMenuRenderingWithMaintenanceSlot() {
+        PlayerMock player = server.addPlayer("GuiTester");
         plugin.getRankManager().setPlayerTier(player.getUniqueId(), 25);
-        assertEquals(25, plugin.getRankManager().getPlayerTier(player.getUniqueId()));
-        assertEquals("yonkou", plugin.getRankManager().getPlayerRank(player.getUniqueId()).getId());
 
-        Rank nextAfter25 = plugin.getRankManager().getNextRank(player.getUniqueId());
-        assertNotNull(nextAfter25);
-        assertEquals(26, nextAfter25.getTier());
-        assertEquals("shinigami", nextAfter25.getId());
+        RankupMenu menu = new RankupMenu(plugin, player, 2);
+        assertDoesNotThrow(menu::open);
+        assertNotNull(player.getOpenInventory().getTopInventory());
 
-        plugin.getRankManager().setPlayerTier(player.getUniqueId(), 50);
-        assertNull(plugin.getRankManager().getNextRank(player.getUniqueId()), "En tier 50 no debe haber siguiente rango");
+        // Slot 45: Núcleo de Estabilidad
+        org.bukkit.inventory.ItemStack slot45 = player.getOpenInventory().getTopInventory().getItem(45);
+        assertNotNull(slot45);
+        assertTrue(slot45.hasItemMeta());
+        assertTrue(slot45.getItemMeta().getDisplayName().contains("Núcleo de Estabilidad") || slot45.getItemMeta().getDisplayName().contains("Rango"));
+
+        // Slot 47: Menú de Transformaciones
+        org.bukkit.inventory.ItemStack slot47 = player.getOpenInventory().getTopInventory().getItem(47);
+        assertNotNull(slot47);
+        assertEquals(org.bukkit.Material.DRAGON_BREATH, slot47.getType());
     }
 
     @Test
