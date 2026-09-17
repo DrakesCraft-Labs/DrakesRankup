@@ -621,15 +621,15 @@ ranks:
     permissions:
     - playervaults.amount.9
     perks:
-    - 'Ki Divino: Llamas puras de fuego rojo celestial'
+    - 'Ki Divino Carmesí: Carga de Ki (Shift) activa regeneración y agilidad divina'
     - +1 Bóveda (/pv 9)
     - Título [SSJGod]
     reward-commands: []
     kinetic-push: true
     push-multiplier: 1.75
     push-cooldown: 3
-    ability: ZENKAI_BOOST
-    particle: GOLDEN_KI
+    ability: SSJ_GOD
+    particle: RED_GOD_KI
   ssjblue:
     tier: 36
     display-name: '&9&lSSJBlue'
@@ -639,14 +639,14 @@ ranks:
     permissions:
     - essentials.loom
     perks:
-    - 'Calma Trascendental: Aura de deidad azul zafiro'
+    - 'Dios Super Saiyajin: Carga de Ki (Shift) activa Fuerza I y Velocidad II con plasma'
     - Acceso a /loom
     - Título [SSJBlue]
     reward-commands: []
     kinetic-push: true
     push-multiplier: 1.8
     push-cooldown: 3
-    ability: ZENKAI_BOOST
+    ability: SSJ_BLUE
     particle: BLUE_GOD_KI
   cazadore:
     tier: 37
@@ -819,33 +819,34 @@ ranks:
     permissions:
     - playervaults.amount.15
     perks:
-    - 'Doctrina Egoísta: 15% de esquivar cualquier ataque'
-    - Aura plateada etérea
+    - 'Doctrina Egoísta Dominada: Carga de Ki (Shift) activa Evasión 100% por 5s'
+    - '⚠️ Fatiga Divina: El uso repetido desata colapso y daño muscular interno'
     - +3 Bóvedas (/pv 15)
     - Título [UltraInstinto]
     reward-commands: []
     kinetic-push: true
     push-multiplier: 1.95
     push-cooldown: 2
-    ability: ULTRA_INSTINCT
+    ability: MASTERED_ULTRA_INSTINCT
     particle: SILVER_DIVINE
   beerus:
     tier: 47
-    display-name: '&5&lBeerus'
+    display-name: '&5&lBeerus / UltraEgo'
     division: 'División V: Trascendencia Suprema'
     cost: 1150000000
     icon: END_CRYSTAL
     permissions:
     - essentials.feed
     perks:
-    - 'Hakai Aura: Inmunidad total a fuego/lava y daño de retorno'
+    - 'Mega Instinto (Ultra Ego): Carga de Ki (Shift) aumenta daño según el dolor recibido (+60%)'
+    - 'Hakai Aura: Inmunidad a fuego/lava y 3.5 corazones de daño puro reflejado'
     - Acceso a /feed
-    - Título [Beerus]
+    - Título [UltraEgo]
     reward-commands: []
     kinetic-push: true
     push-multiplier: 1.95
     push-cooldown: 2
-    ability: HAKAI_AURA
+    ability: ULTRA_EGO
     particle: PURPLE_HAKAI
   whis:
     tier: 48

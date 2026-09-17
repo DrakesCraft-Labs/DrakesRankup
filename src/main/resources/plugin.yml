@@ -3,9 +3,13 @@ version: '${project.version}'
 main: com.drakescraft.rankup.DrakesRankupPlugin
 api-version: '1.21'
 author: DrakesCraft-Labs
-description: Sistema oficial de 50 Rangos Anime/Shonen, Sumidero de Economía y GUI interactiva
+description: Sistema oficial de 50 Rangos Anime/Shonen, Transformaciones Saiyajin, Modo Angel y Sumidero de Economía
 softdepend: [Vault, LuckPerms, PlaceholderAPI]
 commands:
   rankup:
-    description: Abre la interfaz de Rankup o asciende al siguiente rango.
+    description: Abre la interfaz de Rankup, asciende de rango o gestiona pruebas.
     aliases: [ranks, rangos, subirrango]
+  angel:
+    description: Modo Staff de Deidad Angelical (Invulnerabilidad y Ultra Instinto Infinito).
+    aliases: [zenosama, zeno, daishinkan]
+    permission: drakesrankup.staff

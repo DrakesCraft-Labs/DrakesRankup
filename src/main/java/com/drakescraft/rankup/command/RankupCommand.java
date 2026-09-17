@@ -87,6 +87,40 @@ public class RankupCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        if (sub.equals("test")) {
+            if (!(sender instanceof Player player)) {
+                sender.sendMessage("§cSolo jugadores en el servidor pueden usar el modo de pruebas.");
+                return true;
+            }
+            if (!player.hasPermission("drakesrankup.staff") && !player.hasPermission("drakesrankup.admin")) {
+                sender.sendMessage("§cNo tienes permiso de staff para el modo de pruebas de rangos.");
+                return true;
+            }
+
+            if (args.length >= 2 && args[1].equalsIgnoreCase("reset")) {
+                plugin.getStaffManager().resetTestTier(player);
+                return true;
+            }
+
+            if (args.length >= 2) {
+                int targetTier = -1;
+                try {
+                    targetTier = Integer.parseInt(args[1]);
+                } catch (NumberFormatException e) {
+                    Rank r = plugin.getRankManager().getRankById(args[1]);
+                    if (r != null) targetTier = r.getTier();
+                }
+
+                if (targetTier >= 1 && targetTier <= 50) {
+                    plugin.getStaffManager().setTestTier(player, targetTier);
+                    return true;
+                }
+            }
+
+            player.sendMessage("§cUso: /rankup test <1-50 | id_rango> §7o §e/rankup test reset");
+            return true;
+        }
+
         if (sub.equals("info")) {
             Player targetPlayer = (sender instanceof Player p) ? p : null;
             if (args.length >= 2) {
@@ -166,6 +200,10 @@ public class RankupCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(" §6/rankup gui §7- Abre el menú visual de las 5 divisiones");
         sender.sendMessage(" §6/rankup info §7- Consulta tus habilidades y progreso");
         sender.sendMessage(" §6/rankup toggle [particulas|empuje|habilidades] §7- Ajustes personales");
+        if (sender.hasPermission("drakesrankup.staff")) {
+            sender.sendMessage(" §b/rankup test <1-50> §7- Modo Staff de pruebas de rango instantáneo");
+            sender.sendMessage(" §b/angel §7(o /zenosama) - Modo Ángel invulnerable con Ultra Instinto perpetuo");
+        }
         return true;
     }
 
@@ -174,8 +212,13 @@ public class RankupCommand implements CommandExecutor, TabCompleter {
         List<String> list = new ArrayList<>();
         if (args.length == 1) {
             list.addAll(Arrays.asList("gui", "max", "info", "toggle", "admin"));
+            if (sender.hasPermission("drakesrankup.staff")) {
+                list.add("test");
+            }
         } else if (args.length == 2 && args[0].equalsIgnoreCase("toggle")) {
             list.addAll(Arrays.asList("empuje", "particulas", "habilidades"));
+        } else if (args.length == 2 && args[0].equalsIgnoreCase("test")) {
+            list.addAll(Arrays.asList("reset", "1", "10", "20", "30", "35", "36", "46", "47", "50"));
         } else if (args.length == 2 && args[0].equalsIgnoreCase("admin")) {
             list.addAll(Arrays.asList("set", "reset", "reload"));
         }

@@ -32,6 +32,8 @@ class DrakesRankupTest {
         assertNotNull(plugin);
         assertTrue(plugin.isEnabled());
         assertNotNull(plugin.getRankManager());
+        assertNotNull(plugin.getStaffManager());
+        assertNotNull(plugin.getDragonBallListener());
     }
 
     @Test
@@ -66,9 +68,21 @@ class DrakesRankupTest {
         assertEquals("gojo", tier19.getId());
         assertEquals(AbilityType.MUGEN_DEFENSE, tier19.getAbilityType());
 
+        Rank tier35 = plugin.getRankManager().getRankByTier(35);
+        assertEquals("ssjgod", tier35.getId());
+        assertEquals(AbilityType.SSJ_GOD, tier35.getAbilityType());
+
+        Rank tier36 = plugin.getRankManager().getRankByTier(36);
+        assertEquals("ssjblue", tier36.getId());
+        assertEquals(AbilityType.SSJ_BLUE, tier36.getAbilityType());
+
         Rank tier46 = plugin.getRankManager().getRankByTier(46);
         assertEquals("ultrainstinto", tier46.getId());
-        assertEquals(AbilityType.ULTRA_INSTINCT, tier46.getAbilityType());
+        assertEquals(AbilityType.MASTERED_ULTRA_INSTINCT, tier46.getAbilityType());
+
+        Rank tier47 = plugin.getRankManager().getRankByTier(47);
+        assertEquals("beerus", tier47.getId());
+        assertEquals(AbilityType.ULTRA_EGO, tier47.getAbilityType());
 
         Rank tier50 = plugin.getRankManager().getRankByTier(50);
         assertEquals("kamisama", tier50.getId());
@@ -100,5 +114,28 @@ class DrakesRankupTest {
 
         plugin.getRankManager().setPlayerTier(player.getUniqueId(), 50);
         assertNull(plugin.getRankManager().getNextRank(player.getUniqueId()), "En tier 50 no debe haber siguiente rango");
+    }
+
+    @Test
+    void testStaffAngelAndTestMode() {
+        PlayerMock staff = server.addPlayer("WhisStaff");
+
+        // Test Angel mode toggle
+        assertFalse(plugin.getStaffManager().isAngel(staff.getUniqueId()));
+        assertTrue(plugin.getStaffManager().toggleAngel(staff));
+        assertTrue(plugin.getStaffManager().isAngel(staff.getUniqueId()));
+        assertTrue(staff.isInvulnerable());
+
+        assertFalse(plugin.getStaffManager().toggleAngel(staff));
+        assertFalse(plugin.getStaffManager().isAngel(staff.getUniqueId()));
+        assertFalse(staff.isInvulnerable());
+
+        // Test Rank Test mode
+        assertEquals(0, plugin.getRankManager().getPlayerTier(staff.getUniqueId()));
+        assertTrue(plugin.getStaffManager().setTestTier(staff, 46));
+        assertEquals(46, plugin.getRankManager().getPlayerTier(staff.getUniqueId()));
+
+        assertTrue(plugin.getStaffManager().resetTestTier(staff));
+        assertEquals(0, plugin.getRankManager().getPlayerTier(staff.getUniqueId()));
     }
 }
