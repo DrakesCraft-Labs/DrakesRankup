@@ -46,42 +46,36 @@ public class RankupMenu implements InventoryHolder {
     }
 
     public void open() {
-        int currentTier = plugin.getRankManager().getPlayerTier(player.getUniqueId());
-        String title = ChatColor.DARK_GRAY + "DrakesRankup ✦ Div. " + (page + 1) + "/5";
-        Inventory inv = Bukkit.createInventory(this, 54, title);
+        Inventory inv = Bukkit.createInventory(this, 54, "§8§lDRAKES RANKUP §8- " + DIVISION_NAMES[page]);
 
-        ItemStack border = createItem(Material.GRAY_STAINED_GLASS_PANE, " ");
+        // Background fillers
+        ItemStack glass = createItem(Material.GRAY_STAINED_GLASS_PANE, " ");
         for (int i = 0; i < 54; i++) {
-            if (i < 9 || i >= 45 || i % 9 == 0 || i % 9 == 8) {
-                inv.setItem(i, border);
-            }
+            inv.setItem(i, glass);
         }
 
-        // Top Division Tabs
-        int[] tabSlots = {0, 1, 2, 6, 7};
-        Material[] tabMats = {Material.BREWING_STAND, Material.IRON_SWORD, Material.SPYGLASS, Material.BLAZE_POWDER, Material.NETHER_STAR};
+        // Division Tabs (Slots 0 to 4)
         for (int d = 0; d < 5; d++) {
-            boolean active = (d == page);
-            String tabTitle = (active ? "&6&l▶ " : "&7") + DIVISION_NAMES[d] + (active ? " &e(Activa)" : "");
-            inv.setItem(tabSlots[d], createItem(
-                    active ? Material.GOLD_BLOCK : tabMats[d],
-                    tabTitle,
-                    "&7Rangos " + ((d * 10) + 1) + " al " + ((d + 1) * 10),
-                    active ? "&aPestaña seleccionada actualmente" : "&eClic para ver esta división"
+            boolean current = (d == page);
+            Material tabMat = current ? Material.GOLD_BLOCK : Material.IRON_BARS;
+            String prefix = current ? "&6&l▶ " : "&7";
+            inv.setItem(d <= 2 ? d : d + 3, createItem(tabMat, prefix + DIVISION_NAMES[d],
+                    "&7Niveles: &f" + ((d * 10) + 1) + " al " + ((d * 10) + 10),
+                    current ? "&aPestaña activa" : "&eClic para ver esta división"
             ));
         }
 
-        // Player Head Profile (Slot 4)
+        // Player Info (Slot 4)
         Rank currentRank = plugin.getRankManager().getPlayerRank(player.getUniqueId());
-        String currentName = currentRank != null ? currentRank.getDisplayName() : "&7Sin Rango";
+        int currentTier = currentRank != null ? currentRank.getTier() : 0;
         double balance = plugin.getEconomy() != null ? plugin.getEconomy().getBalance(player) : 0.0;
         PlayerSettings settings = plugin.getRankManager().getPlayerSettings(player.getUniqueId());
 
-        inv.setItem(4, createItem(Material.PLAYER_HEAD, "&e&lTu Perfil de Rankup",
-                "&7Rango Actual: " + currentName,
-                "&7Nivel: &a" + currentTier + " &7/ &e50",
-                "&7Saldo: &a$" + MONEY_FORMAT.format(balance),
-                "&7Habilidad: &b" + (currentRank != null ? currentRank.getAbilityType().getName() : "Ninguna"),
+        inv.setItem(4, createItem(Material.PLAYER_HEAD, "&e&l" + player.getName(),
+                "&7Rango actual: " + (currentRank != null ? currentRank.getDisplayName() : "&7Ninguno"),
+                "&7Nivel / Tier: &6" + currentTier + "/50",
+                "&7Monedero: &a$" + MONEY_FORMAT.format(balance),
+                "&7Habilidad: " + (currentRank != null && currentRank.getAbilityType() != null ? "&b" + currentRank.getAbilityType().getName() : "&7Ninguna"),
                 "&7Empuje Cinético: " + (currentRank != null && currentRank.isHasKineticPush() ? "&aDesbloqueado" : "&cBloqueado"),
                 "",
                 "&8Ajustes personales:",
@@ -186,6 +180,14 @@ public class RankupMenu implements InventoryHolder {
                 "&fComandos útiles: &6/rankup&f, &6/rankup max"
         ));
 
+        // Transformation Menu Button (Slot 47)
+        inv.setItem(47, createItem(Material.DRAGON_BREATH, "&d&l⚡ Menú de Transformaciones",
+                "&7Accede al selector de transformaciones anime,",
+                "&7habilidades, vuelo de Ki y técnicas especiales.",
+                "",
+                "&eClic para abrir /transform"
+        ));
+
         player.openInventory(inv);
     }
 
@@ -208,6 +210,12 @@ public class RankupMenu implements InventoryHolder {
             plugin.getRankManager().savePlayerData();
             p.sendMessage("§b[Rankup] §7Empuje cinético: " + (s.isKineticPushEnabled() ? "§aActivado" : "§cDesactivado"));
             new RankupMenu(plugin, p, page).open();
+            return;
+        }
+
+        // Transformation Menu Button (Slot 47)
+        if (slot == 47) {
+            new TransformationMenu(plugin, p).open();
             return;
         }
 

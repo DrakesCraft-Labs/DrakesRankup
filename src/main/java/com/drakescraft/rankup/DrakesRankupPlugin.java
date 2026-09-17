@@ -2,10 +2,13 @@ package com.drakescraft.rankup;
 
 import com.drakescraft.rankup.ability.DragonBallListener;
 import com.drakescraft.rankup.ability.KineticPushListener;
+import com.drakescraft.rankup.ability.OnePieceListener;
 import com.drakescraft.rankup.ability.RankAbilityListener;
 import com.drakescraft.rankup.command.AngelCommand;
 import com.drakescraft.rankup.command.RankupCommand;
+import com.drakescraft.rankup.command.TransformationCommand;
 import com.drakescraft.rankup.gui.RankupGuiListener;
+import com.drakescraft.rankup.gui.TransformationGuiListener;
 import com.drakescraft.rankup.manager.RankManager;
 import com.drakescraft.rankup.manager.StaffManager;
 import com.drakescraft.rankup.papi.DrakesRankupExpansion;
@@ -28,6 +31,8 @@ public class DrakesRankupPlugin extends JavaPlugin {
     private KineticPushListener kineticPushListener;
     @Getter
     private DragonBallListener dragonBallListener;
+    @Getter
+    private OnePieceListener onePieceListener;
     @Getter
     private StaffManager staffManager;
 
@@ -54,14 +59,22 @@ public class DrakesRankupPlugin extends JavaPlugin {
             getCommand("angel").setExecutor(angelCmd);
         }
 
+        TransformationCommand transCmd = new TransformationCommand(this);
+        if (getCommand("transform") != null) {
+            getCommand("transform").setExecutor(transCmd);
+        }
+
         // Register event listeners
         kineticPushListener = new KineticPushListener(this);
         dragonBallListener = new DragonBallListener(this);
+        onePieceListener = new OnePieceListener(this);
 
         Bukkit.getPluginManager().registerEvents(new RankupGuiListener(), this);
+        Bukkit.getPluginManager().registerEvents(new TransformationGuiListener(), this);
         Bukkit.getPluginManager().registerEvents(kineticPushListener, this);
         Bukkit.getPluginManager().registerEvents(new RankAbilityListener(this), this);
         Bukkit.getPluginManager().registerEvents(dragonBallListener, this);
+        Bukkit.getPluginManager().registerEvents(onePieceListener, this);
         Bukkit.getPluginManager().registerEvents(staffManager, this);
 
         // Start aura particle task every second (20 ticks)
@@ -73,7 +86,7 @@ public class DrakesRankupPlugin extends JavaPlugin {
             getLogger().info("PlaceholderAPI expansion %drakesrankup_*% registrada.");
         }
 
-        getLogger().info("DrakesRankup v" + getPluginMeta().getVersion() + " habilitado exitosamente. Motor de 50 Rangos Anime, Modo Ángel Staff, Ki y Empujes activo.");
+        getLogger().info("DrakesRankup v" + getPluginMeta().getVersion() + " habilitado exitosamente. Motor de 50 Rangos Anime, GUI de Transformaciones, Ki, One Piece y Staff Celestial activo.");
     }
 
     @Override

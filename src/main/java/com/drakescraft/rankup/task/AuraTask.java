@@ -49,9 +49,10 @@ public class AuraTask extends BukkitRunnable {
             if (!settings.isParticlesEnabled()) continue;
 
             int tier = rank.getTier();
+            String activeTrans = settings.getActiveTransformation();
 
             try {
-                // Active Dragon Ball Transformation Auras
+                // Active Dragon Ball & Anime Transformation Auras
                 if (plugin.getDragonBallListener() != null) {
                     if (plugin.getDragonBallListener().isMuiActive(player.getUniqueId())) {
                         loc.getWorld().spawnParticle(Particle.END_ROD, loc.clone().add(0, 1.0, 0), 4, 0.3, 0.5, 0.3, 0.05);
@@ -61,6 +62,13 @@ public class AuraTask extends BukkitRunnable {
                         loc.getWorld().spawnParticle(Particle.WITCH, loc.clone().add(0, 0.8, 0), 5, 0.3, 0.5, 0.3, 0.05);
                         loc.getWorld().spawnParticle(Particle.DRAGON_BREATH, loc.clone().add(0, 0.2, 0), 3, 0.2, 0.1, 0.2, 0.03);
                         continue;
+                    } else if (plugin.getDragonBallListener().isGohanBeastActive(player.getUniqueId())) {
+                        loc.getWorld().spawnParticle(Particle.CRIMSON_SPORE, loc.clone().add(0, 0.8, 0), 5, 0.25, 0.4, 0.25, 0.05);
+                        loc.getWorld().spawnParticle(Particle.ELECTRIC_SPARK, loc.clone().add(0, 1.1, 0), 3, 0.3, 0.4, 0.3, 0.05);
+                        continue;
+                    } else if (plugin.getDragonBallListener().isBrolyActive(player.getUniqueId())) {
+                        loc.getWorld().spawnParticle(Particle.HAPPY_VILLAGER, loc.clone().add(0, 0.5, 0), 6, 0.35, 0.5, 0.35, 0.02);
+                        continue;
                     } else if (plugin.getDragonBallListener().isSSJBlueActive(player.getUniqueId())) {
                         loc.getWorld().spawnParticle(Particle.SOUL_FIRE_FLAME, loc.clone().add(0, 0.3, 0), 4, 0.25, 0.4, 0.25, 0.03);
                         loc.getWorld().spawnParticle(Particle.ELECTRIC_SPARK, loc.clone().add(0, 0.9, 0), 3, 0.3, 0.4, 0.3, 0.08);
@@ -69,6 +77,13 @@ public class AuraTask extends BukkitRunnable {
                         loc.getWorld().spawnParticle(Particle.FLAME, loc.clone().add(0, 0.4, 0), 5, 0.25, 0.4, 0.25, 0.03);
                         continue;
                     }
+                }
+
+                // Equipped Static Aura from Settings
+                if ("GOMU_GOMU".equalsIgnoreCase(activeTrans)) {
+                    loc.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, loc.clone().add(0, 0.3, 0), 2, 0.15, 0.3, 0.15, 0.01);
+                } else if ("SANTORYU".equalsIgnoreCase(activeTrans)) {
+                    loc.getWorld().spawnParticle(Particle.CRIT, loc.clone().add(0, 0.2, 0), 2, 0.2, 0.2, 0.2, 0.02);
                 }
 
                 // Passive Rank Auras

@@ -415,21 +415,22 @@ ranks:
     particle: WHITE_SMOKE
   shichibukai:
     tier: 24
-    display-name: '&6Shichibukai'
+    display-name: '&6Shichibukai / Zoro'
     division: 'División III: Ruta Pirata & Segadores'
     cost: 19000000
-    icon: EMERALD
+    icon: IRON_SWORD
     permissions:
     - essentials.dispose
     perks:
-    - 'Corsario del Gobierno: 0% aranceles'
+    - 'Estilo Tres Espadas (Santoryu): +25% daño con espadas'
+    - 'Corte del Dragón Volador: Ráfaga de viento cortante a distancia'
     - Acceso a /dispose
-    - Título [Shichibukai]
+    - Título [Zoro/Santoryu]
     reward-commands: []
     kinetic-push: true
     push-multiplier: 1.45
     push-cooldown: 5
-    ability: NONE
+    ability: SANTORYU_ZORO
     particle: WHITE_SMOKE
   yonkou:
     tier: 25
@@ -523,22 +524,23 @@ ranks:
     particle: WHITE_SMOKE
   joyboy:
     tier: 30
-    display-name: '&e&lJoyBoy'
+    display-name: '&e&lJoyBoy / Luffy'
     division: 'División III: Ruta Pirata & Segadores'
     cost: 50000000
     icon: SUNFLOWER
     permissions:
     - essentials.sethome.multiple.joyboy
     perks:
-    - 'Cima División III: Nubes de Gear 5 y Haki Supremo'
+    - 'Fruta Gomu Gomu: Gear Second (Vapor, Velocidad III y Red Hawk)'
+    - '⚠️ Maldición del Océano: El agua marina drena tu fuerza vital'
     - Tambores de la Liberación
     - +1 Home
-    - Título [JoyBoy]
+    - Título [JoyBoy/Luffy]
     reward-commands: []
     kinetic-push: true
     push-multiplier: 1.65
     push-cooldown: 4
-    ability: HAKI_CONQUEROR
+    ability: DEVIL_FRUIT_GOMU
     particle: WHITE_SMOKE
   saiyajin:
     tier: 31
@@ -596,21 +598,22 @@ ranks:
     particle: GOLDEN_KI
   ssj3:
     tier: 34
-    display-name: '&6&lSSJ3'
+    display-name: '&6&lSSJ3 / Broly'
     division: 'División IV: Guerreros Z & Monarca'
     cost: 140000000
     icon: GOLD_BLOCK
     permissions:
     - essentials.sethome.multiple.ssj3
     perks:
-    - 'Poder Desatado: Estela cósmica masiva al desplazarse'
+    - 'Broly Berserker (LSSJ): Fuerza III, Resistencia II e Inmunidad a empuje'
+    - '⚠️ Furia Descontrolada: Lentitud I al agotarse la furia y debilidad a proyectiles'
     - +1 Home
-    - Título [SSJ3]
+    - Título [SSJ3/Broly]
     reward-commands: []
     kinetic-push: true
     push-multiplier: 1.75
     push-cooldown: 3
-    ability: ZENKAI_BOOST
+    ability: BROLY_LSSJ
     particle: GOLDEN_KI
   ssjgod:
     tier: 35
@@ -794,21 +797,22 @@ ranks:
     particle: GOLDEN_KI
   hakari:
     tier: 45
-    display-name: '&a&lHakari'
+    display-name: '&d&lGohan Beast / Hakari'
     division: 'División V: Trascendencia Suprema'
     cost: 850000000
-    icon: GOLDEN_HORSE_ARMOR
+    icon: AMETHYST_SHARD
     permissions:
     - essentials.sethome.multiple.hakari
     perks:
-    - 'Jackpot Inmortal: Suerte multiplicada al abrir cofres'
+    - 'Gohan Bestia (Beast): Explosión crítica colosal (+75%) y Makankosappo magenta'
+    - '⚠️ Metabolismo Voraz: Consume 4 muslos de comida e induce Hambre II'
     - +1 Home
-    - Título [Hakari]
+    - Título [GohanBeast]
     reward-commands: []
     kinetic-push: true
     push-multiplier: 1.9
     push-cooldown: 3
-    ability: NONE
+    ability: GOHAN_BEAST
     particle: GOLDEN_KI
   ultrainstinto:
     tier: 46
@@ -850,21 +854,22 @@ ranks:
     particle: PURPLE_HAKAI
   whis:
     tier: 48
-    display-name: '&b&lWhis'
+    display-name: '&b&lWhis / Vegetto'
     division: 'División V: Trascendencia Suprema'
     cost: 1300000000
     icon: ELYTRA
     permissions:
     - essentials.fly
     perks:
+    - 'Espada de Haz de Luz (Vegetto): Shift + Clic derecho dispara haz perforante a 14 bloques'
     - 'Guía Angelical: Halo orbital de ángel y paz absoluta'
-    - 'Empuje divino (CD: 2s)'
-    - Título [Whis]
+    - Acceso a /fly
+    - Título [Whis/Vegetto]
     reward-commands: []
     kinetic-push: true
     push-multiplier: 2.0
     push-cooldown: 2
-    ability: ULTRA_INSTINCT
+    ability: VEGETTO_SPIRIT_SWORD
     particle: SILVER_DIVINE
   zeno:
     tier: 49

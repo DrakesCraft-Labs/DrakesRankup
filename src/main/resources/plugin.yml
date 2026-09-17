@@ -13,3 +13,6 @@ commands:
     description: Modo Staff de Deidad Angelical (Invulnerabilidad y Ultra Instinto Infinito).
     aliases: [zenosama, zeno, daishinkan]
     permission: drakesrankup.staff
+  transform:
+    description: Abre la interfaz interactiva para escoger transformaciones y poderes anime.
+    aliases: [transformaciones, ki, poderes, transformacion]

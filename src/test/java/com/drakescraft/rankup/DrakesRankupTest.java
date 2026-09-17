@@ -1,6 +1,8 @@
 package com.drakescraft.rankup;
 
+import com.drakescraft.rankup.gui.TransformationMenu;
 import com.drakescraft.rankup.model.AbilityType;
+import com.drakescraft.rankup.model.PlayerSettings;
 import com.drakescraft.rankup.model.Rank;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
@@ -34,6 +36,7 @@ class DrakesRankupTest {
         assertNotNull(plugin.getRankManager());
         assertNotNull(plugin.getStaffManager());
         assertNotNull(plugin.getDragonBallListener());
+        assertNotNull(plugin.getOnePieceListener());
     }
 
     @Test
@@ -68,6 +71,18 @@ class DrakesRankupTest {
         assertEquals("gojo", tier19.getId());
         assertEquals(AbilityType.MUGEN_DEFENSE, tier19.getAbilityType());
 
+        Rank tier24 = plugin.getRankManager().getRankByTier(24);
+        assertEquals("shichibukai", tier24.getId());
+        assertEquals(AbilityType.SANTORYU_ZORO, tier24.getAbilityType());
+
+        Rank tier30 = plugin.getRankManager().getRankByTier(30);
+        assertEquals("joyboy", tier30.getId());
+        assertEquals(AbilityType.DEVIL_FRUIT_GOMU, tier30.getAbilityType());
+
+        Rank tier34 = plugin.getRankManager().getRankByTier(34);
+        assertEquals("ssj3", tier34.getId());
+        assertEquals(AbilityType.BROLY_LSSJ, tier34.getAbilityType());
+
         Rank tier35 = plugin.getRankManager().getRankByTier(35);
         assertEquals("ssjgod", tier35.getId());
         assertEquals(AbilityType.SSJ_GOD, tier35.getAbilityType());
@@ -76,6 +91,10 @@ class DrakesRankupTest {
         assertEquals("ssjblue", tier36.getId());
         assertEquals(AbilityType.SSJ_BLUE, tier36.getAbilityType());
 
+        Rank tier45 = plugin.getRankManager().getRankByTier(45);
+        assertEquals("hakari", tier45.getId());
+        assertEquals(AbilityType.GOHAN_BEAST, tier45.getAbilityType());
+
         Rank tier46 = plugin.getRankManager().getRankByTier(46);
         assertEquals("ultrainstinto", tier46.getId());
         assertEquals(AbilityType.MASTERED_ULTRA_INSTINCT, tier46.getAbilityType());
@@ -83,6 +102,10 @@ class DrakesRankupTest {
         Rank tier47 = plugin.getRankManager().getRankByTier(47);
         assertEquals("beerus", tier47.getId());
         assertEquals(AbilityType.ULTRA_EGO, tier47.getAbilityType());
+
+        Rank tier48 = plugin.getRankManager().getRankByTier(48);
+        assertEquals("whis", tier48.getId());
+        assertEquals(AbilityType.VEGETTO_SPIRIT_SWORD, tier48.getAbilityType());
 
         Rank tier50 = plugin.getRankManager().getRankByTier(50);
         assertEquals("kamisama", tier50.getId());
@@ -137,5 +160,23 @@ class DrakesRankupTest {
 
         assertTrue(plugin.getStaffManager().resetTestTier(staff));
         assertEquals(0, plugin.getRankManager().getPlayerTier(staff.getUniqueId()));
+    }
+
+    @Test
+    void testTransformationSelectionAndMenu() {
+        PlayerMock player = server.addPlayer("Vegeta");
+        plugin.getRankManager().setPlayerTier(player.getUniqueId(), 47);
+
+        PlayerSettings settings = plugin.getRankManager().getPlayerSettings(player.getUniqueId());
+        assertNull(settings.getActiveTransformation());
+        assertTrue(settings.isKiFlightEnabled());
+
+        settings.setActiveTransformation("ULTRA_EGO");
+        assertEquals("ULTRA_EGO", settings.getActiveTransformation());
+
+        TransformationMenu menu = new TransformationMenu(plugin, player);
+        assertDoesNotThrow(menu::open);
+        assertNotNull(player.getOpenInventory().getTopInventory());
+        assertEquals(54, player.getOpenInventory().getTopInventory().getSize());
     }
 }
