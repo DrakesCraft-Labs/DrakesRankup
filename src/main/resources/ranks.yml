@@ -1,0 +1,549 @@
+# DrakesRankup - Definicion oficial de los 50 Rangos Anime/Shonen
+ranks:
+  primitivo:
+    tier: 1
+    display-name: "&7Primitivo"
+    division: "Division I: El Amanecer Shonen"
+    cost: 10000
+    icon: "STONE"
+    permissions:
+      - "essentials.sethome.multiple.primitivo"
+    perks:
+      - "+1 Home (/sethome)"
+      - "Titulo de Chat [Primitivo]"
+  artesano:
+    tier: 2
+    display-name: "&6Artesano"
+    division: "Division I: El Amanecer Shonen"
+    cost: 25000
+    icon: "CRAFTING_TABLE"
+    permissions:
+      - "essentials.hat"
+    perks:
+      - "Acceso a comando /hat"
+      - "Kit de herramientas y semillas"
+  cientifico_novato:
+    tier: 3
+    display-name: "&bCientifico Novato"
+    division: "Division I: El Amanecer Shonen"
+    cost: 50000
+    icon: "GLASS_BOTTLE"
+    permissions:
+      - "playervaults.amount.2"
+    perks:
+      - "+1 Boveda (/pv 2)"
+      - "5% Descuento XP Slimefun"
+  quimico:
+    tier: 4
+    display-name: "&eQuimico"
+    division: "Division I: El Amanecer Shonen"
+    cost: 90000
+    icon: "BREWING_STAND"
+    permissions:
+      - "essentials.workbench"
+    perks:
+      - "Acceso a mesa de trabajo /craft"
+  aspirante_cazador:
+    tier: 5
+    display-name: "&aAspirante a Cazador"
+    division: "Division I: El Amanecer Shonen"
+    cost: 150000
+    icon: "WOODEN_SWORD"
+    permissions:
+      - "essentials.sethome.multiple.cazador"
+    perks:
+      - "+1 Home (Total: 3 homes)"
+      - "Particulas de aura inicial"
+  cazador_novato:
+    tier: 6
+    display-name: "&2Cazador Novato"
+    division: "Division I: El Amanecer Shonen"
+    cost: 230000
+    icon: "IRON_SWORD"
+    permissions:
+      - "essentials.near"
+    perks:
+      - "Acceso a comando /near (50 bloques)"
+  usuario_ten:
+    tier: 7
+    display-name: "&9Usuario de Ten"
+    division: "Division I: El Amanecer Shonen"
+    cost: 330000
+    icon: "SHIELD"
+    permissions:
+      - "playervaults.amount.3"
+    perks:
+      - "+1 Boveda (/pv 3)"
+      - "Regeneracion pasiva I en spawn"
+  usuario_ren:
+    tier: 8
+    display-name: "&cUsuario de Ren"
+    division: "Division I: El Amanecer Shonen"
+    cost: 460000
+    icon: "BLAZE_POWDER"
+    permissions:
+      - "drakescraft.chatcolor.gray"
+    perks:
+      - "10% Descuento XP Slimefun"
+      - "Color de chat gris (&7)"
+  usuario_hatsu:
+    tier: 9
+    display-name: "&5Usuario de Hatsu"
+    division: "Division I: El Amanecer Shonen"
+    cost: 620000
+    icon: "AMETHYST_SHARD"
+    permissions:
+      - "essentials.sethome.multiple.hatsu"
+    perks:
+      - "+1 Home (Total: 4 homes)"
+      - "Trail de particulas Nen"
+  cazador_1_estrella:
+    tier: 10
+    display-name: "&e&lCazador de 1 Estrella"
+    division: "Division I: El Amanecer Shonen"
+    cost: 850000
+    icon: "NETHER_STAR"
+    permissions:
+      - "playervaults.amount.4"
+      - "drakescraft.anvil"
+    perks:
+      - "+1 Boveda (/pv 4)"
+      - "Acceso a /anvil portatil"
+  genin:
+    tier: 11
+    display-name: "&aGenin"
+    division: "Division II: El Camino del Shinobi"
+    cost: 1200000
+    icon: "IRON_NUGGET"
+    permissions:
+      - "essentials.sethome.multiple.genin"
+    perks:
+      - "+1 Home (Total: 5 homes)"
+      - "Kit Ninja basico"
+  chunin:
+    tier: 12
+    display-name: "&2Chunin"
+    division: "Division II: El Camino del Shinobi"
+    cost: 1700000
+    icon: "CHAINMAIL_CHESTPLATE"
+    permissions:
+      - "drakescraft.market.boost.5"
+    perks:
+      - "+5% Ganancias en venta de Mercado"
+  chaman_grado_4:
+    tier: 13
+    display-name: "&9Chaman Grado 4"
+    division: "Division II: El Camino del Shinobi"
+    cost: 2350000
+    icon: "PHANTOM_MEMBRANE"
+    permissions:
+      - "playervaults.amount.5"
+    perks:
+      - "+1 Boveda (/pv 5)"
+      - "Reduccion leve de dano de caida"
+  chaman_grado_3:
+    tier: 14
+    display-name: "&3Chaman Grado 3"
+    division: "Division II: El Camino del Shinobi"
+    cost: 3150000
+    icon: "CARTOGRAPHY_TABLE"
+    permissions:
+      - "drakescraft.cartography"
+    perks:
+      - "Mesa de cartografia portatil /cartography"
+  jonin_especial:
+    tier: 15
+    display-name: "&eJonin Especial"
+    division: "Division II: El Camino del Shinobi"
+    cost: 4100000
+    icon: "CROSSBOW"
+    permissions:
+      - "essentials.sethome.multiple.joninespecial"
+    perks:
+      - "+1 Home (Total: 6 homes)"
+      - "15% Descuento XP Slimefun"
+  jonin:
+    tier: 16
+    display-name: "&6Jonin"
+    division: "Division II: El Camino del Shinobi"
+    cost: 5250000
+    icon: "DIAMOND_SWORD"
+    permissions:
+      - "auraskills.multiplier.5"
+    perks:
+      - "+5% Multiplicador de AuraSkills XP"
+  chaman_grado_1:
+    tier: 17
+    display-name: "&bChaman Grado 1"
+    division: "Division II: El Camino del Shinobi"
+    cost: 6650000
+    icon: "SOUL_LANTERN"
+    permissions:
+      - "playervaults.amount.6"
+      - "drakescraft.chatcolor.aqua"
+    perks:
+      - "+1 Boveda (/pv 6)"
+      - "Color de chat Aqua (&b)"
+  anbu:
+    tier: 18
+    display-name: "&8&lANBU"
+    division: "Division II: El Camino del Shinobi"
+    cost: 8350000
+    icon: "SMITHING_TABLE"
+    permissions:
+      - "drakescraft.smithing"
+    perks:
+      - "Mesa de herreria portatil /smithing"
+      - "Particulas de sombra Ninja"
+  chaman_grado_especial:
+    tier: 19
+    display-name: "&d&lChaman Grado Especial"
+    division: "Division II: El Camino del Shinobi"
+    cost: 10400000
+    icon: "CRYING_OBSIDIAN"
+    permissions:
+      - "essentials.sethome.multiple.chamanesp"
+    perks:
+      - "+1 Home (Total: 7 homes)"
+      - "+10% Ganancias en Mercado"
+  sannin_legendario:
+    tier: 20
+    display-name: "&6&lSannin Legendario"
+    division: "Division II: El Camino del Shinobi"
+    cost: 12900000
+    icon: "DRAGON_BREATH"
+    permissions:
+      - "playervaults.amount.7"
+    perks:
+      - "+1 Boveda (/pv 7)"
+      - "Kit Legendario de Pergaminos Sannin"
+  grumete_east_blue:
+    tier: 21
+    display-name: "&eGrumete del East Blue"
+    division: "Division III: La Gran Ruta Pirata"
+    cost: 15900000
+    icon: "OAK_BOAT"
+    permissions:
+      - "essentials.sethome.multiple.grumete"
+    perks:
+      - "+1 Home (Total: 8 homes)"
+      - "Respiracion acuatica prolongada"
+  shinigami_raso:
+    tier: 22
+    display-name: "&7Shinigami Raso"
+    division: "Division III: La Gran Ruta Pirata"
+    cost: 19500000
+    icon: "GRINDSTONE"
+    permissions:
+      - "drakescraft.grindstone"
+    perks:
+      - "Afiladora portatil /grindstone"
+  pirata_novato:
+    tier: 23
+    display-name: "&6Pirata Novato"
+    division: "Division III: La Gran Ruta Pirata"
+    cost: 23800000
+    icon: "SPYGLASS"
+    permissions:
+      - "auraskills.multiplier.10"
+    perks:
+      - "+10% Multiplicador de AuraSkills XP"
+  oficial_shikai:
+    tier: 24
+    display-name: "&bOficial Shikai"
+    division: "Division III: La Gran Ruta Pirata"
+    cost: 28900000
+    icon: "IRON_SWORD"
+    permissions:
+      - "playervaults.amount.8"
+    perks:
+      - "+1 Boveda (/pv 8)"
+      - "Efecto de impacto critico con chispas"
+  supernova:
+    tier: 25
+    display-name: "&e&lSupernova"
+    division: "Division III: La Gran Ruta Pirata"
+    cost: 35000000
+    icon: "GOLD_INGOT"
+    permissions:
+      - "essentials.sethome.multiple.supernova"
+    perks:
+      - "+1 Home (Total: 9 homes)"
+      - "20% Descuento XP Slimefun"
+  teniente_escuadron:
+    tier: 26
+    display-name: "&dTeniente de Escuadron"
+    division: "Division III: La Gran Ruta Pirata"
+    cost: 42200000
+    icon: "STONECUTTER"
+    permissions:
+      - "drakescraft.stonecutter"
+      - "drakescraft.chatcolor.pink"
+    perks:
+      - "Cortapiedras portatil"
+      - "Color de chat Rosa (&d)"
+  comandante_nuevo_mundo:
+    tier: 27
+    display-name: "&3Comandante del Nuevo Mundo"
+    division: "Division III: La Gran Ruta Pirata"
+    cost: 50600000
+    icon: "HEART_OF_THE_SEA"
+    permissions:
+      - "playervaults.amount.9"
+    perks:
+      - "+1 Boveda (/pv 9)"
+      - "+15% Ganancias en Mercado"
+  capitan_bankai:
+    tier: 28
+    display-name: "&c&lCapitan Bankai"
+    division: "Division III: La Gran Ruta Pirata"
+    cost: 60400000
+    icon: "NETHERITE_SWORD"
+    permissions:
+      - "essentials.sethome.multiple.bankai"
+    perks:
+      - "+1 Home (Total: 10 homes)"
+      - "Particulas Bankai espirituales"
+  haki_conquistador:
+    tier: 29
+    display-name: "&4&lHaki del Conquistador"
+    division: "Division III: La Gran Ruta Pirata"
+    cost: 71800000
+    icon: "DRAGON_EGG"
+    permissions:
+      - "drakescraft.haki.wave"
+    perks:
+      - "Onda de choque cosmetica al entrar"
+  emperador_del_mar:
+    tier: 30
+    display-name: "&e&lEmperador del Mar"
+    division: "Division III: La Gran Ruta Pirata"
+    cost: 85000000
+    icon: "BEACON"
+    permissions:
+      - "playervaults.amount.10"
+      - "drakescraft.condense"
+    perks:
+      - "+1 Boveda (/pv 10)"
+      - "Acceso a /condense"
+  cazador_rango_e:
+    tier: 31
+    display-name: "&7Cazador Rango E"
+    division: "Division IV: Guerreros Z y Despertar"
+    cost: 100500000
+    icon: "COAL"
+    permissions:
+      - "essentials.sethome.multiple.cazadore"
+    perks:
+      - "+1 Home (Total: 11 homes)"
+      - "Vision nocturna pasiva en minas"
+  guerrero_z:
+    tier: 32
+    display-name: "&eGuerrero Z"
+    division: "Division IV: Guerreros Z y Despertar"
+    cost: 118500000
+    icon: "GOLDEN_APPLE"
+    permissions:
+      - "auraskills.multiplier.15"
+    perks:
+      - "+15% Multiplicador de AuraSkills XP"
+  cazador_rango_c:
+    tier: 33
+    display-name: "&9Cazador Rango C"
+    division: "Division IV: Guerreros Z y Despertar"
+    cost: 139500000
+    icon: "LAPIS_LAZULI"
+    permissions:
+      - "playervaults.amount.11"
+    perks:
+      - "+1 Boveda (/pv 11)"
+      - "25% Descuento XP Slimefun"
+  kaioken:
+    tier: 34
+    display-name: "&c&lKaioken"
+    division: "Division IV: Guerreros Z y Despertar"
+    cost: 163800000
+    icon: "REDSTONE_BLOCK"
+    permissions:
+      - "drakescraft.kaioken.aura"
+    perks:
+      - "Aura roja de combate llameante"
+  cazador_rango_a:
+    tier: 35
+    display-name: "&b&lCazador Rango A"
+    division: "Division IV: Guerreros Z y Despertar"
+    cost: 191800000
+    icon: "DIAMOND"
+    permissions:
+      - "essentials.sethome.multiple.cazadora"
+    perks:
+      - "+1 Home (Total: 12 homes)"
+      - "+20% Ganancias en Mercado"
+  super_saiyan:
+    tier: 36
+    display-name: "&e&lSuper Saiyan"
+    division: "Division IV: Guerreros Z y Despertar"
+    cost: 224000000
+    icon: "GLOWSTONE"
+    permissions:
+      - "playervaults.amount.12"
+      - "drakescraft.chatcolor.yellow"
+    perks:
+      - "+1 Boveda (/pv 12)"
+      - "Aura dorada y Chat Amarillo (&e)"
+  cazador_rango_s:
+    tier: 37
+    display-name: "&5&lCazador Rango S"
+    division: "Division IV: Guerreros Z y Despertar"
+    cost: 260800000
+    icon: "ENDER_CHEST"
+    permissions:
+      - "essentials.enderchest"
+    perks:
+      - "Acceso a /enderchest portatil"
+  super_saiyan_2:
+    tier: 38
+    display-name: "&e&lSuper Saiyan 2"
+    division: "Division IV: Guerreros Z y Despertar"
+    cost: 302800000
+    icon: "LIGHTNING_ROD"
+    permissions:
+      - "essentials.sethome.multiple.ssj2"
+    perks:
+      - "+1 Home (Total: 13 homes)"
+      - "Rayos electricos SSJ2"
+  cazador_nivel_nacional:
+    tier: 39
+    display-name: "&6&lCazador Nivel Nacional"
+    division: "Division IV: Guerreros Z y Despertar"
+    cost: 350500000
+    icon: "NETHERITE_SCRAP"
+    permissions:
+      - "playervaults.amount.13"
+    perks:
+      - "+1 Boveda (/pv 13)"
+      - "30% Descuento XP Slimefun"
+  super_saiyan_3:
+    tier: 40
+    display-name: "&6&lSuper Saiyan 3"
+    division: "Division IV: Guerreros Z y Despertar"
+    cost: 404600000
+    icon: "SEA_LANTERN"
+    permissions:
+      - "drakescraft.ssj3.aura"
+    perks:
+      - "Aura de energia titanica SSJ3"
+  monarca_sombras:
+    tier: 41
+    display-name: "&8&lMonarca de las Sombras"
+    division: "Division V: Trascendencia y Deidades"
+    cost: 466000000
+    icon: "ECHO_SHARD"
+    permissions:
+      - "essentials.sethome.multiple.monarca"
+    perks:
+      - "+1 Home (Total: 14 homes)"
+      - "Aura de sombras oscuras"
+  super_saiyan_dios:
+    tier: 42
+    display-name: "&c&lSuper Saiyan Dios"
+    division: "Division V: Trascendencia y Deidades"
+    cost: 535500000
+    icon: "MAGMA_BLOCK"
+    permissions:
+      - "auraskills.multiplier.20"
+      - "drakescraft.chatcolor.red"
+    perks:
+      - "+20% AuraSkills XP"
+      - "Color de chat Rojo (&c)"
+  kage_supremo:
+    tier: 43
+    display-name: "&6&lKage Supremo"
+    division: "Division V: Trascendencia y Deidades"
+    cost: 614000000
+    icon: "TOTEM_OF_UNDYING"
+    permissions:
+      - "playervaults.amount.14"
+    perks:
+      - "+1 Boveda (/pv 14)"
+      - "+25% Ganancias en Mercado"
+  super_saiyan_blue:
+    tier: 44
+    display-name: "&b&lSuper Saiyan Blue"
+    division: "Division V: Trascendencia y Deidades"
+    cost: 702500000
+    icon: "DIAMOND_BLOCK"
+    permissions:
+      - "essentials.sethome.multiple.ssjblue"
+    perks:
+      - "+1 Home (Total: 15 homes)"
+      - "Aura azul celeste divina"
+  guerrero_solar_nika:
+    tier: 45
+    display-name: "&e&lGuerrero Solar Nika (Gear 5)"
+    division: "Division V: Trascendencia y Deidades"
+    cost: 802000000
+    icon: "HONEY_BLOCK"
+    permissions:
+      - "playervaults.amount.15"
+    perks:
+      - "+1 Boveda (/pv 15)"
+      - "Salto impulsado y sonido tambores"
+  sabio_seis_caminos:
+    tier: 46
+    display-name: "&f&lSabio de los Seis Caminos"
+    division: "Division V: Trascendencia y Deidades"
+    cost: 913500000
+    icon: "END_CRYSTAL"
+    permissions:
+      - "drakescraft.gudodama"
+    perks:
+      - "40% Descuento XP Slimefun"
+      - "Gudodamas flotantes"
+  ultra_ego:
+    tier: 47
+    display-name: "&5&lUltra Ego"
+    division: "Division V: Trascendencia y Deidades"
+    cost: 1038500000
+    icon: "AMETHYST_CLUSTER"
+    permissions:
+      - "essentials.sethome.multiple.ultraego"
+    perks:
+      - "+1 Home (Total: 16 homes)"
+      - "Aura purpura destructiva"
+  ultra_instinto_senal:
+    tier: 48
+    display-name: "&7&lUltra Instinto Senal"
+    division: "Division V: Trascendencia y Deidades"
+    cost: 1178500000
+    icon: "IRON_BLOCK"
+    permissions:
+      - "drakescraft.ui.dodge"
+    perks:
+      - "Particulas plateadas y Chat &f&l"
+  ultra_instinto_dominado:
+    tier: 49
+    display-name: "&f&lUltra Instinto Dominado"
+    division: "Division V: Trascendencia y Deidades"
+    cost: 1335000000
+    icon: "NETHERITE_BLOCK"
+    permissions:
+      - "playervaults.amount.16"
+    perks:
+      - "+1 Boveda (/pv 16)"
+      - "Aura plateada trascendente"
+  rey_de_los_piratas:
+    tier: 50
+    display-name: "&6&l&nRey de los Piratas"
+    division: "Division V: Trascendencia y Deidades"
+    cost: 1500000000
+    icon: "CONDUIT"
+    permissions:
+      - "essentials.sethome.multiple.rey"
+      - "playervaults.amount.20"
+    perks:
+      - "Corona Cosmica"
+      - "Tag Legendario"
+      - "+20 Homes"
+      - "+20 Vaults"
+      - "Broadcast dorado permanente"

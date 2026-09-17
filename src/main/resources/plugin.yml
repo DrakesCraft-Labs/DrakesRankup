@@ -1,0 +1,11 @@
+name: DrakesRankup
+version: '${project.version}'
+main: com.drakescraft.rankup.DrakesRankupPlugin
+api-version: '1.21'
+author: DrakesCraft-Labs
+description: Sistema oficial de 50 Rangos Anime/Shonen, Sumidero de Economía y GUI interactiva
+softdepend: [Vault, LuckPerms, PlaceholderAPI]
+commands:
+  rankup:
+    description: Abre la interfaz de Rankup o asciende al siguiente rango.
+    aliases: [ranks, rangos, subirrango]

@@ -1,0 +1,47 @@
+# DrakesRankup - Configuración Principal
+settings:
+  # Moneda e integración Vault
+  currency-symbol: "$"
+  
+  # Sonido al subir de rango
+  sound:
+    enabled: true
+    name: "entity.player.levelup"
+    volume: 1.0
+    pitch: 1.2
+
+  # Título en pantalla al subir de rango
+  title:
+    enabled: true
+    title: "&6&l¡RANGO DESBLOQUEADO!"
+    subtitle: "&eHas ascendido a &b{rank}"
+    fade-in: 10
+    stay: 50
+    fade-out: 10
+
+  # Anuncios en el Chat de Minecraft (Broadcast global)
+  broadcast:
+    enabled: true
+    message:
+      - "&8&m--------------------------------------------------"
+      - " &e&lDRAKES RANKUP &8✦ &6¡ASCENSO HISTÓRICO!"
+      - " &7El jugador &f{player} &7ha alcanzado el Rango &b{rank}&7."
+      - " &8[&e{division}&8] &8» &aNivel {tier} / 50"
+      - "&8&m--------------------------------------------------"
+
+  # Integración LuckPerms (Cero colisión con Dioses VIP)
+  # Los grupos de rankup usan prefijo de grupo "rankup_"
+  luckperms:
+    enabled: true
+    apply-group: true
+    group-prefix: "rankup_"
+    # Si true, remueve el grupo anterior de rankup para no acumular 50 grupos
+    remove-previous-rankup-group: true
+
+messages:
+  prefix: "&8[&6Rankup&8] "
+  max-rank: "&a¡Felicidades! Ya has alcanzado el rango máximo (&6Rey de los Piratas / Trascendente Supremo&a)."
+  insufficient-funds: "&cNo tienes suficiente dinero para subir a &b{rank}&c. Te faltan &e${missing}&c."
+  success: "&a¡Has ascendido con éxito a &b{rank}&a! Se han descontado &e${cost}&a de tu cuenta."
+  no-permission: "&cNo tienes permisos para ejecutar este comando."
+  reload-success: "&aConfiguración y rangos recargados correctamente."
