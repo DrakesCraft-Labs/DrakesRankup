@@ -21,6 +21,8 @@ public class DrakesRankupPlugin extends JavaPlugin {
     private RankManager rankManager;
     @Getter
     private Economy economy;
+    @Getter
+    private KineticPushListener kineticPushListener;
 
     private AuraTask auraTask;
 
@@ -40,8 +42,9 @@ public class DrakesRankupPlugin extends JavaPlugin {
         }
 
         // Register event listeners
+        kineticPushListener = new KineticPushListener(this);
         Bukkit.getPluginManager().registerEvents(new RankupGuiListener(), this);
-        Bukkit.getPluginManager().registerEvents(new KineticPushListener(this), this);
+        Bukkit.getPluginManager().registerEvents(kineticPushListener, this);
         Bukkit.getPluginManager().registerEvents(new RankAbilityListener(this), this);
 
         // Start aura particle task every second (20 ticks)

@@ -5,7 +5,6 @@ import com.drakescraft.rankup.gui.RankupMenu;
 import com.drakescraft.rankup.model.PlayerSettings;
 import com.drakescraft.rankup.model.Rank;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -80,6 +79,9 @@ public class RankupCommand implements CommandExecutor, TabCompleter {
             } else {
                 s.setKineticPushEnabled(!s.isKineticPushEnabled());
                 player.sendMessage("§b[Rankup] §7Empuje Cinético: " + (s.isKineticPushEnabled() ? "§aActivado" : "§cDesactivado"));
+                if (plugin.getKineticPushListener() != null) {
+                    plugin.getKineticPushListener().updatePushEligibility(player);
+                }
             }
             plugin.getRankManager().savePlayerData();
             return true;

@@ -3,6 +3,7 @@ package com.drakescraft.rankup.ability;
 import com.drakescraft.rankup.DrakesRankupPlugin;
 import com.drakescraft.rankup.model.PlayerSettings;
 import com.drakescraft.rankup.model.Rank;
+import net.kyori.adventure.text.Component;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -12,9 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerToggleFlightEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.util.Vector;
 
 import java.util.HashMap;
@@ -31,6 +30,27 @@ public class KineticPushListener implements Listener {
 
     public KineticPushListener(DrakesRankupPlugin plugin) {
         this.plugin = plugin;
+    }
+
+    public void updatePushEligibility(Player player) {
+        if (player == null || !player.isOnline()) return;
+        if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) return;
+
+        Rank rank = plugin.getRankManager().getPlayerRank(player.getUniqueId());
+        if (rank != null && rank.isHasKineticPush()) {
+            PlayerSettings settings = plugin.getRankManager().getPlayerSettings(player.getUniqueId());
+            if (settings.isKineticPushEnabled()) {
+                long now = System.currentTimeMillis();
+                long lastUsed = cooldowns.getOrDefault(player.getUniqueId(), 0L);
+                long cdMillis = Math.max(1, rank.getPushCooldownSeconds()) * 1000L;
+                if (now - lastUsed >= cdMillis) {
+                    player.setAllowFlight(true);
+                    return;
+                }
+            }
+        }
+        player.setAllowFlight(false);
+        player.setFlying(false);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -52,7 +72,11 @@ public class KineticPushListener implements Listener {
             event.setCancelled(true);
             player.setFlying(false);
             player.setAllowFlight(false);
-            player.sendMessage("§c⏳ Empuje cinético en enfriamiento: §e" + remaining + "s");
+            try {
+                player.sendActionBar(Component.text("§c⏳ Empuje cinético en enfriamiento: §e" + remaining + "s"));
+            } catch (Exception ignored) {
+                player.sendMessage("§c⏳ Empuje cinético en enfriamiento: §e" + remaining + "s");
+            }
             return;
         }
 
@@ -63,19 +87,28 @@ public class KineticPushListener implements Listener {
         cooldowns.put(player.getUniqueId(), now);
         fallProtection.add(player.getUniqueId());
 
+        // Safety expiration: remove fall protection after 15 seconds automatically
+        UUID pId = player.getUniqueId();
+        plugin.getServer().getScheduler().runTaskLater(plugin, () -> fallProtection.remove(pId), 300L);
+
         Vector direction = player.getLocation().getDirection().normalize();
         double mult = rank.getPushMultiplier();
         if (mult <= 0.1) mult = 1.2;
 
         Vector velocity = direction.multiply(mult);
-        velocity.setY(Math.min(0.55, Math.max(0.35, direction.getY() * 0.5 + 0.38)));
+        velocity.setY(Math.min(0.58, Math.max(0.36, direction.getY() * 0.5 + 0.38)));
         player.setVelocity(velocity);
+
+        try {
+            player.sendActionBar(Component.text("§b⚡ ¡SHUNPO / IMPULSO CINÉTICO! §7(" + rank.getPushCooldownSeconds() + "s CD)"));
+        } catch (Exception ignored) {}
 
         Location loc = player.getLocation();
         int tier = rank.getTier();
         try {
             if (tier <= 20) {
                 player.getWorld().spawnParticle(Particle.SMOKE, loc, 25, 0.3, 0.3, 0.3, 0.05);
+                player.getWorld().playSound(loc, Sound.ENTITY_BAT_TAKEOFF, 0.9f, 1.2f);
             } else if (tier <= 30) {
                 player.getWorld().spawnParticle(Particle.CLOUD, loc, 20, 0.4, 0.2, 0.4, 0.05);
                 player.getWorld().playSound(loc, Sound.ENTITY_ILLUSIONER_MIRROR_MOVE, 1.0f, 1.4f);
@@ -96,20 +129,13 @@ public class KineticPushListener implements Listener {
         Player player = event.getPlayer();
         if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) return;
 
+        if (player.isInWater() || player.isClimbing()) {
+            fallProtection.remove(player.getUniqueId());
+        }
+
         if (player.isOnGround()) {
             fallProtection.remove(player.getUniqueId());
-            Rank rank = plugin.getRankManager().getPlayerRank(player.getUniqueId());
-            if (rank != null && rank.isHasKineticPush()) {
-                PlayerSettings settings = plugin.getRankManager().getPlayerSettings(player.getUniqueId());
-                if (settings.isKineticPushEnabled()) {
-                    long now = System.currentTimeMillis();
-                    long lastUsed = cooldowns.getOrDefault(player.getUniqueId(), 0L);
-                    long cdMillis = Math.max(1, rank.getPushCooldownSeconds()) * 1000L;
-                    if (now - lastUsed >= cdMillis) {
-                        player.setAllowFlight(true);
-                    }
-                }
-            }
+            updatePushEligibility(player);
         }
     }
 
@@ -119,6 +145,23 @@ public class KineticPushListener implements Listener {
             if (fallProtection.remove(player.getUniqueId())) {
                 event.setCancelled(true);
             }
+        }
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event) {
+        updatePushEligibility(event.getPlayer());
+    }
+
+    @EventHandler
+    public void onRespawn(PlayerRespawnEvent event) {
+        plugin.getServer().getScheduler().runTaskLater(plugin, () -> updatePushEligibility(event.getPlayer()), 5L);
+    }
+
+    @EventHandler
+    public void onGameModeChange(PlayerGameModeChangeEvent event) {
+        if (event.getNewGameMode() == GameMode.SURVIVAL || event.getNewGameMode() == GameMode.ADVENTURE) {
+            plugin.getServer().getScheduler().runTaskLater(plugin, () -> updatePushEligibility(event.getPlayer()), 2L);
         }
     }
 

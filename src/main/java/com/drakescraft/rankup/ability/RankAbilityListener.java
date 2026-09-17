@@ -15,6 +15,8 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerToggleSprintEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -61,6 +63,41 @@ public class RankAbilityListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onSprint(PlayerToggleSprintEvent event) {
+        if (!event.isSprinting()) return;
+        Player player = event.getPlayer();
+        Rank rank = plugin.getRankManager().getPlayerRank(player.getUniqueId());
+        if (rank == null) return;
+
+        PlayerSettings settings = plugin.getRankManager().getPlayerSettings(player.getUniqueId());
+        if (!settings.isAbilitiesEnabled()) return;
+
+        if (rank.getAbilityType() == AbilityType.ELECTRIC_SPEED || rank.getTier() >= 7) {
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 60, 0, false, false, false));
+            try {
+                player.getWorld().spawnParticle(Particle.ELECTRIC_SPARK, player.getLocation().add(0, 0.2, 0), 4, 0.2, 0.1, 0.2, 0.05);
+            } catch (Exception ignored) {}
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onMove(PlayerMoveEvent event) {
+        Player player = event.getPlayer();
+        Rank rank = plugin.getRankManager().getPlayerRank(player.getUniqueId());
+        if (rank == null) return;
+
+        PlayerSettings settings = plugin.getRankManager().getPlayerSettings(player.getUniqueId());
+        if (!settings.isAbilitiesEnabled()) return;
+
+        if (rank.getAbilityType() == AbilityType.WATER_GRACE || (rank.getTier() >= 21 && rank.getTier() <= 24)) {
+            if (player.isInWater()) {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, 120, 0, false, false, false));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.DOLPHINS_GRACE, 120, 0, false, false, false));
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player player) {
             Rank rank = plugin.getRankManager().getPlayerRank(player.getUniqueId());
@@ -73,11 +110,11 @@ public class RankAbilityListener implements Listener {
             if (ability == AbilityType.BLACK_FLASH || rank.getTier() >= 20) {
                 if (random.nextDouble() < 0.15) {
                     event.setDamage(event.getDamage() * 1.5);
-                    Location loc = event.getEntity().getLocation().add(0, 1.0, 0);
                     try {
-                        player.getWorld().spawnParticle(Particle.SQUID_INK, loc, 25, 0.3, 0.3, 0.3, 0.1);
-                        player.getWorld().spawnParticle(Particle.CRIT, loc, 20, 0.3, 0.3, 0.3, 0.15);
-                        player.getWorld().playSound(loc, Sound.ENTITY_LIGHTNING_BOLT_IMPACT, 0.8f, 1.6f);
+                        Location loc = event.getEntity().getLocation().add(0, 1.0, 0);
+                        player.getWorld().spawnParticle(Particle.SQUID_INK, loc, 20, 0.3, 0.3, 0.3, 0.08);
+                        player.getWorld().spawnParticle(Particle.CRIT, loc, 15, 0.2, 0.2, 0.2, 0.1);
+                        player.playSound(loc, Sound.ENTITY_LIGHTNING_BOLT_IMPACT, 0.6f, 1.8f);
                     } catch (Exception ignored) {}
                 }
             }
@@ -146,6 +183,19 @@ public class RankAbilityListener implements Listener {
                     player.getWorld().spawnParticle(Particle.SONIC_BOOM, loc.add(0, 1.0, 0), 1);
                     player.getWorld().playSound(loc, Sound.ENTITY_WARDEN_SONIC_BOOM, 0.4f, 1.5f);
                 } catch (Exception ignored) {}
+            }
+
+            if (ability == AbilityType.KAMI_DIVINE || rank.getTier() >= 50) {
+                if (event.getDamager() instanceof Monster monster) {
+                    if (random.nextDouble() < 0.25) {
+                        monster.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 80, 2));
+                        monster.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 80, 2));
+                        try {
+                            player.getWorld().spawnParticle(Particle.FLASH, monster.getLocation().add(0, 1.0, 0), 1);
+                            player.getWorld().playSound(monster.getLocation(), Sound.BLOCK_BEACON_DEACTIVATE, 0.5f, 2.0f);
+                        } catch (Exception ignored) {}
+                    }
+                }
             }
 
             if (ability == AbilityType.ZENKAI_BOOST || (rank.getTier() >= 31 && rank.getTier() <= 36)) {

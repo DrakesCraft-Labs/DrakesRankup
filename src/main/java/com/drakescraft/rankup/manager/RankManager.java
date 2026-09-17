@@ -33,8 +33,10 @@ public class RankManager {
     private final Map<UUID, Integer> playerTiers = new HashMap<>();
     private final Map<UUID, PlayerSettings> playerSettings = new HashMap<>();
 
+    private FileConfiguration ranksConfig;
     private File playersFile;
     private FileConfiguration playersConfig;
+
     private static final DecimalFormat MONEY_FORMAT = new DecimalFormat("#,###,###,###.##");
 
     public RankManager(DrakesRankupPlugin plugin) {
@@ -44,23 +46,25 @@ public class RankManager {
     }
 
     public void loadRanks() {
-        ranksByTier.clear();
-        ranksById.clear();
-        File ranksFile = new File(plugin.getDataFolder(), "ranks.yml");
-        if (!ranksFile.exists()) {
+        File file = new File(plugin.getDataFolder(), "ranks.yml");
+        if (!file.exists()) {
             plugin.saveResource("ranks.yml", false);
         }
-        FileConfiguration config = YamlConfiguration.loadConfiguration(ranksFile);
-        ConfigurationSection sec = config.getConfigurationSection("ranks");
+        ranksConfig = YamlConfiguration.loadConfiguration(file);
+        ranksByTier.clear();
+        ranksById.clear();
+
+        ConfigurationSection sec = ranksConfig.getConfigurationSection("ranks");
         if (sec != null) {
             for (String key : sec.getKeys(false)) {
                 int tier = sec.getInt(key + ".tier");
-                String displayName = ChatColor.translateAlternateColorCodes('&', sec.getString(key + ".display-name", key));
-                String division = ChatColor.translateAlternateColorCodes('&', sec.getString(key + ".division", "General"));
+                String displayName = sec.getString(key + ".display-name", key);
+                String division = sec.getString(key + ".division", "División Desconocida");
                 double cost = sec.getDouble(key + ".cost", 0.0);
                 String matName = sec.getString(key + ".icon", "STONE");
                 Material mat = Material.matchMaterial(matName);
                 if (mat == null) mat = Material.STONE;
+
                 List<String> perms = sec.getStringList(key + ".permissions");
                 List<String> perks = sec.getStringList(key + ".perks");
                 List<String> rewardCommands = sec.getStringList(key + ".reward-commands");
@@ -150,13 +154,17 @@ public class RankManager {
         return ranksByTier.get(currentTier + 1);
     }
 
-    public PlayerSettings getPlayerSettings(UUID uuid) {
-        return playerSettings.computeIfAbsent(uuid, k -> new PlayerSettings());
-    }
-
     public void setPlayerTier(UUID uuid, int tier) {
         playerTiers.put(uuid, tier);
         savePlayerData();
+        Player online = Bukkit.getPlayer(uuid);
+        if (online != null && plugin.getKineticPushListener() != null) {
+            plugin.getKineticPushListener().updatePushEligibility(online);
+        }
+    }
+
+    public PlayerSettings getPlayerSettings(UUID uuid) {
+        return playerSettings.computeIfAbsent(uuid, k -> new PlayerSettings());
     }
 
     public boolean processRankup(Player player) {
@@ -191,6 +199,10 @@ public class RankManager {
 
         applyLuckPermsRank(player, previousTier, next);
         dispatchRewards(player, next);
+
+        if (plugin.getKineticPushListener() != null) {
+            plugin.getKineticPushListener().updatePushEligibility(player);
+        }
 
         String successMsg = plugin.getConfig().getString("messages.success", "&a¡Has ascendido a {rank}!")
                 .replace("{rank}", next.getDisplayName())
@@ -278,6 +290,10 @@ public class RankManager {
             if (r != null) {
                 dispatchRewards(player, r);
             }
+        }
+
+        if (plugin.getKineticPushListener() != null) {
+            plugin.getKineticPushListener().updatePushEligibility(player);
         }
 
         int ranksGained = targetTier - previousTier;
