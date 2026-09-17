@@ -615,7 +615,7 @@ public class RankManager {
         }
     }
 
-    private void applyLuckPermsRank(Player player, int prevTier, Rank newRank) {
+    public void applyLuckPermsRank(Player player, int prevTier, Rank newRank) {
         if (!Bukkit.getPluginManager().isPluginEnabled("LuckPerms")) return;
         try {
             LuckPerms lp = LuckPermsProvider.get();
@@ -631,17 +631,43 @@ public class RankManager {
                 }
             }
 
-            if (plugin.getConfig().getBoolean("settings.luckperms.apply-group", true)) {
-                user.data().add(InheritanceNode.builder(groupPrefix + newRank.getId()).build());
-            }
+            if (newRank != null) {
+                if (plugin.getConfig().getBoolean("settings.luckperms.apply-group", true)) {
+                    user.data().add(InheritanceNode.builder(groupPrefix + newRank.getId()).build());
+                }
 
-            for (String perm : newRank.getPermissions()) {
-                user.data().add(PermissionNode.builder(perm).build());
+                for (String perm : newRank.getPermissions()) {
+                    user.data().add(PermissionNode.builder(perm).build());
+                }
             }
 
             lp.getUserManager().saveUser(user);
         } catch (Throwable t) {
             plugin.getLogger().warning("No se pudo sincronizar LuckPerms: " + t.getMessage());
+        }
+    }
+
+    public void ensureLuckPermsGroup(Player player, Rank rank) {
+        if (!Bukkit.getPluginManager().isPluginEnabled("LuckPerms") || rank == null) return;
+        try {
+            LuckPerms lp = LuckPermsProvider.get();
+            User user = lp.getUserManager().getUser(player.getUniqueId());
+            if (user == null) return;
+            String groupPrefix = plugin.getConfig().getString("settings.luckperms.group-prefix", "rankup_");
+            String expectedGroup = groupPrefix + rank.getId();
+            boolean hasGroup = user.getNodes().stream()
+                    .filter(n -> n instanceof net.luckperms.api.node.types.InheritanceNode)
+                    .map(n -> ((net.luckperms.api.node.types.InheritanceNode) n).getGroupName())
+                    .anyMatch(g -> g.equalsIgnoreCase(expectedGroup));
+            if (!hasGroup) {
+                user.data().add(InheritanceNode.builder(expectedGroup).build());
+                for (String perm : rank.getPermissions()) {
+                    user.data().add(PermissionNode.builder(perm).build());
+                }
+                lp.getUserManager().saveUser(user);
+            }
+        } catch (Throwable t) {
+            plugin.getLogger().warning("No se pudo verificar grupo de LuckPerms: " + t.getMessage());
         }
     }
 

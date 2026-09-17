@@ -215,10 +215,14 @@ public class RankupCommand implements CommandExecutor, TabCompleter {
                 }
                 try {
                     int newTier = Integer.parseInt(args[3]);
-                    plugin.getRankManager().setPlayerTier(target.getUniqueId(), Math.max(0, Math.min(50, newTier)));
+                    int prevTier = plugin.getRankManager().getPlayerTier(target.getUniqueId());
+                    int clampedTier = Math.max(0, Math.min(50, newTier));
+                    plugin.getRankManager().setPlayerTier(target.getUniqueId(), clampedTier);
                     plugin.getRankManager().resetMaintenance(target.getUniqueId());
-                    sender.sendMessage("§a[Rankup] Nivel de " + target.getName() + " establecido en " + newTier + ".");
-                    target.sendMessage("§a[Rankup] Tu nivel de rango ha sido actualizado a " + newTier + " por un administrador.");
+                    Rank newRank = plugin.getRankManager().getRankByTier(clampedTier);
+                    plugin.getRankManager().applyLuckPermsRank(target, prevTier, newRank);
+                    sender.sendMessage("§a[Rankup] Nivel de " + target.getName() + " establecido en " + clampedTier + ".");
+                    target.sendMessage("§a[Rankup] Tu nivel de rango ha sido actualizado a " + clampedTier + " por un administrador.");
                 } catch (NumberFormatException e) {
                     sender.sendMessage("§cEl nivel debe ser un número entre 0 y 50.");
                 }
@@ -230,7 +234,9 @@ public class RankupCommand implements CommandExecutor, TabCompleter {
                     sender.sendMessage("§cJugador no encontrado.");
                     return true;
                 }
+                int prevTier = plugin.getRankManager().getPlayerTier(target.getUniqueId());
                 plugin.getRankManager().setPlayerTier(target.getUniqueId(), 0);
+                plugin.getRankManager().applyLuckPermsRank(target, prevTier, null);
                 sender.sendMessage("§a[Rankup] Progreso de " + target.getName() + " reiniciado a 0.");
                 target.sendMessage("§c[Rankup] Tu progreso de rangos ha sido reiniciado.");
                 return true;

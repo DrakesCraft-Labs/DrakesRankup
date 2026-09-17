@@ -23,7 +23,16 @@ public class RankDecayListener implements Listener {
         // 1. Revisar si su rango expiró mientras estaba desconectado
         plugin.getRankManager().checkDecay(player.getUniqueId(), true);
 
-        // 2. Avisar con gracia si le quedan pocas horas de estabilidad (solo si está en un mundo custom permitido)
+        // 2. Asegurar grupo de LuckPerms si tiene rango activo
+        int tier = plugin.getRankManager().getPlayerTier(player.getUniqueId());
+        if (tier > 0) {
+            com.drakescraft.rankup.model.Rank r = plugin.getRankManager().getRankByTier(tier);
+            if (r != null) {
+                plugin.getRankManager().ensureLuckPermsGroup(player, r);
+            }
+        }
+
+        // 3. Avisar con gracia si le quedan pocas horas de estabilidad (solo si está en un mundo custom permitido)
         plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
             if (player.isOnline() && plugin.isWorldAllowed(player.getWorld())) {
                 plugin.getRankManager().checkWarning(player);
