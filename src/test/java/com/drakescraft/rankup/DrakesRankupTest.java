@@ -233,5 +233,30 @@ class DrakesRankupTest {
         assertEquals("world", sfPlayer.getWorld().getName());
         assertTrue(plugin.isWorldAllowed(sfPlayer.getWorld()));
     }
+
+    @Test
+    void testKineticPushDoesNotStripExternalFlight() {
+        org.bukkit.World customWorld = server.addSimpleWorld("world_test_fly");
+        PlayerMock vipPlayer = server.addPlayer("VipPlayerFly");
+        vipPlayer.teleport(customWorld.getSpawnLocation());
+
+        // VIP player has flight granted externally (e.g. Essentials /fly or Hefesto rank)
+        vipPlayer.setAllowFlight(true);
+        vipPlayer.setFlying(true);
+
+        // Player is tier 0 (does not have kinetic push)
+        assertEquals(0, plugin.getRankManager().getPlayerTier(vipPlayer.getUniqueId()));
+
+        // Call updatePushEligibility directly
+        plugin.getKineticPushListener().updatePushEligibility(vipPlayer);
+        assertTrue(vipPlayer.getAllowFlight(), "No debe revocar allowFlight a un jugador sin empuje cinético");
+        assertTrue(vipPlayer.isFlying(), "No debe revocar isFlying a un jugador con vuelo activo");
+
+        // Even when on ground, allowFlight should stay intact for VIP
+        vipPlayer.setFlying(false);
+        plugin.getKineticPushListener().updatePushEligibility(vipPlayer);
+        assertTrue(vipPlayer.getAllowFlight(), "No debe revocar allowFlight en el suelo a un jugador sin empuje cinético");
+    }
 }
+
 

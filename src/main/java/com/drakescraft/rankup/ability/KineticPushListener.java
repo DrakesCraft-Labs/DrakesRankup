@@ -32,37 +32,63 @@ public class KineticPushListener implements Listener {
         this.plugin = plugin;
     }
 
+    public boolean hasFlightBypass(Player player) {
+        if (player.hasPermission("drakesrankup.admin")) return true;
+        if (plugin.getStaffManager() != null && plugin.getStaffManager().isAngel(player.getUniqueId())) return true;
+        if (player.isFlying()) return true;
+
+        // Verificar si Essentials tiene el modo de vuelo activo para el jugador
+        try {
+            org.bukkit.plugin.Plugin ess = org.bukkit.Bukkit.getPluginManager().getPlugin("Essentials");
+            if (ess != null && ess.isEnabled()) {
+                Object user = ess.getClass().getMethod("getUser", Player.class).invoke(ess, player);
+                if (user != null) {
+                    Object flyEnabled = user.getClass().getMethod("isFlyModeEnabled").invoke(user);
+                    if (Boolean.TRUE.equals(flyEnabled)) return true;
+                }
+            }
+        } catch (Throwable ignored) {}
+
+        return false;
+    }
+
     public void updatePushEligibility(Player player) {
         if (player == null || !player.isOnline()) return;
         if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) return;
+        if (hasFlightBypass(player)) return;
 
         if (!plugin.isWorldAllowed(player.getWorld())) {
-            player.setAllowFlight(false);
-            player.setFlying(false);
             return;
         }
 
         Rank rank = plugin.getRankManager().getPlayerRank(player.getUniqueId());
-        if (rank != null && rank.isHasKineticPush()) {
-            PlayerSettings settings = plugin.getRankManager().getPlayerSettings(player.getUniqueId());
-            if (settings.isKineticPushEnabled()) {
-                long now = System.currentTimeMillis();
-                long lastUsed = cooldowns.getOrDefault(player.getUniqueId(), 0L);
-                long cdMillis = Math.max(1, rank.getPushCooldownSeconds()) * 1000L;
-                if (now - lastUsed >= cdMillis) {
-                    player.setAllowFlight(true);
-                    return;
-                }
-            }
+        if (rank == null || !rank.isHasKineticPush()) {
+            // El jugador no posee empuje cinético; NO alterar su estado de vuelo
+            return;
         }
-        player.setAllowFlight(false);
-        player.setFlying(false);
+
+        PlayerSettings settings = plugin.getRankManager().getPlayerSettings(player.getUniqueId());
+        if (!settings.isKineticPushEnabled()) {
+            // Habilidad desactivada en configuración personal; no alterar vuelo
+            return;
+        }
+
+        long now = System.currentTimeMillis();
+        long lastUsed = cooldowns.getOrDefault(player.getUniqueId(), 0L);
+        long cdMillis = Math.max(1, rank.getPushCooldownSeconds()) * 1000L;
+        if (now - lastUsed >= cdMillis) {
+            player.setAllowFlight(true);
+        } else {
+            player.setAllowFlight(false);
+            player.setFlying(false);
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onToggleFlight(PlayerToggleFlightEvent event) {
         Player player = event.getPlayer();
         if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) return;
+        if (hasFlightBypass(player)) return;
         if (!plugin.isWorldAllowed(player.getWorld())) return;
 
         Rank rank = plugin.getRankManager().getPlayerRank(player.getUniqueId());
