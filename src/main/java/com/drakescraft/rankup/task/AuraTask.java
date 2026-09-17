@@ -24,6 +24,9 @@ public class AuraTask extends BukkitRunnable {
         if (angle >= Math.PI * 2) angle = 0;
 
         for (Player player : Bukkit.getOnlinePlayers()) {
+            if (!plugin.isWorldAllowed(player.getWorld())) {
+                continue;
+            }
             Location loc = player.getLocation();
 
             // Staff Angel Mode Double Halo Aura (takes precedence)

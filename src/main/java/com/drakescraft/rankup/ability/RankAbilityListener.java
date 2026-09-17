@@ -40,6 +40,7 @@ public class RankAbilityListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
+        if (!plugin.isWorldAllowed(player.getWorld())) return;
         Rank rank = plugin.getRankManager().getPlayerRank(player.getUniqueId());
         if (rank == null) return;
 
@@ -66,6 +67,7 @@ public class RankAbilityListener implements Listener {
     public void onSprint(PlayerToggleSprintEvent event) {
         if (!event.isSprinting()) return;
         Player player = event.getPlayer();
+        if (!plugin.isWorldAllowed(player.getWorld())) return;
         Rank rank = plugin.getRankManager().getPlayerRank(player.getUniqueId());
         if (rank == null) return;
 
@@ -83,6 +85,7 @@ public class RankAbilityListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
+        if (!plugin.isWorldAllowed(player.getWorld())) return;
         Rank rank = plugin.getRankManager().getPlayerRank(player.getUniqueId());
         if (rank == null) return;
 
@@ -99,6 +102,7 @@ public class RankAbilityListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+        if (!plugin.isWorldAllowed(event.getEntity().getWorld())) return;
         if (event.getDamager() instanceof Player player) {
             Rank rank = plugin.getRankManager().getPlayerRank(player.getUniqueId());
             if (rank == null) return;
@@ -231,6 +235,7 @@ public class RankAbilityListener implements Listener {
     public void onEntityDeath(EntityDeathEvent event) {
         Player killer = event.getEntity().getKiller();
         if (killer == null) return;
+        if (!plugin.isWorldAllowed(killer.getWorld())) return;
         Rank rank = plugin.getRankManager().getPlayerRank(killer.getUniqueId());
         if (rank == null) return;
 
@@ -265,6 +270,7 @@ public class RankAbilityListener implements Listener {
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player player) {
+            if (!plugin.isWorldAllowed(player.getWorld())) return;
             Rank rank = plugin.getRankManager().getPlayerRank(player.getUniqueId());
             if (rank == null) return;
             PlayerSettings settings = plugin.getRankManager().getPlayerSettings(player.getUniqueId());

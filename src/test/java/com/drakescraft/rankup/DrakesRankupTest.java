@@ -202,4 +202,36 @@ class DrakesRankupTest {
         assertTrue(player.getInventory().contains(org.bukkit.Material.DIAMOND_PICKAXE));
         assertTrue(player.getInventory().contains(org.bukkit.Material.IRON_SWORD));
     }
+
+    @Test
+    void testWorldFilterRestriction() {
+        org.bukkit.World customWorld = server.addSimpleWorld("world");
+        org.bukkit.World classicWorld = server.addSimpleWorld("clasico");
+        org.bukkit.World skyWorld = server.addSimpleWorld("bskyblock_world");
+
+        // Custom worlds permitted
+        assertTrue(plugin.isWorldAllowed(customWorld), "El mundo 'world' de Survival SF debe estar permitido");
+        assertTrue(plugin.isWorldAllowed(skyWorld), "El mundo 'bskyblock_world' debe estar permitido");
+
+        // Classic world blocked
+        assertFalse(plugin.isWorldAllowed(classicWorld), "El mundo 'clasico' debe estar bloqueado");
+        assertNotNull(plugin.getWorldBlockedMessage());
+        assertTrue(plugin.getWorldBlockedMessage().contains("exclusivo de las modalidades custom"));
+
+        // Player in clasico cannot process rankup or maintenance
+        PlayerMock classicPlayer = server.addPlayer("ClassicWarrior");
+        classicPlayer.teleport(classicWorld.getSpawnLocation());
+        assertEquals("clasico", classicPlayer.getWorld().getName());
+
+        assertFalse(plugin.getRankManager().processRankup(classicPlayer), "No debe permitir /rankup en Clásico");
+        assertFalse(plugin.getRankManager().processMaintenance(classicPlayer), "No debe permitir /rankup maintain en Clásico");
+        assertEquals(0, plugin.getRankManager().processRankupMax(classicPlayer), "No debe permitir /rankup max en Clásico");
+
+        // Player in allowed world can proceed
+        PlayerMock sfPlayer = server.addPlayer("SfWarrior");
+        sfPlayer.teleport(customWorld.getSpawnLocation());
+        assertEquals("world", sfPlayer.getWorld().getName());
+        assertTrue(plugin.isWorldAllowed(sfPlayer.getWorld()));
+    }
 }
+

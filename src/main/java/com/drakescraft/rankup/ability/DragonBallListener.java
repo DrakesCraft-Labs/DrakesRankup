@@ -93,9 +93,23 @@ public class DragonBallListener implements Listener {
         return exp != null && System.currentTimeMillis() < exp;
     }
 
+    public void revertTransformations(Player player) {
+        if (player == null) return;
+        UUID uuid = player.getUniqueId();
+        activeMUI.remove(uuid);
+        activeUltraEgo.remove(uuid);
+        activeSSJGod.remove(uuid);
+        activeSSJBlue.remove(uuid);
+        activeGohanBeast.remove(uuid);
+        activeBroly.remove(uuid);
+        BukkitTask task = chargingTasks.remove(uuid);
+        if (task != null) task.cancel();
+    }
+
     @EventHandler
     public void onSneak(PlayerToggleSneakEvent event) {
         Player player = event.getPlayer();
+        if (!plugin.isWorldAllowed(player.getWorld())) return;
         UUID uuid = player.getUniqueId();
 
         // If stopped sneaking, cancel any charging
@@ -366,6 +380,7 @@ public class DragonBallListener implements Listener {
     public void onVegettoSwordInteract(PlayerInteractEvent event) {
         if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         Player player = event.getPlayer();
+        if (!plugin.isWorldAllowed(player.getWorld())) return;
         if (!player.isSneaking()) return;
 
         ItemStack item = player.getInventory().getItemInMainHand();
@@ -431,6 +446,7 @@ public class DragonBallListener implements Listener {
     public void onKiFlightToggle(PlayerToggleFlightEvent event) {
         Player player = event.getPlayer();
         if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) return;
+        if (!plugin.isWorldAllowed(player.getWorld())) return;
 
         UUID uuid = player.getUniqueId();
         Rank rank = plugin.getRankManager().getPlayerRank(uuid);
@@ -474,6 +490,7 @@ public class DragonBallListener implements Listener {
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) return;
+        if (!plugin.isWorldAllowed(player.getWorld())) return;
 
         UUID uuid = player.getUniqueId();
         Rank rank = plugin.getRankManager().getPlayerRank(uuid);
@@ -499,6 +516,7 @@ public class DragonBallListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onIncomingDamage(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
+        if (!plugin.isWorldAllowed(player.getWorld())) return;
         UUID uuid = player.getUniqueId();
         long now = System.currentTimeMillis();
 
@@ -525,8 +543,10 @@ public class DragonBallListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOW)
     public void onCombatDamage(EntityDamageByEntityEvent event) {
+        if (!plugin.isWorldAllowed(event.getEntity().getWorld())) return;
         // Attacker is Gohan Beast (+75% critical burst)
         if (event.getDamager() instanceof Player attacker) {
+            if (!plugin.isWorldAllowed(attacker.getWorld())) return;
             if (isGohanBeastActive(attacker.getUniqueId())) {
                 event.setDamage(event.getDamage() * 1.75);
                 try {

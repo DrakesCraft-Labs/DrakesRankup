@@ -27,6 +27,14 @@ public class RankupCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (sender instanceof Player player) {
+            boolean isAdmin = args.length > 0 && args[0].equalsIgnoreCase("admin");
+            if (!isAdmin && !plugin.isWorldAllowed(player.getWorld())) {
+                player.sendMessage(plugin.getWorldBlockedMessage());
+                return true;
+            }
+        }
+
         if (args.length == 0) {
             if (!(sender instanceof Player player)) {
                 sender.sendMessage("§cEste comando solo puede ser ejecutado por un jugador.");
@@ -78,47 +86,61 @@ public class RankupCommand implements CommandExecutor, TabCompleter {
 
         if (sub.equals("toggle")) {
             if (!(sender instanceof Player player)) {
-                sender.sendMessage("§cSolo jugadores pueden usar toggle.");
+                sender.sendMessage("§cEste comando solo puede ser ejecutado por un jugador.");
                 return true;
             }
+            if (args.length < 2) {
+                player.sendMessage("§cUso: /rankup toggle <empuje | particulas | habilidades>");
+                return true;
+            }
+            String feature = args[1].toLowerCase();
             PlayerSettings s = plugin.getRankManager().getPlayerSettings(player.getUniqueId());
-            if (args.length >= 2 && args[1].equalsIgnoreCase("particulas")) {
-                s.setParticlesEnabled(!s.isParticlesEnabled());
-                player.sendMessage("§b[Rankup] §7Partículas de Rango: " + (s.isParticlesEnabled() ? "§aActivadas" : "§cDesactivadas"));
-            } else if (args.length >= 2 && args[1].equalsIgnoreCase("habilidades")) {
-                s.setAbilitiesEnabled(!s.isAbilitiesEnabled());
-                player.sendMessage("§b[Rankup] §7Habilidades Pasivas: " + (s.isAbilitiesEnabled() ? "§aActivadas" : "§cDesactivadas"));
-            } else {
+
+            if (feature.startsWith("empuj") || feature.equals("push")) {
                 s.setKineticPushEnabled(!s.isKineticPushEnabled());
-                player.sendMessage("§b[Rankup] §7Empuje Cinético: " + (s.isKineticPushEnabled() ? "§aActivado" : "§cDesactivado"));
+                player.sendMessage("§7Empuje cinético de rango: " + (s.isKineticPushEnabled() ? "§aActivado" : "§cDesactivado"));
                 if (plugin.getKineticPushListener() != null) {
                     plugin.getKineticPushListener().updatePushEligibility(player);
                 }
+                return true;
             }
-            plugin.getRankManager().savePlayerData();
+
+            if (feature.startsWith("partic") || feature.equals("particles")) {
+                s.setParticlesEnabled(!s.isParticlesEnabled());
+                player.sendMessage("§7Partículas de rango: " + (s.isParticlesEnabled() ? "§aActivadas" : "§cDesactivadas"));
+                return true;
+            }
+
+            if (feature.startsWith("habil") || feature.equals("abilities")) {
+                s.setAbilitiesEnabled(!s.isAbilitiesEnabled());
+                player.sendMessage("§7Habilidades pasivas de rango: " + (s.isAbilitiesEnabled() ? "§aActivadas" : "§cDesactivadas"));
+                return true;
+            }
+
+            player.sendMessage("§cOpción no válida. Usa: /rankup toggle <empuje | particulas | habilidades>");
             return true;
         }
 
         if (sub.equals("test")) {
             if (!(sender instanceof Player player)) {
-                sender.sendMessage("§cSolo jugadores en el servidor pueden usar el modo de pruebas.");
+                sender.sendMessage("§cSolo jugadores en el servidor pueden usar el modo test.");
                 return true;
             }
             if (!player.hasPermission("drakesrankup.staff") && !player.hasPermission("drakesrankup.admin")) {
-                sender.sendMessage("§cNo tienes permiso de staff para el modo de pruebas de rangos.");
-                return true;
-            }
-
-            if (args.length >= 2 && args[1].equalsIgnoreCase("reset")) {
-                plugin.getStaffManager().resetTestTier(player);
+                player.sendMessage("§cNo tienes permiso para el modo test de Staff.");
                 return true;
             }
 
             if (args.length >= 2) {
+                if (args[1].equalsIgnoreCase("reset")) {
+                    plugin.getStaffManager().resetTestTier(player);
+                    return true;
+                }
+
                 int targetTier = -1;
                 try {
                     targetTier = Integer.parseInt(args[1]);
-                } catch (NumberFormatException e) {
+                } catch (NumberFormatException ignored) {
                     Rank r = plugin.getRankManager().getRankById(args[1]);
                     if (r != null) targetTier = r.getTier();
                 }

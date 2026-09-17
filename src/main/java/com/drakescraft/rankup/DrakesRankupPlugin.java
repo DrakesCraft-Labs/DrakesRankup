@@ -20,8 +20,12 @@ import com.drakescraft.rankup.task.RankDecayTask;
 import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.World;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.List;
 
 public class DrakesRankupPlugin extends JavaPlugin {
 
@@ -120,6 +124,36 @@ public class DrakesRankupPlugin extends JavaPlugin {
         }
         getLogger().info("DrakesRankup deshabilitado limpiamente.");
         instance = null;
+    }
+
+    public boolean isWorldAllowed(World world) {
+        if (world == null) return true;
+        if (!getConfig().getBoolean("settings.world-filter.enabled", true)) {
+            return true;
+        }
+        String mode = getConfig().getString("settings.world-filter.mode", "BLACKLIST").toUpperCase();
+        String worldName = world.getName().toLowerCase();
+
+        if ("WHITELIST".equals(mode)) {
+            List<String> enabledWorlds = getConfig().getStringList("settings.world-filter.enabled-worlds");
+            for (String w : enabledWorlds) {
+                if (w.equalsIgnoreCase(worldName)) return true;
+            }
+            return false;
+        } else {
+            // Default: BLACKLIST
+            List<String> disabledWorlds = getConfig().getStringList("settings.world-filter.disabled-worlds");
+            for (String w : disabledWorlds) {
+                if (w.equalsIgnoreCase(worldName)) return false;
+            }
+            return true;
+        }
+    }
+
+    public String getWorldBlockedMessage() {
+        return ChatColor.translateAlternateColorCodes('&',
+                getConfig().getString("settings.world-filter.blocked-message",
+                        "&c[DrakesCraft] El sistema de rangos y transformaciones es exclusivo de las modalidades custom (Survival SF, OneBlock y SkyBlock). ¡En Survival Clásico no está disponible!"));
     }
 
     private void setupEconomy() {

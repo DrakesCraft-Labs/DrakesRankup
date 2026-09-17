@@ -53,6 +53,7 @@ public class OnePieceListener implements Listener {
     public void onSantoryuInteract(PlayerInteractEvent event) {
         if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         Player player = event.getPlayer();
+        if (!plugin.isWorldAllowed(player.getWorld())) return;
         if (player.isSneaking()) return; // Shift + Right Click reserved for Vegetto beam
 
         ItemStack item = player.getInventory().getItemInMainHand();
@@ -118,6 +119,7 @@ public class OnePieceListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL)
     public void onCombatMelee(EntityDamageByEntityEvent event) {
         if (!(event.getDamager() instanceof Player attacker)) return;
+        if (!plugin.isWorldAllowed(attacker.getWorld())) return;
         UUID uuid = attacker.getUniqueId();
         Rank rank = plugin.getRankManager().getPlayerRank(uuid);
         int tier = (rank != null) ? rank.getTier() : 0;
@@ -157,6 +159,7 @@ public class OnePieceListener implements Listener {
     @EventHandler
     public void onOceanCurse(PlayerMoveEvent event) {
         Player player = event.getPlayer();
+        if (!plugin.isWorldAllowed(player.getWorld())) return;
         UUID uuid = player.getUniqueId();
         Rank rank = plugin.getRankManager().getPlayerRank(uuid);
         int tier = (rank != null) ? rank.getTier() : 0;

@@ -22,6 +22,11 @@ public class TransformationCommand implements CommandExecutor {
             return true;
         }
 
+        if (!plugin.isWorldAllowed(player.getWorld())) {
+            player.sendMessage(plugin.getWorldBlockedMessage());
+            return true;
+        }
+
         new TransformationMenu(plugin, player).open();
         return true;
     }

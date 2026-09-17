@@ -241,6 +241,10 @@ public class RankManager {
 
     public boolean processMaintenance(Player player) {
         if (player == null || !player.isOnline()) return false;
+        if (!plugin.isWorldAllowed(player.getWorld())) {
+            player.sendMessage(plugin.getWorldBlockedMessage());
+            return false;
+        }
         UUID uuid = player.getUniqueId();
         Rank current = getPlayerRank(uuid);
         if (current == null || current.getTier() <= 0) {
@@ -438,6 +442,10 @@ public class RankManager {
     }
 
     private boolean doProcessRankup(Player player) {
+        if (!plugin.isWorldAllowed(player.getWorld())) {
+            player.sendMessage(plugin.getWorldBlockedMessage());
+            return false;
+        }
         UUID uuid = player.getUniqueId();
         Rank next = getNextRank(uuid);
         if (next == null) {
@@ -521,6 +529,10 @@ public class RankManager {
     }
 
     private int doProcessRankupMax(Player player) {
+        if (!plugin.isWorldAllowed(player.getWorld())) {
+            player.sendMessage(plugin.getWorldBlockedMessage());
+            return 0;
+        }
         UUID uuid = player.getUniqueId();
         int currentTier = getPlayerTier(uuid);
         if (currentTier >= 50) {

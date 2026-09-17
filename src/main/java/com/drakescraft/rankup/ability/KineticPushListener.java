@@ -36,6 +36,12 @@ public class KineticPushListener implements Listener {
         if (player == null || !player.isOnline()) return;
         if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) return;
 
+        if (!plugin.isWorldAllowed(player.getWorld())) {
+            player.setAllowFlight(false);
+            player.setFlying(false);
+            return;
+        }
+
         Rank rank = plugin.getRankManager().getPlayerRank(player.getUniqueId());
         if (rank != null && rank.isHasKineticPush()) {
             PlayerSettings settings = plugin.getRankManager().getPlayerSettings(player.getUniqueId());
@@ -57,6 +63,7 @@ public class KineticPushListener implements Listener {
     public void onToggleFlight(PlayerToggleFlightEvent event) {
         Player player = event.getPlayer();
         if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) return;
+        if (!plugin.isWorldAllowed(player.getWorld())) return;
 
         Rank rank = plugin.getRankManager().getPlayerRank(player.getUniqueId());
         if (rank == null || !rank.isHasKineticPush()) return;
@@ -128,6 +135,7 @@ public class KineticPushListener implements Listener {
     public void onMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) return;
+        if (!plugin.isWorldAllowed(player.getWorld())) return;
 
         if (player.isInWater() || player.isClimbing()) {
             fallProtection.remove(player.getUniqueId());

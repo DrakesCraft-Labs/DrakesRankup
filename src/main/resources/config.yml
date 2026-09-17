@@ -36,6 +36,36 @@ settings:
     group-prefix: "rankup_"
     remove-previous-rankup-group: true
 
+  # Filtro de Mundos (Exclusivo para modalidades Custom: SF, OB, SKY)
+  world-filter:
+    enabled: true
+    # BLACKLIST = deniega los mundos en disabled-worlds
+    # WHITELIST = solo permite los mundos en enabled-worlds
+    mode: "BLACKLIST"
+    disabled-worlds:
+      - "clasico"
+      - "clasico_nether"
+      - "clasico_the_end"
+    enabled-worlds:
+      - "world"
+      - "world_nether"
+      - "world_the_end"
+      - "bskyblock_world"
+      - "bskyblock_world_nether"
+      - "bskyblock_world_the_end"
+      - "oneblock_world"
+      - "oneblock_world_nether"
+      - "oneblock_world_the_end"
+      - "galactifun_space"
+      - "world_galactifun_earth_orbit"
+      - "world_galactifun_the_moon"
+      - "world_galactifun_mars"
+      - "world_galactifun_venus"
+      - "world_galactifun_titan"
+      - "world_galactifun_enceladus"
+      - "world_galactifun_io"
+    blocked-message: "&c[DrakesCraft] El sistema de rangos y transformaciones es exclusivo de las modalidades custom (Survival SF, OneBlock y SkyBlock). ¡En Survival Clásico no está disponible!"
+
   # Sistema de Mantención y Desgaste (Rank Maintenance & Decay)
   maintenance:
     enabled: true

@@ -26,6 +26,11 @@ public class AngelCommand implements CommandExecutor {
             return true;
         }
 
+        if (!plugin.isWorldAllowed(player.getWorld())) {
+            player.sendMessage(plugin.getWorldBlockedMessage());
+            return true;
+        }
+
         plugin.getStaffManager().toggleAngel(player);
         return true;
     }

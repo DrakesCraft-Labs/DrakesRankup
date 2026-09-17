@@ -28,6 +28,7 @@ public class CustomKitItemListener implements Listener {
     public void onSenzuBeanConsume(PlayerInteractEvent event) {
         if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         Player player = event.getPlayer();
+        if (!plugin.isWorldAllowed(player.getWorld())) return;
         ItemStack item = player.getInventory().getItemInMainHand();
 
         if (item.getItemMeta() == null || !item.getItemMeta().hasDisplayName()) return;
@@ -81,6 +82,7 @@ public class CustomKitItemListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL)
     public void onCustomWeaponCombat(EntityDamageByEntityEvent event) {
         if (!(event.getDamager() instanceof Player attacker)) return;
+        if (!plugin.isWorldAllowed(attacker.getWorld())) return;
         ItemStack item = attacker.getInventory().getItemInMainHand();
         if (item.getItemMeta() == null || !item.getItemMeta().hasDisplayName()) return;
 
