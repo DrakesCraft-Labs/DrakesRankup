@@ -448,6 +448,10 @@ public class RankManager {
         savePlayerData();
 
         Player player = Bukkit.getPlayer(uuid);
+        if (player == null || !player.isOnline()) {
+            // antes el decaimiento offline no tocaba LuckPerms y el jugador conservaba los perks
+            reconcileLuckPermsOffline(uuid, targetTier);
+        }
         if (player != null && player.isOnline()) {
             downgradeLuckPermsRank(player, oldRank, newRank);
             if (notifyIfOnline) {
@@ -497,29 +501,9 @@ public class RankManager {
     private void downgradeLuckPermsRank(Player player, Rank oldRank, Rank newRank) {
         if (!Bukkit.getPluginManager().isPluginEnabled("LuckPerms")) return;
         try {
-            LuckPerms lp = LuckPermsProvider.get();
-            User user = lp.getUserManager().getUser(player.getUniqueId());
+            User user = LuckPermsProvider.get().getUserManager().getUser(player.getUniqueId());
             if (user == null) return;
-
-            String groupPrefix = plugin.getConfig().getString("settings.luckperms.group-prefix", "rankup_");
-
-            if (oldRank != null) {
-                user.data().remove(InheritanceNode.builder(groupPrefix + oldRank.getId()).build());
-                for (String perm : oldRank.getPermissions()) {
-                    user.data().remove(PermissionNode.builder(perm).build());
-                }
-            }
-
-            if (newRank != null) {
-                if (plugin.getConfig().getBoolean("settings.luckperms.apply-group", true)) {
-                    user.data().add(InheritanceNode.builder(groupPrefix + newRank.getId()).build());
-                }
-                for (String perm : newRank.getPermissions()) {
-                    user.data().add(PermissionNode.builder(perm).build());
-                }
-            }
-
-            lp.getUserManager().saveUser(user);
+            reconcileLuckPerms(user, newRank != null ? newRank.getTier() : 0);
         } catch (Throwable t) {
             plugin.getLogger().warning("No se pudo sincronizar LuckPerms en downgrade: " + t.getMessage());
         }
@@ -716,54 +700,87 @@ public class RankManager {
     public void applyLuckPermsRank(Player player, int prevTier, Rank newRank) {
         if (!Bukkit.getPluginManager().isPluginEnabled("LuckPerms")) return;
         try {
-            LuckPerms lp = LuckPermsProvider.get();
-            User user = lp.getUserManager().getUser(player.getUniqueId());
+            User user = LuckPermsProvider.get().getUserManager().getUser(player.getUniqueId());
             if (user == null) return;
-
-            String groupPrefix = plugin.getConfig().getString("settings.luckperms.group-prefix", "rankup_");
-
-            if (plugin.getConfig().getBoolean("settings.luckperms.remove-previous-rankup-group", true) && prevTier > 0) {
-                Rank prev = ranksByTier.get(prevTier);
-                if (prev != null) {
-                    user.data().remove(InheritanceNode.builder(groupPrefix + prev.getId()).build());
-                }
-            }
-
-            if (newRank != null) {
-                if (plugin.getConfig().getBoolean("settings.luckperms.apply-group", true)) {
-                    user.data().add(InheritanceNode.builder(groupPrefix + newRank.getId()).build());
-                }
-
-                for (String perm : newRank.getPermissions()) {
-                    user.data().add(PermissionNode.builder(perm).build());
-                }
-            }
-
-            lp.getUserManager().saveUser(user);
+            reconcileLuckPerms(user, newRank != null ? newRank.getTier() : 0);
         } catch (Throwable t) {
             plugin.getLogger().warning("No se pudo sincronizar LuckPerms: " + t.getMessage());
         }
     }
 
-    public void ensureLuckPermsGroup(Player player, Rank rank) {
-        if (!Bukkit.getPluginManager().isPluginEnabled("LuckPerms") || rank == null) return;
+    /**
+     * Deja LuckPerms exactamente como corresponde al tier: un solo grupo `rankup_<id>` y las
+     * permisos acumuladas de los tiers 1..tier, ni una mas.
+     *
+     * Los permisos de cada rango son acumulativos (cada tier anade los suyos y conserva los
+     * anteriores). Los caminos antiguos solo quitaban los del rango que se dejaba, asi que un
+     * decaimiento por checkpoint (30 -> 20) dejaba los permisos de 21..29, y un decaimiento con
+     * el jugador desconectado no tocaba LuckPerms: al volver, `ensureLuckPermsGroup` solo ANADIA
+     * el grupo nuevo y el viejo se quedaba. Mr_Em1lio arrastraba sethome.multiple de ocho rangos.
+     */
+    public void reconcileLuckPerms(User user, int tier) {
+        String groupPrefix = plugin.getConfig().getString("settings.luckperms.group-prefix", "rankup_");
+        boolean applyGroup = plugin.getConfig().getBoolean("settings.luckperms.apply-group", true);
+        Rank current = tier > 0 ? ranksByTier.get(tier) : null;
+        String expectedGroup = current != null && applyGroup ? (groupPrefix + current.getId()).toLowerCase() : null;
+
+        Set<String> desired = new HashSet<>();
+        Set<String> allRankPerms = new HashSet<>();
+        for (Rank r : ranksByTier.values()) {
+            allRankPerms.addAll(r.getPermissions());
+            if (r.getTier() <= tier) desired.addAll(r.getPermissions());
+        }
+
+        boolean changed = false;
+        for (net.luckperms.api.node.Node node : new ArrayList<>(user.getNodes())) {
+            if (node instanceof InheritanceNode inh) {
+                String g = inh.getGroupName().toLowerCase();
+                if (g.startsWith(groupPrefix.toLowerCase()) && !g.equals(expectedGroup)) {
+                    user.data().remove(node);
+                    changed = true;
+                }
+            } else if (node instanceof PermissionNode pn) {
+                if (allRankPerms.contains(pn.getPermission()) && !desired.contains(pn.getPermission())) {
+                    user.data().remove(node);
+                    changed = true;
+                }
+            }
+        }
+        if (expectedGroup != null && user.getNodes().stream().noneMatch(n -> n instanceof InheritanceNode inh
+                && inh.getGroupName().equalsIgnoreCase(expectedGroup))) {
+            user.data().add(InheritanceNode.builder(expectedGroup).build());
+            changed = true;
+        }
+        for (String perm : desired) {
+            if (user.getNodes().stream().noneMatch(n -> n instanceof PermissionNode pn && pn.getPermission().equals(perm))) {
+                user.data().add(PermissionNode.builder(perm).build());
+                changed = true;
+            }
+        }
+        if (changed) {
+            LuckPermsProvider.get().getUserManager().saveUser(user);
+        }
+    }
+
+    /** Reconcilia a un jugador aunque este desconectado (carga el usuario en async). */
+    public void reconcileLuckPermsOffline(UUID uuid, int tier) {
+        if (!Bukkit.getPluginManager().isPluginEnabled("LuckPerms")) return;
         try {
             LuckPerms lp = LuckPermsProvider.get();
-            User user = lp.getUserManager().getUser(player.getUniqueId());
+            lp.getUserManager().loadUser(uuid).thenAccept(user -> {
+                if (user != null) reconcileLuckPerms(user, tier);
+            });
+        } catch (Throwable t) {
+            plugin.getLogger().warning("No se pudo reconciliar LuckPerms offline: " + t.getMessage());
+        }
+    }
+
+    public void ensureLuckPermsGroup(Player player, Rank rank) {
+        if (!Bukkit.getPluginManager().isPluginEnabled("LuckPerms")) return;
+        try {
+            User user = LuckPermsProvider.get().getUserManager().getUser(player.getUniqueId());
             if (user == null) return;
-            String groupPrefix = plugin.getConfig().getString("settings.luckperms.group-prefix", "rankup_");
-            String expectedGroup = groupPrefix + rank.getId();
-            boolean hasGroup = user.getNodes().stream()
-                    .filter(n -> n instanceof net.luckperms.api.node.types.InheritanceNode)
-                    .map(n -> ((net.luckperms.api.node.types.InheritanceNode) n).getGroupName())
-                    .anyMatch(g -> g.equalsIgnoreCase(expectedGroup));
-            if (!hasGroup) {
-                user.data().add(InheritanceNode.builder(expectedGroup).build());
-                for (String perm : rank.getPermissions()) {
-                    user.data().add(PermissionNode.builder(perm).build());
-                }
-                lp.getUserManager().saveUser(user);
-            }
+            reconcileLuckPerms(user, getPlayerTier(player.getUniqueId()));
         } catch (Throwable t) {
             plugin.getLogger().warning("No se pudo verificar grupo de LuckPerms: " + t.getMessage());
         }
