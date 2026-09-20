@@ -132,6 +132,9 @@ public class RankManager {
                 if (playersConfig.isConfigurationSection(uuidStr)) {
                     int tier = playersConfig.getInt(uuidStr + ".tier", 0);
                     boolean particles = playersConfig.getBoolean(uuidStr + ".particles", true);
+                    // -1 = sin migrar: se deriva del boolean (config anterior al nivel).
+                    int particleLevel = playersConfig.getInt(uuidStr + ".particle-level", -1);
+                    if (particleLevel < 0) particleLevel = particles ? 2 : 0;
                     boolean push = playersConfig.getBoolean(uuidStr + ".kinetic-push", true);
                     boolean abilities = playersConfig.getBoolean(uuidStr + ".abilities", true);
                     long expiry = playersConfig.getLong(uuidStr + ".maintenance-expiry", 0L);
@@ -141,7 +144,9 @@ public class RankManager {
                     if (bolsa > 0) {
                         bolsas.put(uuid, bolsa);
                     }
-                    playerSettings.put(uuid, new PlayerSettings(particles, push, abilities));
+                    PlayerSettings loaded = new PlayerSettings(particles, push, abilities);
+                    loaded.setParticleLevel(particleLevel);
+                    playerSettings.put(uuid, loaded);
                     if (expiry > 0) {
                         maintenanceExpiries.put(uuid, expiry);
                     }
@@ -161,6 +166,7 @@ public class RankManager {
             playersConfig.set(path + ".tier", entry.getValue());
             PlayerSettings s = getPlayerSettings(entry.getKey());
             playersConfig.set(path + ".particles", s.isParticlesEnabled());
+            playersConfig.set(path + ".particle-level", s.getParticleLevel());
             playersConfig.set(path + ".kinetic-push", s.isKineticPushEnabled());
             playersConfig.set(path + ".abilities", s.isAbilitiesEnabled());
             Long expiry = maintenanceExpiries.get(entry.getKey());

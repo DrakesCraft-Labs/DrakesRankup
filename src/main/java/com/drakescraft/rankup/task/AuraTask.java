@@ -49,7 +49,10 @@ public class AuraTask extends BukkitRunnable {
             if (rank == null) continue;
 
             PlayerSettings settings = plugin.getRankManager().getPlayerSettings(player.getUniqueId());
-            if (!settings.isParticlesEnabled()) continue;
+            if (!settings.isParticlesEnabled() || settings.getParticleLevel() <= 0) continue;
+            // Reducido: se pinta solo uno de cada dos ciclos, aligerando a la mitad la
+            // densidad y el trafico sin perder la señal visual del rango.
+            if (settings.getParticleLevel() == 1 && ((int) Math.round(angle / (Math.PI / 8)) % 2 != 0)) continue;
 
             int tier = rank.getTier();
             String activeTrans = settings.getActiveTransformation();
@@ -89,30 +92,53 @@ public class AuraTask extends BukkitRunnable {
                     loc.getWorld().spawnParticle(Particle.CRIT, loc.clone().add(0, 0.2, 0), 2, 0.2, 0.2, 0.2, 0.02);
                 }
 
-                // Passive Rank Auras
-                if (tier >= 32 && tier <= 36) {
-                    loc.getWorld().spawnParticle(Particle.FLAME, loc.clone().add(0, 0.2, 0), 3, 0.25, 0.3, 0.25, 0.02);
-                    if (tier >= 33) {
-                        loc.getWorld().spawnParticle(Particle.ELECTRIC_SPARK, loc.clone().add(0, 1.0, 0), 2, 0.3, 0.5, 0.3, 0.05);
-                    }
-                } else if (tier >= 37 && tier <= 40) {
-                    loc.getWorld().spawnParticle(Particle.SQUID_INK, loc.clone().add(0, 0.1, 0), 2, 0.2, 0.1, 0.2, 0.01);
-                } else if (tier == 46) {
-                    loc.getWorld().spawnParticle(Particle.FIREWORK, loc.clone().add(0, 0.3, 0), 3, 0.3, 0.5, 0.3, 0.02);
-                } else if (tier == 47) {
-                    loc.getWorld().spawnParticle(Particle.WITCH, loc.clone().add(0, 0.2, 0), 3, 0.25, 0.4, 0.25, 0.02);
-                } else if (tier >= 50) {
-                    double x = 0.4 * Math.cos(angle);
-                    double z = 0.4 * Math.sin(angle);
-                    loc.getWorld().spawnParticle(Particle.TOTEM_OF_UNDYING, loc.clone().add(x, 2.15, z), 1, 0, 0, 0, 0);
-                } else if (tier == 19) {
-                    loc.getWorld().spawnParticle(Particle.END_ROD, loc.clone().add(0, 1.0, 0), 1, 0.2, 0.4, 0.2, 0.01);
-                } else if (tier == 20) {
-                    loc.getWorld().spawnParticle(Particle.SOUL_FIRE_FLAME, loc.clone().add(0, 0.2, 0), 2, 0.2, 0.2, 0.2, 0.01);
-                } else if (tier == 30) {
-                    loc.getWorld().spawnParticle(Particle.CLOUD, loc.clone().add(0, 0.1, 0), 2, 0.2, 0.1, 0.2, 0.01);
-                }
+                // Auras pasivas por rango. Antes habia huecos (tiers 21-29, 31, 41-45,
+                // 48-49 no mostraban nada): un jugador en tier 25 no veia aura pese a
+                // haber ascendido. Ahora la cobertura es continua por franjas tematicas
+                // y la densidad escala con el tier dentro de cada franja.
+                spawnPassiveAura(loc, tier);
             } catch (Exception ignored) {}
         }
     }
+
+    /**
+     * Aura pasiva continua: toda progresion de rango tiene retorno visual, sin huecos.
+     * Cinco franjas tematicas; dentro de cada una la cantidad de particulas crece con
+     * el tier, para que subir de rango se note aunque se siga en la misma franja.
+     */
+    private void spawnPassiveAura(Location loc, int tier) {
+        if (tier < 1) return;
+        Location base = loc.clone().add(0, 0.2, 0);
+        Location head = loc.clone().add(0, 1.0, 0);
+        try {
+            if (tier <= 10) {                 // Iniciados: chispa tenue
+                loc.getWorld().spawnParticle(Particle.CRIT, base, 1 + tier / 5, 0.2, 0.2, 0.2, 0.01);
+            } else if (tier <= 20) {          // Ascendentes: brasa y luz
+                int n = 1 + (tier - 10) / 4;
+                loc.getWorld().spawnParticle(Particle.SOUL_FIRE_FLAME, base, n, 0.2, 0.25, 0.2, 0.01);
+                if (tier >= 16) loc.getWorld().spawnParticle(Particle.END_ROD, head, 1, 0.2, 0.4, 0.2, 0.01);
+            } else if (tier <= 30) {          // Veteranos: viento y electricidad
+                int n = 1 + (tier - 20) / 4;
+                loc.getWorld().spawnParticle(Particle.CLOUD, base, n, 0.2, 0.15, 0.2, 0.01);
+                if (tier >= 26) loc.getWorld().spawnParticle(Particle.ELECTRIC_SPARK, head, 1, 0.3, 0.4, 0.3, 0.03);
+            } else if (tier <= 40) {          // Elite: fuego y rayo
+                int n = 2 + (tier - 30) / 3;
+                loc.getWorld().spawnParticle(Particle.FLAME, base, n, 0.25, 0.3, 0.25, 0.02);
+                if (tier >= 33) loc.getWorld().spawnParticle(Particle.ELECTRIC_SPARK, head, 1 + (tier - 33) / 3, 0.3, 0.5, 0.3, 0.05);
+                if (tier >= 37) loc.getWorld().spawnParticle(Particle.SQUID_INK, base, 1, 0.2, 0.1, 0.2, 0.01);
+            } else {                          // Legendarios (41-50): halo giratorio creciente
+                int n = 2 + (tier - 40) / 2;
+                loc.getWorld().spawnParticle(Particle.WITCH, base, n, 0.25, 0.4, 0.25, 0.02);
+                if (tier >= 44) loc.getWorld().spawnParticle(Particle.FIREWORK, base, 1 + (tier - 44) / 2, 0.3, 0.5, 0.3, 0.02);
+                double x = 0.45 * Math.cos(angle);
+                double z = 0.45 * Math.sin(angle);
+                loc.getWorld().spawnParticle(Particle.TOTEM_OF_UNDYING, loc.clone().add(x, 2.15, z), 1, 0, 0, 0, 0);
+                if (tier >= 48) {             // corona doble en la cuspide
+                    loc.getWorld().spawnParticle(Particle.TOTEM_OF_UNDYING,
+                            loc.clone().add(-x, 2.15, -z), 1, 0, 0, 0, 0);
+                }
+            }
+        } catch (Exception ignored) {}
+    }
+
 }

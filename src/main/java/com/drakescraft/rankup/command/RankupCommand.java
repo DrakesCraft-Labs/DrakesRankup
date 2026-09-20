@@ -141,8 +141,15 @@ public class RankupCommand implements CommandExecutor, TabCompleter {
             }
 
             if (feature.startsWith("partic") || feature.equals("particles")) {
-                s.setParticlesEnabled(!s.isParticlesEnabled());
-                player.sendMessage("§7Partículas de rango: " + (s.isParticlesEnabled() ? "§aActivadas" : "§cDesactivadas"));
+                // Tres estados en vez de on/off: completo -> reducido -> apagado.
+                // El reducido existe porque a algunos jugadores el aura les molesta
+                // pero no quieren perderla del todo.
+                int lvl = (s.getParticleLevel() + 2) % 3;   // 2->1->0->2
+                s.setParticleLevel(lvl);
+                s.setParticlesEnabled(lvl > 0);
+                String etiqueta = lvl == 2 ? "§aCompletas" : lvl == 1 ? "§eReducidas" : "§cApagadas";
+                player.sendMessage("§7Partículas de rango: " + etiqueta
+                        + " §8(/" + label + " particles para cambiar)");
                 return true;
             }
 

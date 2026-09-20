@@ -14,6 +14,13 @@ public class PlayerSettings {
     private String activeTransformation = null;
     private boolean kiFlightEnabled = true;
 
+    /**
+     * Intensidad de las auras: 2 = completa, 1 = reducida (menos densa y menos
+     * frecuente), 0 = apagada. Convive con particlesEnabled por retrocompatibilidad:
+     * el boolean sigue siendo la puerta on/off y el nivel afina la intensidad.
+     */
+    private int particleLevel = 2;
+
     public PlayerSettings(boolean particlesEnabled, boolean kineticPushEnabled, boolean abilitiesEnabled) {
         this.particlesEnabled = particlesEnabled;
         this.kineticPushEnabled = kineticPushEnabled;
