@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 300" width="920" height="300" role="img" aria-label="DrakesRankup">
+  <defs>
+    <linearGradient id="bgG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1A1030"/>
+      <stop offset="50%" stop-color="#2A1B4A"/>
+      <stop offset="100%" stop-color="#0A0614"/>
+    </linearGradient>
+    <linearGradient id="titleG" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FFB020"/>
+      <stop offset="45%" stop-color="#FF5FA2"/>
+      <stop offset="100%" stop-color="#8B5CF6"/>
+    </linearGradient>
+    <radialGradient id="auraG" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FF5FA2" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#FF5FA2" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="glowF" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="920" height="300" rx="18" fill="url(#bgG)"/>
+
+  <!-- aura glow tras el titulo -->
+  <ellipse cx="300" cy="150" rx="260" ry="150" fill="url(#auraG)"/>
+
+  <!-- particulas ascendentes (evocan las auras del plugin) -->
+  <g fill="#FFB020" opacity="0.9">
+    <circle cx="70"  cy="230" r="3"/>
+    <circle cx="110" cy="180" r="2"/>
+    <circle cx="150" cy="250" r="2.5"/>
+    <circle cx="600" cy="90"  r="2.5" fill="#FF5FA2"/>
+    <circle cx="650" cy="140" r="2"   fill="#8B5CF6"/>
+    <circle cx="700" cy="70"  r="3"   fill="#FF5FA2"/>
+    <circle cx="740" cy="120" r="2"   fill="#38BDF8"/>
+    <circle cx="800" cy="200" r="2.5" fill="#8B5CF6"/>
+    <circle cx="850" cy="150" r="2"   fill="#FFB020"/>
+  </g>
+
+  <!-- orbita de rango (halo giratorio del late-game) -->
+  <g transform="translate(770,150)" opacity="0.8">
+    <circle r="70" fill="none" stroke="#8B5CF6" stroke-width="1.5" stroke-dasharray="4 8"/>
+    <circle r="52" fill="none" stroke="#FF5FA2" stroke-width="1.5" stroke-dasharray="3 10"/>
+    <circle cx="70" cy="0" r="4" fill="#FFB020" filter="url(#glowF)"/>
+    <circle cx="-52" cy="0" r="3" fill="#38BDF8" filter="url(#glowF)"/>
+  </g>
+
+  <!-- simbolo torii minimal -->
+  <g transform="translate(70,88)" stroke="#FF5FA2" stroke-width="6" stroke-linecap="round" filter="url(#glowF)">
+    <line x1="-6" y1="0" x2="86" y2="0"/>
+    <line x1="2" y1="14" x2="78" y2="14"/>
+    <line x1="12" y1="14" x2="12" y2="70"/>
+    <line x1="68" y1="14" x2="68" y2="70"/>
+  </g>
+
+  <text x="70" y="205" font-family="'Segoe UI',Arial,sans-serif" font-size="60" font-weight="800" fill="url(#titleG)" filter="url(#glowF)">DrakesRankup</text>
+  <text x="72" y="240" font-family="'Segoe UI',Arial,sans-serif" font-size="19" font-weight="600" fill="#CBB6F0">Progresión por rangos · auras · poderes anime · sumidero económico</text>
+  <text x="72" y="268" font-family="'Segoe UI',Arial,sans-serif" font-size="14" fill="#7C6BA8">Paper 1.21.11 · DrakesCraft</text>
+</svg>
