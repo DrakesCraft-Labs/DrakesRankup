@@ -455,6 +455,10 @@ public class DragonBallListener implements Listener {
 
         if (tier < 31 || !settings.isKiFlightEnabled()) return;
 
+        // Si el jugador tiene vuelo real (rango/Essentials/staff), el doble-salto es para
+        // VOLAR: no lo convertimos en dash. Sin esto, el vuelo de rango era inusable.
+        if (plugin.hasExternalFlight(player)) return;
+
         event.setCancelled(true);
         player.setFlying(false);
 
@@ -497,7 +501,9 @@ public class DragonBallListener implements Listener {
         int tier = (rank != null) ? rank.getTier() : 0;
         PlayerSettings settings = plugin.getRankManager().getPlayerSettings(uuid);
 
-        if (tier >= 31 && settings.isKiFlightEnabled()) {
+        if (tier >= 31 && settings.isKiFlightEnabled() && !plugin.hasExternalFlight(player)) {
+            // Con vuelo externo NO armamos el doble-salto del dash: pisaria el allowFlight
+            // que Essentials mantiene para el fly de rango y lo apagaria en cada paso.
             long now = System.currentTimeMillis();
             long ready = kiFlightCooldown.getOrDefault(uuid, 0L);
             if (player.isOnGround() && now >= ready) {

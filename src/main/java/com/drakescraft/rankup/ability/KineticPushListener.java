@@ -33,23 +33,9 @@ public class KineticPushListener implements Listener {
     }
 
     public boolean hasFlightBypass(Player player) {
-        if (player.hasPermission("drakesrankup.admin")) return true;
-        if (plugin.getStaffManager() != null && plugin.getStaffManager().isAngel(player.getUniqueId())) return true;
-        if (player.isFlying()) return true;
-
-        // Verificar si Essentials tiene el modo de vuelo activo para el jugador
-        try {
-            org.bukkit.plugin.Plugin ess = org.bukkit.Bukkit.getPluginManager().getPlugin("Essentials");
-            if (ess != null && ess.isEnabled()) {
-                Object user = ess.getClass().getMethod("getUser", Player.class).invoke(ess, player);
-                if (user != null) {
-                    Object flyEnabled = user.getClass().getMethod("isFlyModeEnabled").invoke(user);
-                    if (Boolean.TRUE.equals(flyEnabled)) return true;
-                }
-            }
-        } catch (Throwable ignored) {}
-
-        return false;
+        // Delega en el punto unico del plugin para que empuje cinetico y vuelo de Ki
+        // compartan exactamente el mismo criterio de "tiene vuelo real".
+        return plugin.hasExternalFlight(player);
     }
 
     public void updatePushEligibility(Player player) {

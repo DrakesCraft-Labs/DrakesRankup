@@ -167,4 +167,36 @@ public class DrakesRankupPlugin extends JavaPlugin {
             getLogger().info("Vault Economy enganchado exitosamente (" + economy.getName() + ").");
         }
     }
+
+    /**
+     * True si el jugador tiene un vuelo LEGITIMO ajeno a las habilidades de impulso:
+     * staff/angel, vuelo ya activo, o fly de Essentials (el que se otorga a rangos).
+     *
+     * Es el punto unico que decide "este doble-salto es para VOLAR, no para lanzar un
+     * impulso". Antes solo lo consultaba KineticPush; DragonBall (vuelo de Ki, tier 31+)
+     * no lo miraba, asi que secuestraba el vuelo de rango aunque el jugador desactivara
+     * el empuje cinetico -- el "desactivo uno y queda otro" que reporto Mr_Em1lio.
+     *
+     * Se comprueba tambien el permiso essentials.fly ademas del estado isFlyModeEnabled:
+     * el estado solo es true DESPUES de /fly, pero quien tiene el permiso por su rango
+     * tiene derecho a volar y su doble-salto no debe convertirse en un dash.
+     */
+    public boolean hasExternalFlight(org.bukkit.entity.Player player) {
+        if (player.hasPermission("drakesrankup.admin")) return true;
+        if (player.hasPermission("essentials.fly")) return true;
+        if (player.isFlying()) return true;
+        if (getStaffManager() != null && getStaffManager().isAngel(player.getUniqueId())) return true;
+        try {
+            org.bukkit.plugin.Plugin ess = getServer().getPluginManager().getPlugin("Essentials");
+            if (ess != null && ess.isEnabled()) {
+                Object user = ess.getClass().getMethod("getUser", org.bukkit.entity.Player.class).invoke(ess, player);
+                if (user != null
+                        && Boolean.TRUE.equals(user.getClass().getMethod("isFlyModeEnabled").invoke(user))) {
+                    return true;
+                }
+            }
+        } catch (Throwable ignored) {}
+        return false;
+    }
+
 }
