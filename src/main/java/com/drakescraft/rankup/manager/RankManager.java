@@ -32,6 +32,15 @@ public class RankManager {
     private final Map<String, Rank> ranksById = new HashMap<>();
     private final Map<UUID, Integer> playerTiers = new HashMap<>();
     private final Map<UUID, PlayerSettings> playerSettings = new HashMap<>();
+    /**
+     * Bolsa de ascenso: dinero apartado SOLO para pagar rangos.
+     *
+     * Essentials limita el monedero a 100 M (max-money) y los rangos 33-50 cuestan de 110 M a
+     * 1.500 M, asi que sin esto eran inalcanzables. La bolsa no tiene tope, se llena desde el
+     * monedero con /rankup bolsa depositar y no se puede retirar ni transferir: solo la gasta el
+     * ascenso, primero la bolsa y el resto del monedero.
+     */
+    private final Map<UUID, Double> bolsas = new HashMap<>();
     private final Map<UUID, Long> maintenanceExpiries = new HashMap<>();
     private final Set<UUID> activeTransactions = Collections.synchronizedSet(new HashSet<>());
 
@@ -115,6 +124,7 @@ public class RankManager {
         playerTiers.clear();
         playerSettings.clear();
         maintenanceExpiries.clear();
+        bolsas.clear();
 
         for (String uuidStr : playersConfig.getKeys(false)) {
             try {
@@ -125,8 +135,12 @@ public class RankManager {
                     boolean push = playersConfig.getBoolean(uuidStr + ".kinetic-push", true);
                     boolean abilities = playersConfig.getBoolean(uuidStr + ".abilities", true);
                     long expiry = playersConfig.getLong(uuidStr + ".maintenance-expiry", 0L);
+                    double bolsa = playersConfig.getDouble(uuidStr + ".bolsa", 0.0);
 
                     playerTiers.put(uuid, tier);
+                    if (bolsa > 0) {
+                        bolsas.put(uuid, bolsa);
+                    }
                     playerSettings.put(uuid, new PlayerSettings(particles, push, abilities));
                     if (expiry > 0) {
                         maintenanceExpiries.put(uuid, expiry);
@@ -154,6 +168,14 @@ public class RankManager {
                 playersConfig.set(path + ".maintenance-expiry", expiry);
             } else {
                 playersConfig.set(path + ".maintenance-expiry", null);
+            }
+            Double bolsa = bolsas.get(entry.getKey());
+            playersConfig.set(path + ".bolsa", bolsa != null && bolsa > 0 ? bolsa : null);
+        }
+        // jugadores con bolsa pero todavia sin tier registrado
+        for (Map.Entry<UUID, Double> entry : bolsas.entrySet()) {
+            if (!playerTiers.containsKey(entry.getKey()) && entry.getValue() > 0) {
+                playersConfig.set(entry.getKey() + ".bolsa", entry.getValue());
             }
         }
         try {
@@ -188,6 +210,85 @@ public class RankManager {
 
     public PlayerSettings getPlayerSettings(UUID uuid) {
         return playerSettings.computeIfAbsent(uuid, k -> new PlayerSettings());
+    }
+
+    // ==========================================
+    // BOLSA DE ASCENSO
+    // ==========================================
+
+    public double getBolsa(UUID uuid) {
+        return bolsas.getOrDefault(uuid, 0.0);
+    }
+
+    /** Fondos utilizables para ascender: bolsa + monedero. */
+    public double getFondosAscenso(Player player) {
+        Economy eco = plugin.getEconomy();
+        return getBolsa(player.getUniqueId()) + (eco != null ? eco.getBalance(player) : 0.0);
+    }
+
+    /** Mueve dinero del monedero a la bolsa. Devuelve el monto depositado (0 si no se pudo). */
+    public synchronized double depositarEnBolsa(Player player, double monto) {
+        Economy eco = plugin.getEconomy();
+        if (eco == null || monto <= 0 || Double.isNaN(monto) || Double.isInfinite(monto)) {
+            return 0;
+        }
+        monto = Math.floor(monto * 100) / 100;
+        double balance = eco.getBalance(player);
+        if (balance < monto) {
+            return 0;
+        }
+        EconomyResponse r = eco.withdrawPlayer(player, monto);
+        if (!r.transactionSuccess()) {
+            return 0;
+        }
+        bolsas.merge(player.getUniqueId(), monto, Double::sum);
+        savePlayerData();
+        plugin.getLogger().info("[Bolsa] " + player.getName() + " deposito " + MONEY_FORMAT.format(monto)
+                + " (bolsa: " + MONEY_FORMAT.format(getBolsa(player.getUniqueId())) + ")");
+        return monto;
+    }
+
+    /** Ajuste administrativo (consola): fija la bolsa a un valor. */
+    public synchronized void setBolsa(UUID uuid, double monto) {
+        if (monto <= 0) {
+            bolsas.remove(uuid);
+        } else {
+            bolsas.put(uuid, monto);
+        }
+        savePlayerData();
+    }
+
+    /**
+     * Cobra un costo usando primero la bolsa y luego el monedero. Devuelve false sin tocar nada si
+     * no alcanza o si Vault rechaza el cobro del resto.
+     */
+    private boolean cobrarAscenso(Player player, double costo) {
+        Economy eco = plugin.getEconomy();
+        UUID uuid = player.getUniqueId();
+        double bolsa = getBolsa(uuid);
+        double delBolsa = Math.min(bolsa, costo);
+        double delMonedero = costo - delBolsa;
+        if (eco != null && delMonedero > 0) {
+            if (eco.getBalance(player) < delMonedero) {
+                return false;
+            }
+            EconomyResponse r = eco.withdrawPlayer(player, delMonedero);
+            if (!r.transactionSuccess()) {
+                player.sendMessage(ChatColor.RED + "Error procesando el cobro en Vault: " + r.errorMessage);
+                return false;
+            }
+        }
+        if (delBolsa > 0) {
+            double resto = bolsa - delBolsa;
+            if (resto <= 0.009) {
+                bolsas.remove(uuid);
+            } else {
+                bolsas.put(uuid, resto);
+            }
+            plugin.getLogger().info("[Bolsa] " + player.getName() + " pago " + MONEY_FORMAT.format(delBolsa)
+                    + " de la bolsa y " + MONEY_FORMAT.format(delMonedero) + " del monedero.");
+        }
+        return true;
     }
 
     public Set<UUID> getAllRegisteredPlayerUuids() {
@@ -455,19 +556,20 @@ public class RankManager {
 
         Economy eco = plugin.getEconomy();
         if (eco != null) {
-            double balance = eco.getBalance(player);
-            if (balance < next.getCost()) {
-                double missing = next.getCost() - balance;
+            double fondos = getFondosAscenso(player);
+            if (fondos < next.getCost()) {
+                double missing = next.getCost() - fondos;
                 String msg = plugin.getConfig().getString("messages.insufficient-funds", "&cTe faltan ${missing}")
                         .replace("{rank}", next.getDisplayName())
                         .replace("{missing}", MONEY_FORMAT.format(missing));
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
+                if (next.getCost() > 100_000_000) {
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                            "&7Tip: el monedero tope en 100M; junta el resto en tu bolsa de ascenso con &e/rankup bolsa depositar <monto>&7."));
+                }
                 return false;
             }
-
-            EconomyResponse r = eco.withdrawPlayer(player, next.getCost());
-            if (!r.transactionSuccess()) {
-                player.sendMessage(ChatColor.RED + "Error procesando el cobro en Vault: " + r.errorMessage);
+            if (!cobrarAscenso(player, next.getCost())) {
                 return false;
             }
         }
@@ -541,7 +643,7 @@ public class RankManager {
         }
 
         Economy eco = plugin.getEconomy();
-        double balance = eco != null ? eco.getBalance(player) : Double.MAX_VALUE;
+        double balance = eco != null ? getFondosAscenso(player) : Double.MAX_VALUE;
 
         int targetTier = currentTier;
         double totalCost = 0.0;
@@ -566,12 +668,8 @@ public class RankManager {
             return 0;
         }
 
-        if (eco != null && totalCost > 0) {
-            EconomyResponse r = eco.withdrawPlayer(player, totalCost);
-            if (!r.transactionSuccess()) {
-                player.sendMessage(ChatColor.RED + "Error procesando el cobro en Vault: " + r.errorMessage);
-                return 0;
-            }
+        if (eco != null && totalCost > 0 && !cobrarAscenso(player, totalCost)) {
+            return 0;
         }
 
         int previousTier = currentTier;

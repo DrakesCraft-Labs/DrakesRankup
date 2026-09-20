@@ -24,7 +24,7 @@ public class RankupMenu implements InventoryHolder {
     private final Player player;
     @Getter
     private final int page; // 0 to 4 (Divisions I to V)
-    private static final DecimalFormat MONEY_FORMAT = new DecimalFormat("#,###,###,###.##");
+    public static final DecimalFormat MONEY_FORMAT = new DecimalFormat("#,###,###,###.##");
 
     private static final String[] DIVISION_NAMES = {
             "División I: Ciencia & Nen",
@@ -68,13 +68,16 @@ public class RankupMenu implements InventoryHolder {
         // Player Info (Slot 4)
         Rank currentRank = plugin.getRankManager().getPlayerRank(player.getUniqueId());
         int currentTier = currentRank != null ? currentRank.getTier() : 0;
-        double balance = plugin.getEconomy() != null ? plugin.getEconomy().getBalance(player) : 0.0;
+        double monedero = plugin.getEconomy() != null ? plugin.getEconomy().getBalance(player) : 0.0;
+        double bolsa = plugin.getRankManager().getBolsa(player.getUniqueId());
+        double balance = monedero + bolsa; // fondos de ascenso: bolsa + monedero
         PlayerSettings settings = plugin.getRankManager().getPlayerSettings(player.getUniqueId());
 
         inv.setItem(4, createItem(Material.PLAYER_HEAD, "&e&l" + player.getName(),
                 "&7Rango actual: " + (currentRank != null ? currentRank.getDisplayName() : "&7Ninguno"),
                 "&7Nivel / Tier: &6" + currentTier + "/50",
-                "&7Monedero: &a$" + MONEY_FORMAT.format(balance),
+                "&7Monedero: &a$" + MONEY_FORMAT.format(monedero),
+                "&7Bolsa de ascenso: &6$" + MONEY_FORMAT.format(bolsa) + " &8(/rankup bolsa)",
                 "&7Habilidad: " + (currentRank != null && currentRank.getAbilityType() != null ? "&b" + currentRank.getAbilityType().getName() : "&7Ninguna"),
                 "&7Empuje Cinético: " + (currentRank != null && currentRank.isHasKineticPush() ? "&aDesbloqueado" : "&cBloqueado"),
                 "",

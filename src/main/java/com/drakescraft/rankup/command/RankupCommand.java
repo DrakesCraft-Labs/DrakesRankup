@@ -66,6 +66,41 @@ public class RankupCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        if (sub.equals("bolsa") || sub.equals("pouch")) {
+            if (!(sender instanceof Player player)) {
+                sender.sendMessage("§cEste comando solo puede ser ejecutado por un jugador.");
+                return true;
+            }
+            var rm = plugin.getRankManager();
+            if (args.length >= 3 && (args[1].equalsIgnoreCase("depositar") || args[1].equalsIgnoreCase("deposit"))) {
+                double monto;
+                try {
+                    monto = Double.parseDouble(args[2].replace(",", "").replace("_", ""));
+                } catch (NumberFormatException e) {
+                    player.sendMessage("§cMonto inválido. Ej: §e/rankup bolsa depositar 50000000");
+                    return true;
+                }
+                if (monto < 1000) {
+                    player.sendMessage("§cEl depósito mínimo a la bolsa es de §e$1,000§c.");
+                    return true;
+                }
+                double hecho = rm.depositarEnBolsa(player, monto);
+                if (hecho <= 0) {
+                    player.sendMessage("§cNo tienes ese dinero en el monedero o Vault rechazó el cobro.");
+                } else {
+                    player.sendMessage("§a✔ Depositaste §e$" + RankupMenu.MONEY_FORMAT.format(hecho)
+                            + " §aen tu bolsa de ascenso. Bolsa: §6$" + RankupMenu.MONEY_FORMAT.format(rm.getBolsa(player.getUniqueId())));
+                }
+                return true;
+            }
+            player.sendMessage("§6§lBOLSA DE ASCENSO");
+            player.sendMessage("§7Bolsa: §6$" + RankupMenu.MONEY_FORMAT.format(rm.getBolsa(player.getUniqueId()))
+                    + " §8| §7Monedero: §a$" + RankupMenu.MONEY_FORMAT.format(plugin.getEconomy() != null ? plugin.getEconomy().getBalance(player) : 0));
+            player.sendMessage("§7El monedero tope en $100M; la bolsa no tiene tope y §esolo§7 se usa para ascender.");
+            player.sendMessage("§7Depositar: §e/rankup bolsa depositar <monto> §8(no se puede retirar)");
+            return true;
+        }
+
         if (sub.equals("max")) {
             if (!(sender instanceof Player player)) {
                 sender.sendMessage("§cEste comando solo puede ser ejecutado por un jugador.");
@@ -207,6 +242,19 @@ public class RankupCommand implements CommandExecutor, TabCompleter {
                 sender.sendMessage("§a[Rankup] Configuración y rangos recargados en caliente.");
                 return true;
             }
+            if (args.length >= 4 && args[1].equalsIgnoreCase("bolsa")) {
+                org.bukkit.OfflinePlayer target = org.bukkit.Bukkit.getOfflinePlayer(args[2]);
+                double monto;
+                try {
+                    monto = Double.parseDouble(args[3].replace(",", ""));
+                } catch (NumberFormatException e) {
+                    sender.sendMessage("§cMonto inválido.");
+                    return true;
+                }
+                plugin.getRankManager().setBolsa(target.getUniqueId(), monto);
+                sender.sendMessage("§aBolsa de ascenso de §e" + args[2] + " §afijada en §6$" + RankupMenu.MONEY_FORMAT.format(monto));
+                return true;
+            }
             if (args.length >= 4 && args[1].equalsIgnoreCase("set")) {
                 Player target = Bukkit.getPlayer(args[2]);
                 if (target == null) {
@@ -264,7 +312,7 @@ public class RankupCommand implements CommandExecutor, TabCompleter {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         List<String> list = new ArrayList<>();
         if (args.length == 1) {
-            list.addAll(Arrays.asList("gui", "kit", "max", "maintain", "mantener", "info", "toggle", "admin"));
+            list.addAll(Arrays.asList("gui", "kit", "max", "bolsa", "maintain", "mantener", "info", "toggle", "admin"));
             if (sender.hasPermission("drakesrankup.staff")) {
                 list.add("test");
             }
