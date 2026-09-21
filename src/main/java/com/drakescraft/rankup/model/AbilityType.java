@@ -24,8 +24,8 @@ public enum AbilityType {
     KI_FLIGHT("Vuelo de Ki Supersónico", "&bPropulsión sónica ultra rápida por 4 segundos con onda expansiva. Cooldown de 30s."),
     SHADOW_EXTRACTION("Extracción de Sombras", "&812% al derrotar mobs de invocar un soldado de sombra temporal."),
     SERIOUS_PUNCH("Golpe Serio", "&612% en golpes cuerpo a cuerpo de infligir un empuje colosal."),
-    ULTRA_INSTINCT("Doctrina Egoísta", "&f15% de esquivar completamente cualquier ataque físico o flecha."),
-    MASTERED_ULTRA_INSTINCT("Ultra Instinto Dominado", "&fEvasión visual 100% de ataques por 5s. ¡El abuso pasa factura corporal!"),
+    ULTRA_INSTINCT("Doctrina Egoísta", "&f15% de esquivar cualquier golpe de combate (físico o flecha)."),
+    MASTERED_ULTRA_INSTINCT("Ultra Instinto Dominado", "&fEsquiva total de ataques por 5s (no protege del entorno). ¡El abuso pasa factura corporal!"),
     HAKAI_AURA("Aura de la Destrucción", "&5Inmunidad al fuego y daño de espinas de energía Hakai."),
     ULTRA_EGO("Mega Instinto (Ultra Ego)", "&5Poder de la Destrucción: A menor vida, mayor daño destructivo desatado."),
     KAMI_DIVINE("Presencia Divina", "&6Aura suprema: corona de luz, regeneración suave e intimidación hostil.");

@@ -7,6 +7,7 @@ import com.drakescraft.rankup.model.Rank;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -165,11 +166,15 @@ public class RankAbilityListener implements Listener {
             }
 
             if (ability == AbilityType.ULTRA_INSTINCT || rank.getTier() >= 49) {
-                if (random.nextDouble() < 0.14) {
+                // Doctrina Egoista: 15% de esquivar cualquier golpe de combate.
+                if (random.nextDouble() < 0.15) {
                     event.setCancelled(true);
                     try {
-                        player.getWorld().spawnParticle(Particle.CLOUD, player.getLocation().add(0, 0.8, 0), 12, 0.3, 0.3, 0.3, 0.03);
-                        player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 0.8f, 1.8f);
+                        Location dloc = player.getLocation().add(0, 0.9, 0);
+                        player.getWorld().spawnParticle(Particle.CLOUD, dloc, 14, 0.3, 0.3, 0.3, 0.03);
+                        player.getWorld().spawnParticle(Particle.ELECTRIC_SPARK, dloc, 6, 0.25, 0.4, 0.25, 0.02);
+                        player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 0.7f, 1.9f);
+                        player.sendActionBar(Component.text("\u00A7f\u26A1 \u00A77Esquive instintivo"));
                     } catch (Exception ignored) {}
                     return;
                 }

@@ -367,7 +367,9 @@ public class DragonBallListener implements Listener {
             player.getWorld().playSound(loc, Sound.BLOCK_ANVIL_LAND, 0.8f, 0.5f);
         } catch (Exception ignored) {}
 
-        player.damage(8.0); // 4 hearts pure strain damage
+        // Desgaste de hasta 4 corazones, pero NUNCA letal (deja minimo medio corazon).
+        double desgaste = Math.min(8.0, Math.max(0.0, player.getHealth() - 1.0));
+        if (desgaste > 0) player.damage(desgaste);
         player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 100, 2)); // Level III for 5s
         player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 50, 0)); // 2.5s
 
@@ -536,11 +538,17 @@ public class DragonBallListener implements Listener {
             }
         }
 
-        // 100% Dodge during Mastered Ultra Instinct
+        // Esquiva total durante Ultra Instinto Dominado -- SOLO ataques de combate.
+        // (No ignora lava, void, caida ni ahogo: el Ultra Instinto esquiva golpes, no el entorno.)
         if (isMuiActive(uuid)) {
-            event.setCancelled(true);
-            triggerMuiAfterimage(player);
-            return;
+            switch (event.getCause()) {
+                case ENTITY_ATTACK, ENTITY_SWEEP_ATTACK, PROJECTILE, MAGIC, ENTITY_EXPLOSION, THORNS -> {
+                    event.setCancelled(true);
+                    triggerMuiAfterimage(player);
+                    return;
+                }
+                default -> { /* el dano ambiental si afecta */ }
+            }
         }
 
         // Broly takes +20% damage from projectiles (tradeoff)
@@ -664,8 +672,8 @@ public class DragonBallListener implements Listener {
         // Micro-teleport 0.8 blocks backward/sideways
         Vector back = loc.getDirection().normalize().multiply(-0.8).setY(0);
         Location target = loc.clone().add(back);
-        if (target.getBlock().isPassable()) {
-            player.teleport(target);
+        if (target.getBlock().isPassable() && target.clone().add(0, 1, 0).getBlock().isPassable()) {
+            player.teleport(target); // paso lateral solo si pies Y cabeza quedan libres (evita sofocacion)
         }
 
         try {
