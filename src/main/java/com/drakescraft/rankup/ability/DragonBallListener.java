@@ -322,7 +322,7 @@ public class DragonBallListener implements Listener {
 
         } else if (type.equals("BROLY_LSSJ")) {
             activeBroly.put(uuid, now + 20000L); // 20 seconds
-            player.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 400, 2)); // Strength III
+            player.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 400, 1)); // Fuerza II (berserker equilibrado)
             player.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 400, 1)); // Resistance II
             player.sendTitle("§a§lBROLY BERSERKER (LSSJ)", "§2Furia destructiva incontrolable", 5, 40, 5);
             player.sendActionBar(Component.text("§a⚡ ¡FUERZA III & RESISTENCIA II ACTIVAS!"));
@@ -340,20 +340,31 @@ public class DragonBallListener implements Listener {
             activeSSJBlue.put(uuid, now + 20000L);
             player.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 400, 0));
             player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 400, 1));
-            player.sendTitle("§9§lSUPER SAIYAJIN BLUE", "§bFuerza y velocidad de los dioses", 5, 40, 5);
+            player.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 400, 0)); // Resistencia I: temple divino
+            player.sendTitle("§9§lSUPER SAIYAJIN BLUE", "§bFuerza, velocidad y temple de los dioses", 5, 40, 5);
+            player.sendActionBar(Component.text("§9⚡ ¡Fuerza I · Velocidad II · Resistencia I por 20s!"));
 
             plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
                 activeSSJBlue.remove(uuid);
+                if (player.isOnline()) {
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 80, 0)); // coste: ki agotado
+                    player.sendMessage("§9[Rankup] El Super Saiyajin Blue se disipa: ki agotado (Lentitud).");
+                }
             }, 400L);
 
         } else {
             activeSSJGod.put(uuid, now + 20000L);
-            player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 400, 0));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 400, 1)); // Regen II: gracia divina
             player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 400, 0));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 400, 1)); // Absorcion II: escudo de ki
             player.sendTitle("§c§lSUPER SAIYAJIN GOD", "§eKi divino de sanación y gracia", 5, 40, 5);
+            player.sendActionBar(Component.text("§c⚡ ¡Regeneración II · Absorción · Velocidad por 20s!"));
 
             plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
                 activeSSJGod.remove(uuid);
+                if (player.isOnline()) {
+                    player.sendMessage("§c[Rankup] El ki divino del Super Saiyajin God se ha disipado.");
+                }
             }, 400L);
         }
     }
@@ -595,6 +606,11 @@ public class DragonBallListener implements Listener {
                     attacker.playSound(loc, Sound.ENTITY_PLAYER_ATTACK_CRIT, 0.9f, 1.6f);
                 } catch (Exception ignored) {}
             }
+        }
+
+        // Victim is Gohan Beast -- furia temeraria: recibe +20% de dano (glass cannon con riesgo real)
+        if (event.getEntity() instanceof Player gVictim && isGohanBeastActive(gVictim.getUniqueId())) {
+            event.setDamage(event.getDamage() * 1.20);
         }
 
         // Victim is Ultra Ego Vegeta
