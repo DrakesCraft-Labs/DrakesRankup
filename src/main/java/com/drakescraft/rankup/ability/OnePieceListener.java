@@ -9,6 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.Color;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -83,7 +84,8 @@ public class OnePieceListener implements Listener {
 
         try {
             player.getWorld().playSound(eye, Sound.ENTITY_PLAYER_ATTACK_SWEEP, 1.0f, 1.8f);
-            player.getWorld().playSound(eye, Sound.ITEM_ARMOR_EQUIP_IRON, 1.0f, 1.5f);
+            player.getWorld().playSound(eye, Sound.ITEM_TRIDENT_RIPTIDE_1, 1.0f, 1.9f);
+            player.getWorld().playSound(eye, Sound.ENTITY_PLAYER_ATTACK_CRIT, 0.9f, 0.8f);
         } catch (Exception ignored) {}
 
         // Launch flying wind blade arc
@@ -95,6 +97,8 @@ public class OnePieceListener implements Listener {
             try {
                 pt.getWorld().spawnParticle(Particle.SWEEP_ATTACK, pt, 2, 0.1, 0.1, 0.1, 0);
                 pt.getWorld().spawnParticle(Particle.CRIT, pt, 3, 0.1, 0.1, 0.1, 0.05);
+                pt.getWorld().spawnParticle(Particle.DUST, pt, 4, 0.25, 0.5, 0.25, 0, new Particle.DustOptions(Color.fromRGB(60, 200, 90), 1.3f)); // viento verde de Zoro
+                pt.getWorld().spawnParticle(Particle.CLOUD, pt, 1, 0.1, 0.1, 0.1, 0.01);
             } catch (Exception ignored) {}
 
             for (LivingEntity entity : pt.getWorld().getNearbyLivingEntities(pt, 1.2)) {
@@ -146,8 +150,11 @@ public class OnePieceListener implements Listener {
                 try {
                     victim.setFireTicks(60); // 3s fire
                     Location loc = victim.getLocation().add(0, 1.0, 0);
-                    victim.getWorld().spawnParticle(Particle.FLAME, loc, 15, 0.3, 0.4, 0.3, 0.05);
-                    victim.getWorld().playSound(loc, Sound.ENTITY_BLAZE_SHOOT, 0.8f, 1.4f);
+                    victim.getWorld().spawnParticle(Particle.FLAME, loc, 18, 0.3, 0.4, 0.3, 0.05);
+                    victim.getWorld().spawnParticle(Particle.LAVA, loc, 3, 0.2, 0.3, 0.2, 0);
+                    victim.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, loc, 5, 0.3, 0.4, 0.3, 0.01); // vapor del Gear Second
+                    victim.getWorld().playSound(loc, Sound.ENTITY_BLAZE_SHOOT, 0.9f, 1.5f);
+                    victim.getWorld().playSound(loc, Sound.ENTITY_PLAYER_ATTACK_STRONG, 0.7f, 1.4f);
                 } catch (Exception ignored) {}
             }
         }

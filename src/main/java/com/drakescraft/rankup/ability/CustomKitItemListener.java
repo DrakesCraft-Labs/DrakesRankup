@@ -2,6 +2,8 @@ package com.drakescraft.rankup.ability;
 
 import com.drakescraft.rankup.DrakesRankupPlugin;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
@@ -22,6 +24,23 @@ public class CustomKitItemListener implements Listener {
 
     public CustomKitItemListener(DrakesRankupPlugin plugin) {
         this.plugin = plugin;
+    }
+
+    // Senku (Dr. Stone): fx de transmutacion cientifica al minar con el Pico Transmutador.
+    @EventHandler(ignoreCancelled = true)
+    public void onSenkuTransmute(BlockBreakEvent event) {
+        ItemStack tool = event.getPlayer().getInventory().getItemInMainHand();
+        if (tool.getType() != Material.DIAMOND_PICKAXE || !tool.hasItemMeta()) return;
+        if (!tool.getItemMeta().hasDisplayName()) return;
+        String name = tool.getItemMeta().getDisplayName();
+        if (name == null || !name.contains("Senku")) return;
+        try {
+            Location loc = event.getBlock().getLocation().add(0.5, 0.5, 0.5);
+            loc.getWorld().spawnParticle(Particle.ELECTRIC_SPARK, loc, 8, 0.3, 0.3, 0.3, 0.05);
+            loc.getWorld().spawnParticle(Particle.GLOW, loc, 5, 0.2, 0.2, 0.2, 0.02);
+            loc.getWorld().spawnParticle(Particle.END_ROD, loc, 3, 0.1, 0.1, 0.1, 0.02);
+            loc.getWorld().playSound(loc, Sound.BLOCK_AMETHYST_BLOCK_CHIME, 0.5f, 1.6f);
+        } catch (Exception ignored) {}
     }
 
     @EventHandler(priority = EventPriority.HIGH)

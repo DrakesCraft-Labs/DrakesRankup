@@ -291,6 +291,7 @@ public class DragonBallListener implements Listener {
 
         } else if (type.equals("ULTRA_EGO")) {
             activeUltraEgo.put(uuid, now + 15000L); // 15 seconds
+            playAwakeningBurst(player, Color.fromRGB(160,60,220), Color.fromRGB(90,20,140), Particle.WITCH, Sound.ENTITY_ELDER_GUARDIAN_CURSE);
             player.sendTitle("§5§lMEGA INSTINTO (ULTRA EGO)", "§dEl daño recibido aumenta tu poder de destrucción", 5, 40, 5);
             player.sendActionBar(Component.text("§5⚡ ¡AURA HAKAI ACTIVA POR 15 SEGUNDOS!"));
 
@@ -303,6 +304,7 @@ public class DragonBallListener implements Listener {
 
         } else if (type.equals("GOHAN_BEAST")) {
             activeGohanBeast.put(uuid, now + 20000L); // 20 seconds
+            playAwakeningBurst(player, Color.fromRGB(245,245,255), Color.fromRGB(230,70,160), Particle.ELECTRIC_SPARK, Sound.ENTITY_RAVAGER_ROAR);
             player.sendTitle("§d§lGOHAN BESTIA (BEAST)", "§f¡Furia desatada! Explosión crítica al máximo", 5, 40, 5);
             player.sendActionBar(Component.text("§d⚡ ¡EXPLOSIÓN CRÍTICA +75% ACTIVADA POR 20S!"));
 
@@ -322,6 +324,7 @@ public class DragonBallListener implements Listener {
 
         } else if (type.equals("BROLY_LSSJ")) {
             activeBroly.put(uuid, now + 20000L); // 20 seconds
+            playAwakeningBurst(player, Color.fromRGB(120,230,80), Color.fromRGB(60,150,40), Particle.HAPPY_VILLAGER, Sound.ENTITY_WARDEN_ROAR);
             player.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 400, 1)); // Fuerza II (berserker equilibrado)
             player.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 400, 1)); // Resistance II
             player.sendTitle("§a§lBROLY BERSERKER (LSSJ)", "§2Furia destructiva incontrolable", 5, 40, 5);
@@ -338,6 +341,7 @@ public class DragonBallListener implements Listener {
 
         } else if (type.equals("SSJ_BLUE")) {
             activeSSJBlue.put(uuid, now + 20000L);
+            playAwakeningBurst(player, Color.fromRGB(70,150,255), Color.fromRGB(150,230,255), Particle.SOUL_FIRE_FLAME, Sound.ENTITY_ENDER_DRAGON_GROWL);
             player.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 400, 0));
             player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 400, 1));
             player.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 400, 0)); // Resistencia I: temple divino
@@ -354,6 +358,7 @@ public class DragonBallListener implements Listener {
 
         } else {
             activeSSJGod.put(uuid, now + 20000L);
+            playAwakeningBurst(player, Color.fromRGB(255,80,80), Color.fromRGB(255,200,90), Particle.FLAME, Sound.ENTITY_LIGHTNING_BOLT_THUNDER);
             player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 400, 1)); // Regen II: gracia divina
             player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 400, 0));
             player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 400, 1)); // Absorcion II: escudo de ki
@@ -629,6 +634,28 @@ public class DragonBallListener implements Listener {
 
     // Animacion cinematografica del despertar de Ultra Instinto (plata fluida):
     // FASE 1 implosion -> FASE 2 estallido con pilar y onda -> FASE 3 aura en doble helice.
+    // Estallido cinematografico de despertar (reusable): pilar de luz tematico + onda de choque + rugido.
+    private void playAwakeningBurst(Player player, Color c1, Color c2, Particle accent, Sound roar) {
+        Location loc = player.getLocation();
+        var w = player.getWorld();
+        Particle.DustOptions d1 = new Particle.DustOptions(c1, 1.4f);
+        Particle.DustOptions d2 = new Particle.DustOptions(c2, 1.1f);
+        try {
+            w.spawnParticle(Particle.FLASH, loc.clone().add(0, 1, 0), 1);
+            w.spawnParticle(Particle.EXPLOSION_EMITTER, loc.clone().add(0, 1, 0), 1);
+            for (double dy = 0; dy < 5.5; dy += 0.25) {
+                w.spawnParticle(accent, loc.clone().add(0, dy, 0), 1, 0.08, 0, 0.08, 0.01);
+                w.spawnParticle(Particle.DUST, loc.clone().add(0, dy, 0), 1, 0.15, 0, 0.15, 0, d1);
+            }
+            for (int i = 0; i < 40; i++) {
+                double a = (Math.PI * 2 / 40) * i;
+                w.spawnParticle(Particle.DUST, loc.clone().add(Math.cos(a) * 1.8, 0.2, Math.sin(a) * 1.8), 1, 0, 0, 0, 0, d2);
+            }
+            w.playSound(loc, roar, 1.0f, 1.0f);
+            w.playSound(loc, Sound.ITEM_TRIDENT_THUNDER, 0.6f, 1.5f);
+        } catch (Exception ignored) {}
+    }
+
     private void playMuiActivationFx(Player player) {
         final Particle.DustOptions PLATA = new Particle.DustOptions(Color.fromRGB(232, 236, 245), 1.3f);
         final Particle.DustOptions CELESTE = new Particle.DustOptions(Color.fromRGB(150, 210, 255), 1.1f);
