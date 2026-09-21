@@ -11,6 +11,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.Color;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -267,6 +268,7 @@ public class DragonBallListener implements Listener {
 
         if (type.equals("MUI")) {
             activeMUI.put(uuid, now + 5000L); // 5 seconds of total dodge
+            playMuiActivationFx(player); // animacion cinematografica de despertar
             player.sendTitle("§f§lDOCTRINA EGOÍSTA", "§bUltra Instinto Dominado activado", 5, 40, 5);
             player.sendActionBar(Component.text("§f⚡ ¡EVASIÓN TOTAL ACTIVADA POR 5 SEGUNDOS!"));
 
@@ -599,6 +601,61 @@ public class DragonBallListener implements Listener {
                 }
             }
         }
+    }
+
+    // Animacion cinematografica del despertar de Ultra Instinto (plata fluida):
+    // FASE 1 implosion -> FASE 2 estallido con pilar y onda -> FASE 3 aura en doble helice.
+    private void playMuiActivationFx(Player player) {
+        final Particle.DustOptions PLATA = new Particle.DustOptions(Color.fromRGB(232, 236, 245), 1.3f);
+        final Particle.DustOptions CELESTE = new Particle.DustOptions(Color.fromRGB(150, 210, 255), 1.1f);
+        new BukkitRunnable() {
+            int t = 0;
+            @Override
+            public void run() {
+                if (!player.isOnline()) { cancel(); return; }
+                Location loc = player.getLocation();
+                var w = player.getWorld();
+                try {
+                    if (t < 10) {
+                        // FASE 1 - anillo plateado que colapsa hacia el jugador
+                        double radius = 3.0 * (1.0 - t / 10.0) + 0.3;
+                        double y = 0.1 + (t / 10.0) * 1.3;
+                        for (int i = 0; i < 14; i++) {
+                            double ang = (Math.PI * 2 / 14) * i + t * 0.35;
+                            double x = Math.cos(ang) * radius, z = Math.sin(ang) * radius;
+                            w.spawnParticle(Particle.DUST, loc.clone().add(x, y, z), 1, 0, 0, 0, 0, PLATA);
+                            if (t % 2 == 0) w.spawnParticle(Particle.END_ROD, loc.clone().add(x, y, z), 1, 0, 0, 0, 0.01);
+                        }
+                        if (t % 3 == 0) w.playSound(loc, Sound.BLOCK_BEACON_AMBIENT, 0.7f, 0.6f + t * 0.04f);
+                    } else if (t == 10) {
+                        // FASE 2 - despertar: flash, pilar de luz y onda de choque
+                        w.spawnParticle(Particle.FLASH, loc.clone().add(0, 1, 0), 2);
+                        w.spawnParticle(Particle.EXPLOSION_EMITTER, loc.clone().add(0, 1, 0), 1);
+                        for (double dy = 0; dy < 6.5; dy += 0.22)
+                            w.spawnParticle(Particle.END_ROD, loc.clone().add(0, dy, 0), 2, 0.09, 0, 0.09, 0.0);
+                        for (int i = 0; i < 44; i++) {
+                            double ang = (Math.PI * 2 / 44) * i;
+                            w.spawnParticle(Particle.SWEEP_ATTACK, loc.clone().add(Math.cos(ang) * 1.6, 0.2, Math.sin(ang) * 1.6), 1);
+                        }
+                        w.playSound(loc, Sound.ENTITY_LIGHTNING_BOLT_IMPACT, 1.0f, 1.6f);
+                        w.playSound(loc, Sound.ITEM_TRIDENT_THUNDER, 0.8f, 1.9f);
+                        w.playSound(loc, Sound.ENTITY_WARDEN_SONIC_BOOM, 0.35f, 2.0f);
+                    } else {
+                        // FASE 3 - aura sostenida en doble helice + chispas y ceniza flotante
+                        double phase = t * 0.55;
+                        double yy = ((t - 11) % 34) / 34.0 * 2.4;
+                        for (int s = 0; s < 2; s++) {
+                            double ang = phase + Math.PI * s;
+                            double x = Math.cos(ang) * 0.95, z = Math.sin(ang) * 0.95;
+                            w.spawnParticle(Particle.DUST, loc.clone().add(x, yy, z), 1, 0, 0, 0, 0, s == 0 ? PLATA : CELESTE);
+                        }
+                        if (t % 5 == 0) w.spawnParticle(Particle.ELECTRIC_SPARK, loc.clone().add(0, 1.0, 0), 3, 0.4, 0.6, 0.4, 0.02);
+                        if (t % 9 == 0) w.spawnParticle(Particle.WHITE_ASH, loc.clone().add(0, 1.3, 0), 6, 0.5, 0.9, 0.5, 0.01);
+                    }
+                } catch (Exception ignored) {}
+                if (t++ >= 118) cancel(); // ~6s: cubre los 5s de MUI
+            }
+        }.runTaskTimer(plugin, 0L, 1L);
     }
 
     private void triggerMuiAfterimage(Player player) {
