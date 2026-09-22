@@ -42,6 +42,13 @@ public class OnePieceListener implements Listener {
     // Luffy Gear 3 (forma gigante): estado activo y cooldown
     private final Map<UUID, Long> activeGear3 = new HashMap<>();
     private final Map<UUID, Long> gear3Cooldown = new HashMap<>();
+    private final Map<UUID, Long> activeGear4 = new HashMap<>();
+    private final Map<UUID, Long> gear4Cooldown = new HashMap<>();
+
+    public boolean isGear4Active(UUID uuid) {
+        Long exp = activeGear4.get(uuid);
+        return exp != null && System.currentTimeMillis() < exp;
+    }
 
     public boolean isGear3Active(UUID uuid) {
         Long exp = activeGear3.get(uuid);
@@ -137,6 +144,59 @@ public class OnePieceListener implements Listener {
     // ==========================================
     // MAESTRÍA DE ESPADAS Y GATLING RED HAWK
     // ==========================================
+    // ==========================================
+    // LUFFY GEAR 4 (Bounceman: haki + velocidad extrema, tier 40+)
+    // ==========================================
+    @EventHandler
+    public void onGear4Activate(PlayerInteractEvent event) {
+        if (event.getAction() != Action.LEFT_CLICK_AIR) return;
+        Player player = event.getPlayer();
+        if (!player.isSneaking()) return;
+        if (!plugin.isWorldAllowed(player.getWorld())) return;
+        UUID uuid = player.getUniqueId();
+        Rank rank = plugin.getRankManager().getPlayerRank(uuid);
+        int tier = (rank != null) ? rank.getTier() : 0;
+        if (tier < 40) return; // Gear 4 es forma avanzada
+        PlayerSettings settings = plugin.getRankManager().getPlayerSettings(uuid);
+        String equipped = settings.getActiveTransformation();
+        boolean hasGomu = (tier >= 30 || "GOMU_GOMU".equalsIgnoreCase(equipped)
+                || (rank != null && rank.getAbilityType() == AbilityType.DEVIL_FRUIT_GOMU));
+        if (!hasGomu || isGear4Active(uuid)) return;
+        long now = System.currentTimeMillis();
+        Long cd = gear4Cooldown.get(uuid);
+        if (cd != null && now < cd) {
+            player.sendActionBar(Component.text("§4⏳ Gear 4 en recarga: §e" + ((cd - now) / 1000 + 1) + "s"));
+            return;
+        }
+        gear4Cooldown.put(uuid, now + 45000L);
+        activeGear4.put(uuid, now + 15000L); // 15s
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 300, 2));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, 300, 1));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 300, 0));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 300, 0));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 300, 0));
+        Location loc = player.getLocation();
+        try {
+            var d1 = new org.bukkit.Particle.DustOptions(org.bukkit.Color.fromRGB(200, 30, 30), 1.4f);
+            player.getWorld().spawnParticle(Particle.DUST, loc.clone().add(0, 1.2, 0), 40, 0.5, 0.9, 0.5, 0, d1);
+            player.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, loc.clone().add(0, 1, 0), 25, 0.5, 0.8, 0.5, 0.02);
+            player.getWorld().spawnParticle(Particle.LAVA, loc.clone().add(0, 1, 0), 6, 0.3, 0.5, 0.3, 0);
+            player.getWorld().playSound(loc, Sound.ENTITY_WARDEN_ROAR, 0.7f, 1.6f);
+            player.getWorld().playSound(loc, Sound.ITEM_TRIDENT_THUNDER, 0.7f, 1.9f);
+        } catch (Exception ignored) {}
+        player.sendTitle("§4§lGEAR 4 · BOUNCEMAN", "§c¡Haki y velocidad de rebote incontrolable!", 5, 40, 5);
+        player.sendActionBar(Component.text("§4⚡ ¡GEAR 4! Velocidad III + Salto + Fuerza + Regen (15s)"));
+        plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
+            activeGear4.remove(uuid);
+            if (player.isOnline()) {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, 160, 1)); // agotamiento de haki
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 100, 0));
+                try { player.getWorld().playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.6f, 0.6f); } catch (Exception ignored) {}
+                player.sendMessage("§4[Rankup] El Gear 4 se agota: el haki consumido te deja exhausto.");
+            }
+        }, 300L);
+    }
+
     // ==========================================
     // LUFFY GEAR 3 (forma gigante con Attribute.SCALE)
     // ==========================================
@@ -265,6 +325,7 @@ public class OnePieceListener implements Listener {
     public void onPlayerDeath(PlayerDeathEvent event) {
         activeGearSecond.remove(event.getPlayer().getUniqueId());
         activeGear3.remove(event.getPlayer().getUniqueId());
+        activeGear4.remove(event.getPlayer().getUniqueId());
         resetScale(event.getPlayer());
     }
 
@@ -274,6 +335,7 @@ public class OnePieceListener implements Listener {
         santoryuCooldown.remove(uuid);
         activeGearSecond.remove(uuid);
         activeGear3.remove(uuid);
+        activeGear4.remove(uuid);
         resetScale(event.getPlayer());
     }
 }
