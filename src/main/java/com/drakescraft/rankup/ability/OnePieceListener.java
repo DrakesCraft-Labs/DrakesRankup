@@ -7,6 +7,7 @@ import com.drakescraft.rankup.model.Rank;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.Color;
@@ -37,6 +38,22 @@ public class OnePieceListener implements Listener {
 
     // Active Gear Second: UUID -> expiration timestamp
     private final Map<UUID, Long> activeGearSecond = new HashMap<>();
+
+    // Luffy Gear 3 (forma gigante): estado activo y cooldown
+    private final Map<UUID, Long> activeGear3 = new HashMap<>();
+    private final Map<UUID, Long> gear3Cooldown = new HashMap<>();
+
+    public boolean isGear3Active(UUID uuid) {
+        Long exp = activeGear3.get(uuid);
+        return exp != null && System.currentTimeMillis() < exp;
+    }
+
+    private void resetScale(Player player) {
+        try {
+            var attr = player.getAttribute(Attribute.SCALE);
+            if (attr != null) attr.setBaseValue(1.0);
+        } catch (Throwable ignored) {}
+    }
 
     public OnePieceListener(DrakesRankupPlugin plugin) {
         this.plugin = plugin;
@@ -120,6 +137,60 @@ public class OnePieceListener implements Listener {
     // ==========================================
     // MAESTRÍA DE ESPADAS Y GATLING RED HAWK
     // ==========================================
+    // ==========================================
+    // LUFFY GEAR 3 (forma gigante con Attribute.SCALE)
+    // ==========================================
+    @EventHandler
+    public void onGear3Activate(PlayerInteractEvent event) {
+        if (event.getAction() != Action.RIGHT_CLICK_AIR) return;
+        Player player = event.getPlayer();
+        if (!player.isSneaking()) return;
+        if (!plugin.isWorldAllowed(player.getWorld())) return;
+        UUID uuid = player.getUniqueId();
+        Rank rank = plugin.getRankManager().getPlayerRank(uuid);
+        int tier = (rank != null) ? rank.getTier() : 0;
+        PlayerSettings settings = plugin.getRankManager().getPlayerSettings(uuid);
+        String equipped = settings.getActiveTransformation();
+        boolean hasGomu = (tier >= 30 || "GOMU_GOMU".equalsIgnoreCase(equipped)
+                || (rank != null && rank.getAbilityType() == AbilityType.DEVIL_FRUIT_GOMU));
+        if (!hasGomu || isGear3Active(uuid)) return;
+        long now = System.currentTimeMillis();
+        Long cd = gear3Cooldown.get(uuid);
+        if (cd != null && now < cd) {
+            player.sendActionBar(Component.text("§c⏳ Gear 3 en recarga: §e" + ((cd - now) / 1000 + 1) + "s"));
+            return;
+        }
+        gear3Cooldown.put(uuid, now + 35000L);
+        activeGear3.put(uuid, now + 12000L); // 12s
+        try {
+            var attr = player.getAttribute(Attribute.SCALE);
+            if (attr != null) attr.setBaseValue(1.8); // gigantificacion
+        } catch (Throwable ignored) {}
+        player.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 240, 0));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 240, 0));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 240, 0)); // gigante = lento
+        Location loc = player.getLocation();
+        try {
+            player.getWorld().spawnParticle(Particle.CLOUD, loc.clone().add(0, 1, 0), 40, 0.6, 1.0, 0.6, 0.05);
+            player.getWorld().spawnParticle(Particle.POOF, loc.clone().add(0, 1, 0), 20, 0.5, 0.8, 0.5, 0.02);
+            player.getWorld().playSound(loc, Sound.ENTITY_PUFFER_FISH_BLOW_UP, 1.0f, 0.6f);
+            player.getWorld().playSound(loc, Sound.ENTITY_IRON_GOLEM_REPAIR, 0.8f, 0.6f);
+        } catch (Exception ignored) {}
+        player.sendTitle("§c§lGEAR THIRD", "§e¡Hone Fuusen! Musculo de globo, golpes descomunales", 5, 40, 5);
+        player.sendActionBar(Component.text("§c⚡ ¡GEAR 3 ACTIVO! Mas grande, +50% daño, mas lento (12s)"));
+        plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
+            activeGear3.remove(uuid);
+            resetScale(player);
+            if (player.isOnline()) {
+                try {
+                    player.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, player.getLocation().add(0, 1, 0), 15, 0.4, 0.6, 0.4, 0.02);
+                    player.getWorld().playSound(player.getLocation(), Sound.ENTITY_PUFFER_FISH_BLOW_OUT, 1.0f, 0.7f);
+                } catch (Exception ignored) {}
+                player.sendMessage("§c[Rankup] El Gear 3 se desinfla: recuperas tu tamaño.");
+            }
+        }, 240L);
+    }
+
     @EventHandler(priority = EventPriority.NORMAL)
     public void onCombatMelee(EntityDamageByEntityEvent event) {
         if (!(event.getDamager() instanceof Player attacker)) return;
@@ -141,6 +212,11 @@ public class OnePieceListener implements Listener {
                     attacker.getWorld().spawnParticle(Particle.SWEEP_ATTACK, loc, 1);
                 } catch (Exception ignored) {}
             }
+        }
+
+        // Gear 3 activo: puño gigante +50% de daño
+        if (isGear3Active(uuid)) {
+            event.setDamage(event.getDamage() * 1.5);
         }
 
         // 2. Luffy Gear Second Red Hawk / Gatling burst
@@ -188,6 +264,8 @@ public class OnePieceListener implements Listener {
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
         activeGearSecond.remove(event.getPlayer().getUniqueId());
+        activeGear3.remove(event.getPlayer().getUniqueId());
+        resetScale(event.getPlayer());
     }
 
     @EventHandler
@@ -195,5 +273,7 @@ public class OnePieceListener implements Listener {
         UUID uuid = event.getPlayer().getUniqueId();
         santoryuCooldown.remove(uuid);
         activeGearSecond.remove(uuid);
+        activeGear3.remove(uuid);
+        resetScale(event.getPlayer());
     }
 }
