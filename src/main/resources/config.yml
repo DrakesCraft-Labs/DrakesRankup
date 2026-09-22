@@ -70,20 +70,20 @@ settings:
   maintenance:
     enabled: true
     # Duración base de cada periodo de mantención (en días)
-    period-days: 14
+    period-days: 30
     # Máximo acumulable de días de mantención al renovar
-    max-accumulated-days: 30
+    max-accumulated-days: 60
     # Modo de desgaste al expirar:
     # CHECKPOINT = Vuelve al último hito/ancla permanente de su división (o a tier 0 si no tiene)
     # RESET = Vuelve directamente a Tier 0
     # SINGLE_TIER = Pierde 1 tier
     decay-mode: "CHECKPOINT"
-    # Porcentaje del costo del rango que se cobra como mantención por 14 días (0.05 = 5%)
+    # Porcentaje del costo del rango que se cobra como mantención por periodo (0.05 = 5%)
     cost-percentage: 0.05
     # Costo mínimo de mantención en Dragmas
     min-cost: 1000.0
     # Avisar al jugador al conectar si le quedan menos de X horas
-    warning-threshold-hours: 72
+    warning-threshold-hours: 120
     # Frecuencia de verificación en minutos
     check-interval-minutes: 30
 
