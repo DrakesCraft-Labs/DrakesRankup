@@ -482,8 +482,8 @@ public class DragonBallListener implements Listener {
         PlayerSettings settings = plugin.getRankManager().getPlayerSettings(uuid);
         if (!settings.isAbilitiesEnabled()) return;
 
-        boolean hasHakai = (tier >= 47 || rank.getAbilityType() == AbilityType.HAKAI_AURA
-                || rank.getAbilityType() == AbilityType.ULTRA_EGO || isUltraEgoActive(uuid));
+        boolean hasHakai = (tier >= 47 || (rank != null && (rank.getAbilityType() == AbilityType.HAKAI_AURA
+                || rank.getAbilityType() == AbilityType.ULTRA_EGO)) || isUltraEgoActive(uuid));
         if (!hasHakai) return;
 
         long now = System.currentTimeMillis();
@@ -563,7 +563,7 @@ public class DragonBallListener implements Listener {
         ItemStack hand = player.getInventory().getItemInMainHand();
         boolean hasTotem = hand.hasItemMeta() && hand.getItemMeta().hasDisplayName()
                 && hand.getItemMeta().getDisplayName().contains("Zeno-Sama");
-        boolean isKami = (tier >= 50 || rank.getAbilityType() == AbilityType.KAMI_DIVINE);
+        boolean isKami = (tier >= 50 || (rank != null && rank.getAbilityType() == AbilityType.KAMI_DIVINE));
 
         if (!isKami && !hasTotem) return;
 

@@ -5,6 +5,10 @@ import com.drakescraft.rankup.gui.TransformationMenu;
 import com.drakescraft.rankup.model.AbilityType;
 import com.drakescraft.rankup.model.PlayerSettings;
 import com.drakescraft.rankup.model.Rank;
+import org.bukkit.Material;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
@@ -257,6 +261,19 @@ class DrakesRankupTest {
         plugin.getKineticPushListener().updatePushEligibility(vipPlayer);
         assertTrue(vipPlayer.getAllowFlight(), "No debe revocar allowFlight en el suelo a un jugador sin empuje cinético");
     }
+
+    @Test
+    void testDragonBallInteractionsIgnorePlayersWithoutRank() {
+        PlayerMock player = server.addPlayer("NoRankDragonBall");
+        player.setSneaking(true);
+        player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+
+        PlayerInteractEvent hakai = new PlayerInteractEvent(player, Action.LEFT_CLICK_AIR,
+                new ItemStack(Material.AIR), null, null);
+        PlayerInteractEvent zeno = new PlayerInteractEvent(player, Action.RIGHT_CLICK_AIR,
+                new ItemStack(Material.AIR), null, null);
+
+        assertDoesNotThrow(() -> plugin.getDragonBallListener().onBillsHakai(hakai));
+        assertDoesNotThrow(() -> plugin.getDragonBallListener().onZenoErase(zeno));
+    }
 }
-
-
