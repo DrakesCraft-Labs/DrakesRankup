@@ -166,6 +166,30 @@ public class KitManager {
             list.add(sword);
 
             list.add(createPotion(PotionEffectType.SPEED, 4800, 0, "&bElixir de Agilidad de Nen"));
+
+            ItemStack medusa = createCustomItem(Material.ECHO_SHARD, "&a&lDispositivo de Petrificación: Medusa",
+                    Arrays.asList(
+                            "&8▪ &aTecnología Dr. Stone: Rayo Petrificador",
+                            "&7Clic derecho para emitir un destello petrificador a 12m:",
+                            "&8▪ &fParaliza a la entidad objetivo por 8 segundos",
+                            "&8▪ &fAplica Lentitud extrema, Ceguera y Debilidad",
+                            "&8▪ &7Recarga: 45s",
+                            "&aHerramienta científica definitiva de Why-Man & Senku."
+                    ));
+            list.add(medusa);
+
+            ItemStack nital = createCustomItem(Material.POTION, "&e&lLíquido Despetrificador (Fluido Nital)",
+                    Arrays.asList(
+                            "&8▪ &eFórmula: Ácido Nítrico + Etanol (Dr. Stone)",
+                            "&7Clic derecho para aplicar o consumir:",
+                            "&8▪ &fQuiebra instantáneamente cualquier petrificación o parálisis",
+                            "&8▪ &fPurifica Lentitud, Fatiga Minera y Debilidad",
+                            "&8▪ &fOtorga Velocidad II y Prisa Minera II por 15 segundos",
+                            "&eEl milagro de la ciencia que despertó a la humanidad."
+                    ));
+            nital.setAmount(3);
+            list.add(nital);
+
             list.add(new ItemStack(Material.BREAD, 32));
 
         } else if (division == 2) {

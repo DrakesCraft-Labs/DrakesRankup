@@ -13,8 +13,7 @@ import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.Color;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -53,6 +52,8 @@ public class DragonBallListener implements Listener {
     private final Map<UUID, Long> spiritSwordCooldown = new HashMap<>();
     private final Map<UUID, Long> kiFlightCooldown = new HashMap<>();
     private final Map<UUID, Long> kiFlightImmunity = new HashMap<>();
+    private final Map<UUID, Long> hakaiCooldown = new HashMap<>();
+    private final Map<UUID, Long> zenoEraseCooldown = new HashMap<>();
 
     // Overuse tracking: UUID -> list of activation timestamps in last 120 seconds
     private final Map<UUID, List<Long>> muiUsageHistory = new HashMap<>();
@@ -457,6 +458,150 @@ public class DragonBallListener implements Listener {
         }
 
         player.sendActionBar(Component.text("§e⚡ ¡ESPADA DE HAZ DE LUZ DE VEGETTO! §7(Perforación colosal)"));
+    }
+
+    // ==========================================
+    // HAKAI DE BILLS / BEERUS (DESINTEGRACIÓN DESTRUCTORA)
+    // ==========================================
+    @EventHandler
+    public void onBillsHakai(PlayerInteractEvent event) {
+        // Trigger: Sneak + Left Click o Sneak + Right Click con mano vacia/aura destructora
+        boolean isLeft = (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK);
+        boolean isRightEmpty = (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)
+                && event.getPlayer().getInventory().getItemInMainHand().getType() == Material.AIR;
+
+        if (!isLeft && !isRightEmpty) return;
+
+        Player player = event.getPlayer();
+        if (!plugin.isWorldAllowed(player.getWorld())) return;
+        if (!player.isSneaking()) return;
+
+        UUID uuid = player.getUniqueId();
+        Rank rank = plugin.getRankManager().getPlayerRank(uuid);
+        int tier = (rank != null) ? rank.getTier() : 0;
+        PlayerSettings settings = plugin.getRankManager().getPlayerSettings(uuid);
+        if (!settings.isAbilitiesEnabled()) return;
+
+        boolean hasHakai = (tier >= 47 || rank.getAbilityType() == AbilityType.HAKAI_AURA
+                || rank.getAbilityType() == AbilityType.ULTRA_EGO || isUltraEgoActive(uuid));
+        if (!hasHakai) return;
+
+        long now = System.currentTimeMillis();
+        long ready = hakaiCooldown.getOrDefault(uuid, 0L);
+        if (now < ready) {
+            long rem = Math.max(1, (ready - now) / 1000L);
+            player.sendActionBar(Component.text("§c⏳ Hakai en recarga: §5" + rem + "s"));
+            return;
+        }
+
+        hakaiCooldown.put(uuid, now + 35000L); // 35s cooldown
+
+        Location eye = player.getEyeLocation();
+        Vector dir = eye.getDirection().normalize();
+
+        try {
+            player.getWorld().playSound(eye, Sound.ENTITY_WARDEN_SONIC_BOOM, 0.8f, 1.8f);
+            player.getWorld().playSound(eye, Sound.ENTITY_WITHER_SHOOT, 1.0f, 0.6f);
+        } catch (Exception ignored) {}
+
+        Set<LivingEntity> damaged = new HashSet<>();
+        for (double d = 1.0; d <= 14.0; d += 0.5) {
+            Location point = eye.clone().add(dir.clone().multiply(d));
+            if (!point.getBlock().isPassable()) break;
+
+            try {
+                point.getWorld().spawnParticle(Particle.WITCH, point, 3, 0.08, 0.08, 0.08, 0.02);
+                point.getWorld().spawnParticle(Particle.DRAGON_BREATH, point, 2, 0.05, 0.05, 0.05, 0.01);
+                point.getWorld().spawnParticle(Particle.SOUL_FIRE_FLAME, point, 1, 0.02, 0.02, 0.02, 0.01);
+            } catch (Exception ignored) {}
+
+            for (LivingEntity entity : point.getWorld().getNearbyLivingEntities(point, 1.4)) {
+                if (entity.equals(player)) continue;
+                if (!damaged.contains(entity)) {
+                    damaged.add(entity);
+                    try {
+                        Location eLoc = entity.getLocation().add(0, 1.0, 0);
+                        eLoc.getWorld().spawnParticle(Particle.ASH, eLoc, 35, 0.3, 0.5, 0.3, 0.1);
+                        eLoc.getWorld().spawnParticle(Particle.FLASH, eLoc, 1);
+                        eLoc.getWorld().playSound(eLoc, Sound.ENTITY_GENERIC_EXTINGUISH_FIRE, 1.0f, 0.7f);
+
+                        if (entity instanceof Player victim) {
+                            // PvP balance: NO instakill a jugadores (14.0 dano = 7 corazones + oscuridad)
+                            victim.damage(14.0, player);
+                            victim.addPotionEffect(new PotionEffect(PotionEffectType.DARKNESS, 80, 0));
+                            victim.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 80, 1));
+                            victim.sendMessage("§5§l¡HAKAI! §7Has sido alcanzado por la energia destructora de un Dios.");
+                        } else {
+                            // Mobs y jefes: Desintegracion colosal
+                            entity.damage(50.0, player);
+                        }
+                    } catch (Exception ignored) {}
+                }
+            }
+        }
+
+        player.sendTitle("§5§l¡HAKAI!", "§dEnergia de la Destruccion desatada", 0, 25, 10);
+        player.sendActionBar(Component.text("§5⚡ ¡HAKAI DEPREDADOR DESATADO! §7(Recarga: 35s)"));
+    }
+
+    // ==========================================
+    // BORRADO UNIVERSAL DE ZENO-SAMA (TIER 50+)
+    // ==========================================
+    @EventHandler
+    public void onZenoErase(PlayerInteractEvent event) {
+        if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        Player player = event.getPlayer();
+        if (!plugin.isWorldAllowed(player.getWorld())) return;
+        if (!player.isSneaking()) return;
+
+        UUID uuid = player.getUniqueId();
+        Rank rank = plugin.getRankManager().getPlayerRank(uuid);
+        int tier = (rank != null) ? rank.getTier() : 0;
+        PlayerSettings settings = plugin.getRankManager().getPlayerSettings(uuid);
+        if (!settings.isAbilitiesEnabled()) return;
+
+        ItemStack hand = player.getInventory().getItemInMainHand();
+        boolean hasTotem = hand.hasItemMeta() && hand.getItemMeta().hasDisplayName()
+                && hand.getItemMeta().getDisplayName().contains("Zeno-Sama");
+        boolean isKami = (tier >= 50 || rank.getAbilityType() == AbilityType.KAMI_DIVINE);
+
+        if (!isKami && !hasTotem) return;
+
+        long now = System.currentTimeMillis();
+        long ready = zenoEraseCooldown.getOrDefault(uuid, 0L);
+        if (now < ready) {
+            long rem = Math.max(1, (ready - now) / 1000L);
+            player.sendActionBar(Component.text("§c⏳ Borrado Universal en enfriamiento: §e" + rem + "s"));
+            return;
+        }
+
+        zenoEraseCooldown.put(uuid, now + 90000L); // 90s cooldown
+        event.setCancelled(true);
+
+        Location center = player.getLocation();
+        try {
+            center.getWorld().playSound(center, Sound.BLOCK_BEACON_DEACTIVATE, 1.0f, 1.9f);
+            center.getWorld().playSound(center, Sound.ITEM_TOTEM_USE, 0.8f, 1.5f);
+            center.getWorld().playSound(center, Sound.ENTITY_GENERIC_EXPLODE, 0.5f, 0.5f);
+            center.getWorld().spawnParticle(Particle.FLASH, center.clone().add(0, 1.0, 0), 3);
+            center.getWorld().spawnParticle(Particle.END_ROD, center.clone().add(0, 1.0, 0), 80, 2.0, 1.0, 2.0, 0.1);
+        } catch (Exception ignored) {}
+
+        int erased = 0;
+        for (LivingEntity target : center.getWorld().getNearbyLivingEntities(center, 16.0)) {
+            if (target instanceof Monster || target instanceof Phantom
+                    || target instanceof Slime || target instanceof Ghast) {
+                Location tLoc = target.getLocation();
+                try {
+                    tLoc.getWorld().spawnParticle(Particle.POOF, tLoc.add(0, 0.5, 0), 15, 0.3, 0.3, 0.3, 0.05);
+                } catch (Exception ignored) {}
+                target.remove();
+                erased++;
+            }
+        }
+
+        player.sendTitle("§b§l¡BORRADO OMNI-UNIVERSAL!", "§f" + erased + " entidades hostiles desvanecidas de la existencia", 5, 40, 15);
+        player.sendActionBar(Component.text("§b⚡ ¡BORRADO DE ZENO-SAMA! §e" + erased + " mobs erradicados §7(Recarga: 90s)"));
     }
 
     // ==========================================
