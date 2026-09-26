@@ -16,3 +16,6 @@ commands:
   transform:
     description: Abre la interfaz interactiva para escoger transformaciones y poderes anime.
     aliases: [transformaciones, ki, poderes, transformacion]
+  rebirth:
+    description: Sistema de Renacimiento Supremo (Rebirth) hasta un máximo de 50 niveles.
+    aliases: [renacer, renacimiento, rebirths]

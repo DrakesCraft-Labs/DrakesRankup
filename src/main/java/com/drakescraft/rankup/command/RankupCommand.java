@@ -46,6 +46,49 @@ public class RankupCommand implements CommandExecutor, TabCompleter {
 
         String sub = args[0].toLowerCase();
 
+        if (sub.equals("magnet") || sub.equals("iman")) {
+            if (!(sender instanceof Player player)) {
+                sender.sendMessage("§cSolo jugadores pueden usar el magnetismo.");
+                return true;
+            }
+            if (plugin.getSpecialAbilitiesListener() != null) {
+                plugin.getSpecialAbilitiesListener().triggerMagnetVortex(player);
+            }
+            return true;
+        }
+
+        if (sub.equals("blades") || sub.equals("filos") || sub.equals("aurakill")) {
+            if (!(sender instanceof Player player)) {
+                sender.sendMessage("§cSolo jugadores pueden usar los filos danzantes.");
+                return true;
+            }
+            if (plugin.getSpecialAbilitiesListener() != null) {
+                plugin.getSpecialAbilitiesListener().toggleDancingBlades(player);
+            }
+            return true;
+        }
+
+        if (sub.equals("conqueror") || sub.equals("haki") || sub.equals("haoshoku")) {
+            if (!(sender instanceof Player player)) {
+                sender.sendMessage("§cSolo jugadores pueden liberar Haki del Conquistador.");
+                return true;
+            }
+            if (plugin.getOnePieceListener() != null) {
+                plugin.getOnePieceListener().triggerConquerorHaki(player);
+            }
+            return true;
+        }
+
+        if (sub.equals("setuplp") || sub.equals("autoconfig-lp") || sub.equals("synclp")) {
+            if (!sender.hasPermission("drakesrankup.admin") && !sender.isOp()) {
+                sender.sendMessage("§cNo tienes permiso para ejecutar este comando.");
+                return true;
+            }
+            sender.sendMessage("§e[DrakesRankup] Iniciando auto-configuración de los 100 rangos en LuckPerms y TAB...");
+            plugin.getRankManager().autoConfigureLuckPermsAndTab(sender);
+            return true;
+        }
+
         if (sub.equals("gui") || sub.equals("menu")) {
             if (!(sender instanceof Player player)) {
                 sender.sendMessage("§cEste comando solo puede ser ejecutado por un jugador.");
@@ -306,6 +349,9 @@ public class RankupCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(" §6/rankup maintain §7(o /rankup mantener) - Alimenta el Núcleo y renueva la estabilidad");
         sender.sendMessage(" §6/rankup max §7- Sube al rango máximo que puedas pagar");
         sender.sendMessage(" §6/rankup gui §7- Abre el menú visual de las 5 divisiones");
+        sender.sendMessage(" §6/rankup magnet §7- Activa el Vórtice Magnético (200 bloques)");
+        sender.sendMessage(" §6/rankup blades §7- Activa Filos Danzantes / Aura Kill");
+        sender.sendMessage(" §6/rankup conqueror §7- Desata el Haki del Conquistador Haoshoku");
         sender.sendMessage(" §6/rankup info §7- Consulta tus habilidades, estabilidad y progreso");
         sender.sendMessage(" §6/rankup toggle [particulas|empuje|habilidades] §7- Ajustes personales");
         if (sender.hasPermission("drakesrankup.staff")) {
@@ -319,7 +365,7 @@ public class RankupCommand implements CommandExecutor, TabCompleter {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         List<String> list = new ArrayList<>();
         if (args.length == 1) {
-            list.addAll(Arrays.asList("gui", "kit", "max", "bolsa", "maintain", "mantener", "info", "toggle", "admin"));
+            list.addAll(Arrays.asList("gui", "kit", "max", "bolsa", "maintain", "mantener", "magnet", "blades", "conqueror", "info", "toggle", "admin"));
             if (sender.hasPermission("drakesrankup.staff")) {
                 list.add("test");
             }

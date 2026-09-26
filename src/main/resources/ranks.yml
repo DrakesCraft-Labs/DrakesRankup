@@ -910,3 +910,908 @@ ranks:
     push-cooldown: 2
     ability: KAMI_DIVINE
     particle: SUPREME_GOD
+  yuji_itadori:
+    tier: 51
+    display-name: '&c&lʏᴜᴊɪ ɪᴛᴀᴅᴏʀɪ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪ · ʜᴇᴄʜɪᴄᴇʀɪ́ᴀ & ᴍᴀʟᴅɪᴄɪᴏ́ɴ'
+    cost: 2000000000
+    icon: IRON_SWORD
+    permissions:
+    - drakesrankup.tier.51
+    perks:
+    - 'Recipiente de Sukuna'
+    - 'Impacto de Puño Divergente'
+    - '+1 Home'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 2.03
+    push-cooldown: 2
+    ability: BLACK_FLASH
+    particle: CRIMSON_FLASH
+  megumi_fushiguro:
+    tier: 52
+    display-name: '&9&lᴍᴇɢᴜᴍɪ ғᴜsʜɪɢᴜʀᴏ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪ · ʜᴇᴄʜɪᴄᴇʀɪ́ᴀ & ᴍᴀʟᴅɪᴄɪᴏ́ɴ'
+    cost: 2500000000
+    icon: ENDER_EYE
+    permissions:
+    - drakesrankup.tier.52
+    perks:
+    - 'Técnica de las Diez Sombras'
+    - 'Invocación de Shikigamis'
+    - '+1 Bóveda (/pv 21)'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 2.06
+    push-cooldown: 2
+    ability: SHADOW_EXTRACTION
+    particle: SHADOW_AURA
+  nobara_kugisaki:
+    tier: 53
+    display-name: '&6&lɴᴏʙᴀʀᴀ ᴋᴜɢɪsᴀᴋɪ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪ · ʜᴇᴄʜɪᴄᴇʀɪ́ᴀ & ᴍᴀʟᴅɪᴄɪᴏ́ɴ'
+    cost: 3000000000
+    icon: CROSSBOW
+    permissions:
+    - drakesrankup.tier.53
+    perks:
+    - 'Técnica del Muñeco de Paja'
+    - 'Resonancia Perforante'
+    - '+1 Home'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 2.09
+    push-cooldown: 2
+    ability: CURSED_FLAME
+    particle: ORANGE_FLAME
+  maki_zenin:
+    tier: 54
+    display-name: '&a&lᴍᴀᴋɪ ᴢᴇɴ''''ɪɴ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪ · ʜᴇᴄʜɪᴄᴇʀɪ́ᴀ & ᴍᴀʟᴅɪᴄɪᴏ́ɴ'
+    cost: 3500000000
+    icon: NETHERITE_SWORD
+    permissions:
+    - drakesrankup.tier.54
+    perks:
+    - 'Restricción Celestial Completa'
+    - 'Velocidad sobrehumana inmune a dominios'
+    - '+1 Home'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 2.12
+    push-cooldown: 2
+    ability: FEATHER_STEP
+    particle: GREEN_SPEED
+  aoi_todo:
+    tier: 55
+    display-name: '&d&lᴀᴏɪ ᴛᴏᴅᴏ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪ · ʜᴇᴄʜɪᴄᴇʀɪ́ᴀ & ᴍᴀʟᴅɪᴄɪᴏ́ɴ'
+    cost: 4000000000
+    icon: BELL
+    permissions:
+    - drakesrankup.tier.55
+    perks:
+    - 'Boogie Woogie: Aplaude para permutar posición'
+    - '530,000 de IQ de combate'
+    - '+1 Bóveda (/pv 22)'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 2.15
+    push-cooldown: 2
+    ability: BOOGIE_WOOGIE
+    particle: PURPLE_TELEPORT
+  nanami_kento:
+    tier: 56
+    display-name: '&e&lᴋᴇɴᴛᴏ ɴᴀɴᴀᴍɪ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪ · ʜᴇᴄʜɪᴄᴇʀɪ́ᴀ & ᴍᴀʟᴅɪᴄɪᴏ́ɴ'
+    cost: 4500000000
+    icon: SHEARS
+    permissions:
+    - drakesrankup.tier.56
+    perks:
+    - 'Técnica de Proporción 7:3'
+    - 'Golpes Críticos Garantizados en Punto Débil'
+    - '+1 Home'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 2.18
+    push-cooldown: 2
+    ability: BLACK_FLASH
+    particle: YELLOW_SPARK
+  suguru_geto:
+    tier: 57
+    display-name: '&8&lsᴜɢᴜʀᴜ ɢᴇᴛᴏ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪ · ʜᴇᴄʜɪᴄᴇʀɪ́ᴀ & ᴍᴀʟᴅɪᴄɪᴏ́ɴ'
+    cost: 5000000000
+    icon: WITHER_SKELETON_SKULL
+    permissions:
+    - drakesrankup.tier.57
+    perks:
+    - 'Manipulación de Maldiciones'
+    - 'Vórtice Supremo Uzumaki'
+    - '+1 Home'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 2.21
+    push-cooldown: 2
+    ability: CURSED_FLAME
+    particle: DARK_VORTEX
+  yuta_okkotsu:
+    tier: 58
+    display-name: '&b&lʏᴜᴛᴀ ᴏᴋᴋᴏᴛsᴜ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪ · ʜᴇᴄʜɪᴄᴇʀɪ́ᴀ & ᴍᴀʟᴅɪᴄɪᴏ́ɴ'
+    cost: 6000000000
+    icon: DIAMOND_SWORD
+    permissions:
+    - drakesrankup.tier.58
+    perks:
+    - 'Rika: Reina de las Maldiciones'
+    - 'Mimetismo de Técnicas Prohibidas'
+    - '+1 Bóveda (/pv 23)'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 2.24
+    push-cooldown: 2
+    ability: MUGEN_DEFENSE
+    particle: CYAN_RING
+  ryomen_sukuna:
+    tier: 59
+    display-name: '&4&lʀʏᴏᴍᴇɴ sᴜᴋᴜɴᴀ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪ · ʜᴇᴄʜɪᴄᴇʀɪ́ᴀ & ᴍᴀʟᴅɪᴄɪᴏ́ɴ'
+    cost: 7500000000
+    icon: NETHER_WART
+    permissions:
+    - drakesrankup.tier.59
+    perks:
+    - 'Rey de las Maldiciones'
+    - 'Desmantelar y Cortar espacial'
+    - 'Expansión: Relicario Maldito'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 2.27
+    push-cooldown: 2
+    ability: DISMANTLE_CLEAVE
+    particle: BLOOD_SLASH
+  satoru_gojo:
+    tier: 60
+    display-name: '&b&l&nɢᴏᴊᴏ sᴀᴛᴏʀᴜ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪ · ʜᴇᴄʜɪᴄᴇʀɪ́ᴀ & ᴍᴀʟᴅɪᴄɪᴏ́ɴ'
+    cost: 9000000000
+    icon: BEACON
+    permissions:
+    - drakesrankup.tier.60
+    perks:
+    - 'Los Seis Ojos & Infinito Ilimitado'
+    - 'Hollow Purple (Púrpura Devastador)'
+    - 'Vacío Infinito Infranqueable'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 2.3
+    push-cooldown: 2
+    ability: HOLLOW_PURPLE
+    particle: HOLLOW_PURPLE_AURA
+  renji_abarai:
+    tier: 61
+    display-name: '&c&lʀᴇɴᴊɪ ᴀʙᴀʀᴀɪ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪ · sᴏᴄɪᴇᴅᴀᴅ ᴅᴇ ᴀʟᴍᴀs & ᴀʀʀᴀɴᴄᴀʀ'
+    cost: 11000000000
+    icon: CHAIN
+    permissions:
+    - drakesrankup.tier.61
+    perks:
+    - 'Zabimaru: Rugido de la Serpiente Babosa'
+    - 'Hihio Zabimaru'
+    - '+1 Home'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 2.33
+    push-cooldown: 2
+    ability: SANTORYU_ZORO
+    particle: RED_SNAKE
+  rukia_kuchiki:
+    tier: 62
+    display-name: '&f&lʀᴜᴋɪᴀ ᴋᴜᴄʜɪᴋɪ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪ · sᴏᴄɪᴇᴅᴀᴅ ᴅᴇ ᴀʟᴍᴀs & ᴀʀʀᴀɴᴄᴀʀ'
+    cost: 13000000000
+    icon: SNOWBALL
+    permissions:
+    - drakesrankup.tier.62
+    perks:
+    - 'Sode no Shirayuki'
+    - 'Hakka no Togame Cero Absoluto'
+    - '+1 Bóveda (/pv 24)'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 2.36
+    push-cooldown: 2
+    ability: FEATHER_STEP
+    particle: WHITE_FROST
+  byakuya_kuchiki:
+    tier: 63
+    display-name: '&d&lʙʏᴀᴋᴜʏᴀ ᴋᴜᴄʜɪᴋɪ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪ · sᴏᴄɪᴇᴅᴀᴅ ᴅᴇ ᴀʟᴍᴀs & ᴀʀʀᴀɴᴄᴀʀ'
+    cost: 15000000000
+    icon: CHERRY_LEAVES
+    permissions:
+    - drakesrankup.tier.63
+    perks:
+    - 'Senbonzakura Kageyoshi: Tormenta de Pétalos Cortantes'
+    - 'Shunpo del Clan Kuchiki'
+    - '+1 Home'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 2.39
+    push-cooldown: 2
+    ability: DISMANTLE_CLEAVE
+    particle: CHERRY_PETALS
+  kenpachi_zaraki:
+    tier: 64
+    display-name: '&4&lᴋᴇɴᴘᴀᴄʜɪ ᴢᴀʀᴀᴋɪ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪ · sᴏᴄɪᴇᴅᴀᴅ ᴅᴇ ᴀʟᴍᴀs & ᴀʀʀᴀɴᴄᴀʀ'
+    cost: 17000000000
+    icon: NETHERITE_AXE
+    permissions:
+    - drakesrankup.tier.64
+    perks:
+    - 'Reiatsu Monstruoso Incontrolable'
+    - 'Nozarashi: Traga todo a tu paso'
+    - 'Modo Berserker Bankai'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 2.42
+    push-cooldown: 2
+    ability: BROLY_LSSJ
+    particle: YELLOW_BEAST
+  shunsui_kyoraku:
+    tier: 65
+    display-name: '&5&lsʜᴜɴsᴜɪ ᴋʏᴏ̄ʀᴀᴋᴜ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪ · sᴏᴄɪᴇᴅᴀᴅ ᴅᴇ ᴀʟᴍᴀs & ᴀʀʀᴀɴᴄᴀʀ'
+    cost: 19000000000
+    icon: TWISTING_VINES
+    permissions:
+    - drakesrankup.tier.65
+    perks:
+    - 'Katen Kyōkotsu: Karamatsu Shinjū'
+    - 'Capitán Comandante del Gotei 13'
+    - '+1 Bóveda (/pv 25)'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 2.45
+    push-cooldown: 2
+    ability: BOOGIE_WOOGIE
+    particle: BLACK_THREAD
+  ulquiorra_cifer:
+    tier: 66
+    display-name: '&2&lᴜʟǫᴜɪᴏʀʀᴀ ᴄɪғᴇʀ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪ · sᴏᴄɪᴇᴅᴀᴅ ᴅᴇ ᴀʟᴍᴀs & ᴀʀʀᴀɴᴄᴀʀ'
+    cost: 22000000000
+    icon: DRAGON_BREATH
+    permissions:
+    - drakesrankup.tier.66
+    perks:
+    - 'Resurrección: Segunda Etapa'
+    - 'Lanza del Relámpago Cero Oscuras'
+    - '+1 Home'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 2.48
+    push-cooldown: 2
+    ability: SPHERE_OF_DESTRUCTION
+    particle: GREEN_CERO
+  sosuke_aizen:
+    tier: 67
+    display-name: '&5&lsᴏ̄sᴜᴋᴇ ᴀɪᴢᴇɴ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪ · sᴏᴄɪᴇᴅᴀᴅ ᴅᴇ ᴀʟᴍᴀs & ᴀʀʀᴀɴᴄᴀʀ'
+    cost: 25000000000
+    icon: ENDER_EYE
+    permissions:
+    - drakesrankup.tier.67
+    perks:
+    - 'Kyōka Suigetsu: Hipnosis Total'
+    - 'Fusión con el Hōgyoku'
+    - 'Soberano de Las Noches'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 2.51
+    push-cooldown: 2
+    ability: KYOKA_SUIGETSU
+    particle: PURPLE_ILLUSION
+  yamamoto_genryusai:
+    tier: 68
+    display-name: '&6&lʏᴀᴍᴀᴍᴏᴛᴏ ɢᴇɴʀʏᴜ̄sᴀɪ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪ · sᴏᴄɪᴇᴅᴀᴅ ᴅᴇ ᴀʟᴍᴀs & ᴀʀʀᴀɴᴄᴀʀ'
+    cost: 28000000000
+    icon: BLAZE_ROD
+    permissions:
+    - drakesrankup.tier.68
+    perks:
+    - 'Ryūjin Jakka & Zanka no Tachi'
+    - 'Calor del Sol: 15 Millones de Grados'
+    - 'Incinera materia y terreno salvaje'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 2.54
+    push-cooldown: 2
+    ability: ZANKA_NO_TACHI
+    particle: SOLAR_FIRE
+  yhwach_almighty:
+    tier: 69
+    display-name: '&e&lʏʜᴡᴀᴄʜ: ᴛʜᴇ ᴀʟᴍɪɢʜᴛʏ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪ · sᴏᴄɪᴇᴅᴀᴅ ᴅᴇ ᴀʟᴍᴀs & ᴀʀʀᴀɴᴄᴀʀ'
+    cost: 32000000000
+    icon: GOLDEN_SWORD
+    permissions:
+    - drakesrankup.tier.69
+    perks:
+    - 'Padre de los Quincy & Soberano del Wandenreich'
+    - 'The Almighty: Alteración de futuros'
+    - '+1 Bóveda (/pv 26)'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 2.57
+    push-cooldown: 2
+    ability: ULTRA_INSTINCT
+    particle: GOLDEN_EYES
+  ichigo_mugetsu:
+    tier: 70
+    display-name: '&8&l&nɪᴄʜɪɢᴏ ᴋᴜʀᴏsᴀᴋɪ: ᴍᴜɢᴇᴛsᴜ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪ · sᴏᴄɪᴇᴅᴀᴅ ᴅᴇ ᴀʟᴍᴀs & ᴀʀʀᴀɴᴄᴀʀ'
+    cost: 36000000000
+    icon: NETHERITE_SWORD
+    permissions:
+    - drakesrankup.tier.70
+    perks:
+    - 'Getsuga Tenshō Final'
+    - 'Corte del Vasto Lorde Trascendental'
+    - 'Poder más allá de las dimensiones'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 2.6
+    push-cooldown: 2
+    ability: BANKAI_ZANGETSU
+    particle: BLACK_GETSUGA
+  aki_hayakawa:
+    tier: 71
+    display-name: '&b&lᴀᴋɪ ʜᴀʏᴀᴋᴀᴡᴀ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪɪ · ᴅᴇᴍᴏɴɪᴏs & ᴄᴀᴢᴀᴅᴏʀᴇs ᴅᴇ sᴏᴍʙʀᴀs'
+    cost: 40000000000
+    icon: SPECTRAL_ARROW
+    permissions:
+    - drakesrankup.tier.71
+    perks:
+    - 'Contrato con el Demonio Zorro: ¡Kon!'
+    - 'Demonio de la Maldición y del Futuro'
+    - '+1 Home'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 2.63
+    push-cooldown: 2
+    ability: BLACK_FLASH
+    particle: BLUE_FOX
+  power_blood:
+    tier: 72
+    display-name: '&c&lᴘᴏᴡᴇʀ: ᴅᴇᴍᴏɴɪᴏ sᴀɴɢᴜɪ́ɴᴇᴏ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪɪ · ᴅᴇᴍᴏɴɪᴏs & ᴄᴀᴢᴀᴅᴏʀᴇs ᴅᴇ sᴏᴍʙʀᴀs'
+    cost: 44000000000
+    icon: REDSTONE
+    permissions:
+    - drakesrankup.tier.72
+    perks:
+    - 'Manipulación de la Sangre'
+    - 'Martillo gigante de sangre coagulada'
+    - '+1 Home'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 2.66
+    push-cooldown: 2
+    ability: CURSED_FLAME
+    particle: BLOOD_BURST
+  makima_control:
+    tier: 73
+    display-name: '&e&lᴍᴀᴋɪᴍᴀ: ᴅᴇᴍᴏɴɪᴏ ᴅᴇʟ ᴄᴏɴᴛʀᴏʟ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪɪ · ᴅᴇᴍᴏɴɪᴏs & ᴄᴀᴢᴀᴅᴏʀᴇs ᴅᴇ sᴏᴍʙʀᴀs'
+    cost: 48000000000
+    icon: LEAD
+    permissions:
+    - drakesrankup.tier.73
+    perks:
+    - 'Poder del Control Absoluto'
+    - 'Disparo invisible: ¡Bang!'
+    - '+1 Bóveda (/pv 27)'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 2.69
+    push-cooldown: 2
+    ability: KYOKA_SUIGETSU
+    particle: YELLOW_CHAINS
+  denji_chainsaw:
+    tier: 74
+    display-name: '&c&lᴅᴇɴᴊɪ: ᴅᴇᴍᴏɴɪᴏ ᴍᴏᴛᴏsɪᴇʀʀᴀ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪɪ · ᴅᴇᴍᴏɴɪᴏs & ᴄᴀᴢᴀᴅᴏʀᴇs ᴅᴇ sᴏᴍʙʀᴀs'
+    cost: 52000000000
+    icon: IRON_BLOCK
+    permissions:
+    - drakesrankup.tier.74
+    perks:
+    - 'Tira del cable de arranque'
+    - 'Sierras giratorias que absorben vitalidad'
+    - 'Terror del Infierno'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 2.72
+    push-cooldown: 2
+    ability: CHAINSAW_DEVIL
+    particle: CHAINSAW_SPARKS
+  cha_hae_in:
+    tier: 75
+    display-name: '&e&lᴄʜᴀ ʜᴀᴇ-ɪɴ: ʟᴀ ʙᴀɪʟᴀʀɪɴᴀ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪɪ · ᴅᴇᴍᴏɴɪᴏs & ᴄᴀᴢᴀᴅᴏʀᴇs ᴅᴇ sᴏᴍʙʀᴀs'
+    cost: 57000000000
+    icon: GOLDEN_SWORD
+    permissions:
+    - drakesrankup.tier.75
+    perks:
+    - 'Espadachina Rango S de Luz'
+    - 'Danza de la Espada de Luz Cegadora'
+    - '+1 Home'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 2.75
+    push-cooldown: 2
+    ability: ELECTRIC_SPEED
+    particle: LIGHT_TRAIL
+  beru_shadow:
+    tier: 76
+    display-name: '&5&lʙᴇʀᴜ: ʀᴇʏ ʜᴏʀᴍɪɢᴀ ᴅᴇ sᴏᴍʙʀᴀs'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪɪ · ᴅᴇᴍᴏɴɪᴏs & ᴄᴀᴢᴀᴅᴏʀᴇs ᴅᴇ sᴏᴍʙʀᴀs'
+    cost: 62000000000
+    icon: DRAGON_HEAD
+    permissions:
+    - drakesrankup.tier.76
+    perks:
+    - 'Mariscal del Ejército de las Sombras'
+    - 'Garras venenosas y grito sónico'
+    - '+1 Home'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 2.78
+    push-cooldown: 2
+    ability: SERIOUS_PUNCH
+    particle: PURPLE_POISON
+  igris_commander:
+    tier: 77
+    display-name: '&4&lɪɢʀɪs: ᴄᴀʙᴀʟʟᴇʀᴏ ʀᴏᴊᴏ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪɪ · ᴅᴇᴍᴏɴɪᴏs & ᴄᴀᴢᴀᴅᴏʀᴇs ᴅᴇ sᴏᴍʙʀᴀs'
+    cost: 67000000000
+    icon: SHIELD
+    permissions:
+    - drakesrankup.tier.77
+    perks:
+    - 'Comandante Sombra Sangriento'
+    - 'Tajo relámpago con mandoble dual'
+    - '+1 Bóveda (/pv 28)'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 2.81
+    push-cooldown: 2
+    ability: SANTORYU_ZORO
+    particle: RED_LIGHTNING
+  bellion_shadow:
+    tier: 78
+    display-name: '&8&lʙᴇʟʟɪᴏɴ: ɢʀᴀɴ ᴍᴀʀɪsᴄᴀʟ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪɪ · ᴅᴇᴍᴏɴɪᴏs & ᴄᴀᴢᴀᴅᴏʀᴇs ᴅᴇ sᴏᴍʙʀᴀs'
+    cost: 72000000000
+    icon: NETHER_STAR
+    permissions:
+    - drakesrankup.tier.78
+    perks:
+    - 'Servidor primordial de Ashborn'
+    - 'Espada cienpiés ciñe mundos'
+    - '+1 Home'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 2.84
+    push-cooldown: 2
+    ability: DISMANTLE_CLEAVE
+    particle: SHADOW_BLADE
+  sung_arise:
+    tier: 79
+    display-name: '&9&lsᴜɴɢ ᴊɪɴ-ᴡᴏᴏ: ¡ᴀʀɪsᴇ!'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪɪ · ᴅᴇᴍᴏɴɪᴏs & ᴄᴀᴢᴀᴅᴏʀᴇs ᴅᴇ sᴏᴍʙʀᴀs'
+    cost: 78000000000
+    icon: SOUL_CAMPFIRE
+    permissions:
+    - drakesrankup.tier.79
+    perks:
+    - 'Comando ¡Levántate! (Arise)'
+    - 'Extracción y control ilimitado de sombras'
+    - '+1 Home'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 2.87
+    push-cooldown: 2
+    ability: SHADOW_MONARCH_ARMY
+    particle: BLUE_ARISE
+  shadow_monarch_ashborn:
+    tier: 80
+    display-name: '&5&l&nᴍᴏɴᴀʀᴄᴀ ᴅᴇ ʟᴀs sᴏᴍʙʀᴀs'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪɪ · ᴅᴇᴍᴏɴɪᴏs & ᴄᴀᴢᴀᴅᴏʀᴇs ᴅᴇ sᴏᴍʙʀᴀs'
+    cost: 84000000000
+    icon: OBSIDIAN
+    permissions:
+    - drakesrankup.tier.80
+    perks:
+    - 'Heredero absoluto del Poder de la Muerte'
+    - 'Dominio del Monarca: Territorio Umbrío Total'
+    - 'Inmunidad a caídas y fatiga'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 2.9
+    push-cooldown: 2
+    ability: SHADOW_MONARCH_ARMY
+    particle: MONARCH_AURA
+  killua_godspeed:
+    tier: 81
+    display-name: '&b&lᴋɪʟʟᴜᴀ: ɢᴏᴅsᴘᴇᴇᴅ (ᴋᴀɴᴍᴜʀᴜ)'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪx · ʟᴇʏᴇɴᴅᴀs ᴄᴏ́sᴍɪᴄᴀs & sᴇɪs ᴄᴀᴍɪɴᴏs'
+    cost: 90000000000
+    icon: LIGHTNING_ROD
+    permissions:
+    - drakesrankup.tier.81
+    perks:
+    - 'Modo Kanmuru (Velocidad Divina del Relámpago)'
+    - 'Reflejos automáticos sin latencia'
+    - '+1 Home'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 2.93
+    push-cooldown: 2
+    ability: ELECTRIC_SPEED
+    particle: CYAN_LIGHTNING
+  gon_adulto:
+    tier: 82
+    display-name: '&e&lɢᴏɴ ғʀᴇᴇᴄss: ᴀᴅᴜʟᴛᴏ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪx · ʟᴇʏᴇɴᴅᴀs ᴄᴏ́sᴍɪᴄᴀs & sᴇɪs ᴄᴀᴍɪɴᴏs'
+    cost: 96000000000
+    icon: ANVIL
+    permissions:
+    - drakesrankup.tier.82
+    perks:
+    - 'Voto Sagrado y Renuncia al Futuro'
+    - 'Jajanken: Piedra de Destrucción Masiva'
+    - '+1 Bóveda (/pv 29)'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 2.96
+    push-cooldown: 2
+    ability: JAJANKEN_ROCK
+    particle: GOLDEN_SMASH
+  netero_guanyin:
+    tier: 83
+    display-name: '&6&lɪsᴀᴀᴄ ɴᴇᴛᴇʀᴏ: ᴄᴇʀᴏ ʜᴀɴᴅ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪx · ʟᴇʏᴇɴᴅᴀs ᴄᴏ́sᴍɪᴄᴀs & sᴇɪs ᴄᴀᴍɪɴᴏs'
+    cost: 102000000000
+    icon: GOLD_BLOCK
+    permissions:
+    - drakesrankup.tier.83
+    perks:
+    - 'Bodhisattva Guanyin de las 100 Manos'
+    - 'Mano Cero: Descarga cósmica de aura'
+    - '+1 Home'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 2.99
+    push-cooldown: 2
+    ability: ZERO_HAND_GUANYIN
+    particle: GUANYIN_AURA
+  meruem_postrose:
+    tier: 84
+    display-name: '&a&lᴍᴇʀᴜᴇᴍ: ʀᴇʏ ʜᴏʀᴍɪɢᴀ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪx · ʟᴇʏᴇɴᴅᴀs ᴄᴏ́sᴍɪᴄᴀs & sᴇɪs ᴄᴀᴍɪɴᴏs'
+    cost: 108000000000
+    icon: EMERALD_BLOCK
+    permissions:
+    - drakesrankup.tier.84
+    perks:
+    - 'Fotón de Aura Omnisciente'
+    - 'Síntesis de Aura Evolutiva'
+    - '+1 Home'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 3.02
+    push-cooldown: 2
+    ability: ULTRA_INSTINCT
+    particle: EMERALD_PHOTON
+  minato_hiraishin:
+    tier: 85
+    display-name: '&e&lᴍɪɴᴀᴛᴏ ɴᴀᴍɪᴋᴀᴢᴇ: ʜɪʀᴀɪsʜɪɴ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪx · ʟᴇʏᴇɴᴅᴀs ᴄᴏ́sᴍɪᴄᴀs & sᴇɪs ᴄᴀᴍɪɴᴏs'
+    cost: 115000000000
+    icon: ENDER_PEARL
+    permissions:
+    - drakesrankup.tier.85
+    perks:
+    - 'El Relámpago Amarillo de Konoha'
+    - 'Dios del Trueno Volador instantáneo'
+    - '+1 Bóveda (/pv 30)'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 3.05
+    push-cooldown: 2
+    ability: HIRAISHIN_TELEPORT
+    particle: YELLOW_FLASH
+  itachi_susanoo:
+    tier: 86
+    display-name: '&4&lɪᴛᴀᴄʜɪ ᴜᴄʜɪʜᴀ: ᴀᴍᴀᴛᴇʀᴀsᴜ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪx · ʟᴇʏᴇɴᴅᴀs ᴄᴏ́sᴍɪᴄᴀs & sᴇɪs ᴄᴀᴍɪɴᴏs'
+    cost: 122000000000
+    icon: MAGMA_BLOCK
+    permissions:
+    - drakesrankup.tier.86
+    perks:
+    - 'Mangekyō Sharingan & Tsukuyomi'
+    - 'Amaterasu: Fuego negro que arde eternamente'
+    - 'Escudo Yata & Espada Totsuka'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 3.08
+    push-cooldown: 2
+    ability: AMATERASU_TSUKUYOMI
+    particle: BLACK_FLAME
+  madara_rikudo:
+    tier: 87
+    display-name: '&5&lᴍᴀᴅᴀʀᴀ ᴜᴄʜɪʜᴀ: sᴇɪs ᴄᴀᴍɪɴᴏs'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪx · ʟᴇʏᴇɴᴅᴀs ᴄᴏ́sᴍɪᴄᴀs & sᴇɪs ᴄᴀᴍɪɴᴏs'
+    cost: 129000000000
+    icon: CRYING_OBSIDIAN
+    permissions:
+    - drakesrankup.tier.87
+    perks:
+    - 'Jinchūriki del Diez Colas & Rinnegan'
+    - 'Tengai Shinsei: Caída de Meteoros orbitales'
+    - 'Tsukuyomi Infinito'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 3.11
+    push-cooldown: 2
+    ability: TENGAI_SHINSEI
+    particle: METEOR_SMOKE
+  naruto_baryon:
+    tier: 88
+    display-name: '&c&lɴᴀʀᴜᴛᴏ ᴜᴢᴜᴍᴀᴋɪ: ᴍᴏᴅᴏ ʙᴀʀɪᴏ́ɴ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪx · ʟᴇʏᴇɴᴅᴀs ᴄᴏ́sᴍɪᴄᴀs & sᴇɪs ᴄᴀᴍɪɴᴏs'
+    cost: 136000000000
+    icon: FIRE_CHARGE
+    permissions:
+    - drakesrankup.tier.88
+    perks:
+    - 'Fusión Nuclear de Chakras'
+    - 'Drenaje de esperanza de vida adversaria'
+    - 'Velocidad absoluta'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 3.14
+    push-cooldown: 2
+    ability: BARYON_MODE
+    particle: ORANGE_TAILS
+  luffy_gear5:
+    tier: 89
+    display-name: '&f&lʟᴜғғʏ: ɢᴇᴀʀ 5 sᴜɴ ɢᴏᴅ ɴɪᴋᴀ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪx · ʟᴇʏᴇɴᴅᴀs ᴄᴏ́sᴍɪᴄᴀs & sᴇɪs ᴄᴀᴍɪɴᴏs'
+    cost: 144000000000
+    icon: WHITE_WOOL
+    permissions:
+    - drakesrankup.tier.89
+    perks:
+    - 'El Guerrero de la Liberación Nika'
+    - 'Tambores de la Libertad y Rebote Cartoon'
+    - 'Libertad de combate total'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 3.17
+    push-cooldown: 2
+    ability: GEAR_FIVE_NIKA
+    particle: WHITE_JOY
+  shanks_kamisari:
+    tier: 90
+    display-name: '&c&l&nsʜᴀɴᴋs ᴇʟ ᴘᴇʟɪʀʀᴏᴊᴏ: ᴋᴀᴍɪsᴀʀɪ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪx · ʟᴇʏᴇɴᴅᴀs ᴄᴏ́sᴍɪᴄᴀs & sᴇɪs ᴄᴀᴍɪɴᴏs'
+    cost: 152000000000
+    icon: NETHERITE_SWORD
+    permissions:
+    - drakesrankup.tier.90
+    perks:
+    - 'Haki del Conquistador Infundido Avanzado'
+    - 'Kamisari (Partida Divina)'
+    - 'Presión que anula la visión de futuro'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 3.2
+    push-cooldown: 2
+    ability: KAMISARI_HAKI
+    particle: CONQUEROR_LIGHTNING
+  jiren_universe11:
+    tier: 91
+    display-name: '&c&lᴊɪʀᴇɴ ᴇʟ ɢʀɪs'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ x · ᴅɪᴏsᴇs ᴍᴜʟᴛɪᴠᴇʀsᴀʟᴇs & sɪɴɢᴜʟᴀʀɪᴅᴀᴅ'
+    cost: 160000000000
+    icon: REDSTONE_BLOCK
+    permissions:
+    - drakesrankup.tier.91
+    perks:
+    - 'Guerrero más fuerte del Universo 11'
+    - 'Muralla de Ki Inconmovible'
+    - '+1 Home'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 3.23
+    push-cooldown: 2
+    ability: SERIOUS_PUNCH
+    particle: HEAT_WAVE
+  gogeta_blue:
+    tier: 92
+    display-name: '&b&lɢᴏɢᴇᴛᴀ sᴜᴘᴇʀ sᴀɪʏᴀᴊɪɴ ʙʟᴜᴇ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ x · ᴅɪᴏsᴇs ᴍᴜʟᴛɪᴠᴇʀsᴀʟᴇs & sɪɴɢᴜʟᴀʀɪᴅᴀᴅ'
+    cost: 168000000000
+    icon: SOUL_TORCH
+    permissions:
+    - drakesrankup.tier.92
+    perks:
+    - 'Fusión Metamoran Definitiva'
+    - 'Stardust Breaker (Castigador de Almas)'
+    - 'Fuerza destructiva cósmica'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 3.26
+    push-cooldown: 2
+    ability: STARDUST_BREAKER
+    particle: STARDUST_RAINBOW
+  vegito_blue:
+    tier: 93
+    display-name: '&9&lᴠᴇɢɪᴛᴏ sᴜᴘᴇʀ sᴀɪʏᴀᴊɪɴ ʙʟᴜᴇ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ x · ᴅɪᴏsᴇs ᴍᴜʟᴛɪᴠᴇʀsᴀʟᴇs & sɪɴɢᴜʟᴀʀɪᴅᴀᴅ'
+    cost: 176000000000
+    icon: SEA_LANTERN
+    permissions:
+    - drakesrankup.tier.93
+    perks:
+    - 'Fusión Pothala Divina'
+    - 'Espada de Espíritu Divina & Final Kamehameha'
+    - '+1 Home'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 3.29
+    push-cooldown: 2
+    ability: VEGETTO_SPIRIT_SWORD
+    particle: BLUE_DIVINE_BURST
+  bills_god:
+    tier: 94
+    display-name: '&5&lʙɪʟʟs: ᴅɪᴏs ᴅᴇ ʟᴀ ᴅᴇsᴛʀᴜᴄᴄɪᴏ́ɴ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ x · ᴅɪᴏsᴇs ᴍᴜʟᴛɪᴠᴇʀsᴀʟᴇs & sɪɴɢᴜʟᴀʀɪᴅᴀᴅ'
+    cost: 184000000000
+    icon: PURPLE_GLAZED_TERRACOTTA
+    permissions:
+    - drakesrankup.tier.94
+    perks:
+    - 'Hakai Supremo: Esfera de la Destrucción'
+    - 'Inmunidad al fuego y lava cósmica'
+    - 'Vaporiza materia salvaje'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 3.32
+    push-cooldown: 2
+    ability: SPHERE_OF_DESTRUCTION
+    particle: HAKAI_PURPLE
+  whis_angel:
+    tier: 95
+    display-name: '&b&lᴡʜɪs: ᴀ́ɴɢᴇʟ ᴅᴇʟ ᴜɴɪᴠᴇʀsᴏ 7'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ x · ᴅɪᴏsᴇs ᴍᴜʟᴛɪᴠᴇʀsᴀʟᴇs & sɪɴɢᴜʟᴀʀɪᴅᴀᴅ'
+    cost: 192000000000
+    icon: END_ROD
+    permissions:
+    - drakesrankup.tier.95
+    perks:
+    - 'Gracia Angelical Inmortal'
+    - 'Doctrina Egoísta fluida permanente'
+    - 'Retroceso temporal protector'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 3.35
+    push-cooldown: 2
+    ability: ULTRA_INSTINCT
+    particle: ANGEL_HALO
+  daishinkan_sama:
+    tier: 96
+    display-name: '&f&lɢʀᴀɴ sᴀᴄᴇʀᴅᴏᴛᴇ: ᴅᴀɪsʜɪɴᴋᴀɴ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ x · ᴅɪᴏsᴇs ᴍᴜʟᴛɪᴠᴇʀsᴀʟᴇs & sɪɴɢᴜʟᴀʀɪᴅᴀᴅ'
+    cost: 200000000000
+    icon: CONDUIT
+    permissions:
+    - drakesrankup.tier.96
+    perks:
+    - 'Soberano de todos los Ángeles'
+    - 'Poder más allá del reino mortal'
+    - '+1 Home'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 3.38
+    push-cooldown: 2
+    ability: KAMI_DIVINE
+    particle: CELESTIAL_SPHERES
+  zalama_dragon:
+    tier: 97
+    display-name: '&e&lᴢᴀʟᴀᴍᴀ: ᴅʀᴀɢᴏ́ɴ ᴅɪᴠɪɴᴏ sᴜᴘᴇʀ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ x · ᴅɪᴏsᴇs ᴍᴜʟᴛɪᴠᴇʀsᴀʟᴇs & sɪɴɢᴜʟᴀʀɪᴅᴀᴅ'
+    cost: 210000000000
+    icon: DRAGON_EGG
+    permissions:
+    - drakesrankup.tier.97
+    perks:
+    - 'Creador de las Super Esferas del Dragón'
+    - 'Concede deseos sin límites dimensionales'
+    - '+1 Home'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 3.41
+    push-cooldown: 2
+    ability: OMNI_CREATION_ERASE
+    particle: GOLDEN_DRAGON_DUST
+  toribot_creator:
+    tier: 98
+    display-name: '&6&lᴛᴏʀɪ-ʙᴏᴛ: ᴇʟ ᴄʀᴇᴀᴅᴏʀ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ x · ᴅɪᴏsᴇs ᴍᴜʟᴛɪᴠᴇʀsᴀʟᴇs & sɪɴɢᴜʟᴀʀɪᴅᴀᴅ'
+    cost: 22000000000
+    icon: ENCHANTED_BOOK
+    permissions:
+    - drakesrankup.tier.98
+    perks:
+    - 'El Creador de Todo el Universo'
+    - 'La Pluma Sagrada de la Existencia'
+    - '+1 Home'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 3.44
+    push-cooldown: 2
+    ability: OMNI_CREATION_ERASE
+    particle: CREATOR_PENCIL
+  zeno_duo:
+    tier: 99
+    display-name: '&d&lᴢᴇɴᴏ-sᴀᴍᴀ: ᴘʀᴇsᴇɴᴛᴇ & ғᴜᴛᴜʀᴏ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ x · ᴅɪᴏsᴇs ᴍᴜʟᴛɪᴠᴇʀsᴀʟᴇs & sɪɴɢᴜʟᴀʀɪᴅᴀᴅ'
+    cost: 235000000000
+    icon: TOTEM_OF_UNDYING
+    permissions:
+    - drakesrankup.tier.99
+    perks:
+    - 'Dúo Omni-Rey Universal'
+    - 'Juicio y balance de realidades infinitas'
+    - '+1 Home'
+    reward-commands: []
+    kinetic-push: true
+    push-multiplier: 3.47
+    push-cooldown: 2
+    ability: OMNI_CREATION_ERASE
+    particle: DUAL_OMNI
+  zeno_omni_supremo:
+    tier: 100
+    display-name: '&6&l&nᴢᴇɴᴏ ᴏᴍɴɪ-sᴜᴘʀᴇᴍᴏ'
+    division: 'ᴅɪᴠɪsɪᴏ́ɴ x · ᴅɪᴏsᴇs ᴍᴜʟᴛɪᴠᴇʀsᴀʟᴇs & sɪɴɢᴜʟᴀʀɪᴅᴀᴅ'
+    cost: 250000000000
+    icon: NETHER_STAR
+    permissions:
+    - drakesrankup.tier.100
+    perks:
+    - 'CIMA ABSOLUTA DE DRAKESRANKUP (TIER 100)'
+    - 'Acceso al Renacimiento (/rebirth para reiniciar y ganar daño permanente)'
+    - 'Armadura Celestial Omni-Suprema Completa (Endgame)'
+    - 'Artefactos Endgame Slimefun (Infinity, Supreme, Tinker, Daxis)'
+    - 'Corona Divina Suprema y Presencia Multiversal'
+    - 'Título Supremo [Omni-Supremo]'
+    reward-commands:
+    - 'drakesrankup kit %player%'
+    - 'broadcast &6&lDRAKES RANKUP &8▶ &f¡El guerrero &e&l%player% &fha conquistado el universo alcanzando el &d&lTIER 100: ZENO OMNI-SUPREMO&f!'
+    kinetic-push: true
+    push-multiplier: 3.5
+    push-cooldown: 2
+    ability: OMNI_CREATION_ERASE
+    particle: SUPREME_GOD

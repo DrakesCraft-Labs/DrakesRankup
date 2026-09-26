@@ -46,10 +46,10 @@ class DrakesRankupTest {
     }
 
     @Test
-    void testFiftyAnimeRanksLoaded() {
-        assertEquals(50, plugin.getRankManager().getAllRanks().size(), "Deben cargarse exactamente 50 rangos");
+    void testHundredAnimeRanksLoaded() {
+        assertEquals(100, plugin.getRankManager().getAllRanks().size(), "Deben cargarse exactamente 100 rangos");
 
-        for (int i = 1; i <= 50; i++) {
+        for (int i = 1; i <= 100; i++) {
             Rank rank = plugin.getRankManager().getRankByTier(i);
             assertNotNull(rank, "El rango de tier " + i + " debe existir");
             assertEquals(i, rank.getTier());
@@ -58,6 +58,10 @@ class DrakesRankupTest {
             assertTrue(rank.getCost() > 0, "El costo debe ser positivo");
             assertNotNull(rank.getIcon());
         }
+
+        Rank tier100 = plugin.getRankManager().getRankByTier(100);
+        assertNotNull(tier100);
+        assertEquals("zeno_omni_supremo", tier100.getId());
 
         Rank tier1 = plugin.getRankManager().getRankByTier(1);
         assertEquals("senku", tier1.getId());

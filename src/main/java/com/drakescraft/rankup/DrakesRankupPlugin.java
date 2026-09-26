@@ -4,6 +4,7 @@ import com.drakescraft.rankup.ability.DragonBallListener;
 import com.drakescraft.rankup.ability.KineticPushListener;
 import com.drakescraft.rankup.ability.OnePieceListener;
 import com.drakescraft.rankup.ability.RankAbilityListener;
+import com.drakescraft.rankup.ability.SpecialAbilitiesListener;
 import com.drakescraft.rankup.command.AngelCommand;
 import com.drakescraft.rankup.command.RankupCommand;
 import com.drakescraft.rankup.command.TransformationCommand;
@@ -17,6 +18,8 @@ import com.drakescraft.rankup.ability.CustomKitItemListener;
 import com.drakescraft.rankup.papi.DrakesRankupExpansion;
 import com.drakescraft.rankup.task.AuraTask;
 import com.drakescraft.rankup.task.RankDecayTask;
+import com.drakescraft.rankup.command.RebirthCommand;
+import com.drakescraft.rankup.protection.ProtectionGate;
 import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -42,9 +45,13 @@ public class DrakesRankupPlugin extends JavaPlugin {
     @Getter
     private OnePieceListener onePieceListener;
     @Getter
+    private SpecialAbilitiesListener specialAbilitiesListener;
+    @Getter
     private StaffManager staffManager;
     @Getter
     private KitManager kitManager;
+    @Getter
+    private ProtectionGate protectionGate;
 
     private AuraTask auraTask;
     private RankDecayTask rankDecayTask;
@@ -59,11 +66,18 @@ public class DrakesRankupPlugin extends JavaPlugin {
         rankManager = new RankManager(this);
         staffManager = new StaffManager(this);
         kitManager = new KitManager(this);
+        protectionGate = new ProtectionGate(this);
 
         RankupCommand cmd = new RankupCommand(this);
         if (getCommand("rankup") != null) {
             getCommand("rankup").setExecutor(cmd);
             getCommand("rankup").setTabCompleter(cmd);
+        }
+
+        RebirthCommand rebirthCmd = new RebirthCommand(this);
+        if (getCommand("rebirth") != null) {
+            getCommand("rebirth").setExecutor(rebirthCmd);
+            getCommand("rebirth").setTabCompleter(rebirthCmd);
         }
 
         AngelCommand angelCmd = new AngelCommand(this);
@@ -80,6 +94,7 @@ public class DrakesRankupPlugin extends JavaPlugin {
         kineticPushListener = new KineticPushListener(this);
         dragonBallListener = new DragonBallListener(this);
         onePieceListener = new OnePieceListener(this);
+        specialAbilitiesListener = new SpecialAbilitiesListener(this);
 
         Bukkit.getPluginManager().registerEvents(new RankupGuiListener(), this);
         Bukkit.getPluginManager().registerEvents(new TransformationGuiListener(), this);
@@ -87,6 +102,7 @@ public class DrakesRankupPlugin extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new RankAbilityListener(this), this);
         Bukkit.getPluginManager().registerEvents(dragonBallListener, this);
         Bukkit.getPluginManager().registerEvents(onePieceListener, this);
+        Bukkit.getPluginManager().registerEvents(specialAbilitiesListener, this);
         Bukkit.getPluginManager().registerEvents(staffManager, this);
         Bukkit.getPluginManager().registerEvents(new CustomKitItemListener(this), this);
         Bukkit.getPluginManager().registerEvents(new RankDecayListener(this), this);

@@ -21,11 +21,18 @@ public class PlayerSettings {
      */
     private int particleLevel = 2;
 
+    /**
+     * Contador de Renacimientos (Rebirths): máximo 50.
+     * Otorga +3% de daño permanente y -1% de enfriamiento en habilidades por nivel.
+     */
+    private int rebirthCount = 0;
+
     public PlayerSettings(boolean particlesEnabled, boolean kineticPushEnabled, boolean abilitiesEnabled) {
         this.particlesEnabled = particlesEnabled;
         this.kineticPushEnabled = kineticPushEnabled;
         this.abilitiesEnabled = abilitiesEnabled;
         this.activeTransformation = null;
         this.kiFlightEnabled = true;
+        this.rebirthCount = 0;
     }
 }

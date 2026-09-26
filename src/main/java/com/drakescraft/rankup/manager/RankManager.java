@@ -93,7 +93,7 @@ public class RankManager {
 
                 String particleType = sec.getString(key + ".particle", "NONE");
 
-                boolean defaultPermanent = (tier <= 10 || tier % 10 == 0 || tier == 50);
+                boolean defaultPermanent = (tier <= 10 || tier % 10 == 0 || tier == 100);
                 boolean permanent = sec.getBoolean(key + ".permanent", defaultPermanent);
 
                 double costPercentage = plugin.getConfig().getDouble("settings.maintenance.cost-percentage", 0.05);
@@ -137,6 +137,7 @@ public class RankManager {
                     if (particleLevel < 0) particleLevel = particles ? 2 : 0;
                     boolean push = playersConfig.getBoolean(uuidStr + ".kinetic-push", true);
                     boolean abilities = playersConfig.getBoolean(uuidStr + ".abilities", true);
+                    int rebirths = playersConfig.getInt(uuidStr + ".rebirths", 0);
                     long expiry = playersConfig.getLong(uuidStr + ".maintenance-expiry", 0L);
                     double bolsa = playersConfig.getDouble(uuidStr + ".bolsa", 0.0);
 
@@ -146,6 +147,7 @@ public class RankManager {
                     }
                     PlayerSettings loaded = new PlayerSettings(particles, push, abilities);
                     loaded.setParticleLevel(particleLevel);
+                    loaded.setRebirthCount(rebirths);
                     playerSettings.put(uuid, loaded);
                     if (expiry > 0) {
                         maintenanceExpiries.put(uuid, expiry);
@@ -169,6 +171,7 @@ public class RankManager {
             playersConfig.set(path + ".particle-level", s.getParticleLevel());
             playersConfig.set(path + ".kinetic-push", s.isKineticPushEnabled());
             playersConfig.set(path + ".abilities", s.isAbilitiesEnabled());
+            playersConfig.set(path + ".rebirths", s.getRebirthCount());
             Long expiry = maintenanceExpiries.get(entry.getKey());
             if (expiry != null && expiry > 0) {
                 playersConfig.set(path + ".maintenance-expiry", expiry);
@@ -216,6 +219,61 @@ public class RankManager {
 
     public PlayerSettings getPlayerSettings(UUID uuid) {
         return playerSettings.computeIfAbsent(uuid, k -> new PlayerSettings());
+    }
+
+    public int getRebirthCount(UUID uuid) {
+        return getPlayerSettings(uuid).getRebirthCount();
+    }
+
+    public void setRebirthCount(UUID uuid, int count) {
+        getPlayerSettings(uuid).setRebirthCount(Math.max(0, Math.min(50, count)));
+        savePlayerData();
+    }
+
+    public boolean processRebirth(Player player) {
+        if (player == null || !player.isOnline()) return false;
+        if (!plugin.isWorldAllowed(player.getWorld())) {
+            player.sendMessage(plugin.getWorldBlockedMessage());
+            return false;
+        }
+        UUID uuid = player.getUniqueId();
+        int currentTier = getPlayerTier(uuid);
+        int maxTier = ranksByTier.isEmpty() ? 100 : Collections.max(ranksByTier.keySet());
+
+        if (currentTier < maxTier) {
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                    "&c[Rebirth] Debes alcanzar la Cima Absoluta (&6Tier " + maxTier + "&c) para poder renacer. Rango actual: &eTier " + currentTier));
+            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+            return false;
+        }
+
+        PlayerSettings settings = getPlayerSettings(uuid);
+        if (settings.getRebirthCount() >= 50) {
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                    "&6[Rebirth] &c¡Ya has alcanzado el límite supremo de 50 Rebirths!"));
+            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+            return false;
+        }
+
+        int nextRebirth = settings.getRebirthCount() + 1;
+        settings.setRebirthCount(nextRebirth);
+        setPlayerTier(uuid, 1); // Reset al Tier 1
+        resetMaintenance(uuid);
+        savePlayerData();
+
+        org.bukkit.Location loc = player.getLocation();
+        player.sendTitle("§6§l¡RENACIMIENTO SUPREMO!", "§eRebirth " + nextRebirth + "/50 (+3% daño permanente)", 10, 70, 20);
+        player.playSound(loc, Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 1.0f);
+        player.playSound(loc, Sound.ITEM_TOTEM_USE, 0.8f, 1.1f);
+        player.playSound(loc, Sound.ENTITY_ENDER_DRAGON_GROWL, 0.7f, 1.5f);
+        try {
+            loc.getWorld().spawnParticle(org.bukkit.Particle.TOTEM_OF_UNDYING, loc.clone().add(0, 1.0, 0), 80, 0.8, 1.0, 0.8, 0.2);
+            loc.getWorld().spawnParticle(org.bukkit.Particle.FLASH, loc.clone().add(0, 1.5, 0), 2);
+        } catch (Exception ignored) {}
+
+        Bukkit.broadcast(net.kyori.adventure.text.Component.text(ChatColor.translateAlternateColorCodes('&',
+                "&6&lDRAKES RANKUP &8▶ &f¡El guerrero &e&l" + player.getName() + " &fha completado el camino y alcanzado el &d&lREBIRTH " + nextRebirth + "&f/50!")));
+        return true;
     }
 
     // ==========================================
@@ -627,7 +685,8 @@ public class RankManager {
         }
         UUID uuid = player.getUniqueId();
         int currentTier = getPlayerTier(uuid);
-        if (currentTier >= 50) {
+        int maxTier = ranksByTier.isEmpty() ? 100 : Collections.max(ranksByTier.keySet());
+        if (currentTier >= maxTier) {
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("messages.max-rank", "&aYa has alcanzado el rango máximo.")));
             return 0;
         }
@@ -638,7 +697,7 @@ public class RankManager {
         int targetTier = currentTier;
         double totalCost = 0.0;
 
-        for (int t = currentTier + 1; t <= 50; t++) {
+        for (int t = currentTier + 1; t <= maxTier; t++) {
             Rank r = ranksByTier.get(t);
             if (r == null) break;
             if (totalCost + r.getCost() <= balance) {
@@ -803,4 +862,66 @@ public class RankManager {
     public Rank getRankById(String id) {
         return ranksById.get(id != null ? id.toLowerCase() : "");
     }
+
+    /**
+     * Auto-configurador de LuckPerms y TAB para los 100 rangos en orden estricto de menor a mayor.
+     * Crea los grupos rankup_<id>, asigna pesos (1..100), prefijos y permisos acumulativos.
+     */
+    public synchronized int autoConfigureLuckPermsAndTab(org.bukkit.command.CommandSender sender) {
+        if (!Bukkit.getPluginManager().isPluginEnabled("LuckPerms")) {
+            if (sender != null) sender.sendMessage("§c[DrakesRankup] LuckPerms no está cargado o habilitado en este servidor.");
+            return 0;
+        }
+
+        String groupPrefix = plugin.getConfig().getString("settings.luckperms.group-prefix", "rankup_");
+        net.luckperms.api.LuckPerms lp = net.luckperms.api.LuckPermsProvider.get();
+        int configured = 0;
+
+        List<Rank> sortedRanks = new ArrayList<>(ranksByTier.values());
+        sortedRanks.sort(Comparator.comparingInt(Rank::getTier));
+
+        for (Rank rank : sortedRanks) {
+            String groupName = (groupPrefix + rank.getId()).toLowerCase();
+            try {
+                net.luckperms.api.model.group.Group group = lp.getGroupManager().getGroup(groupName);
+                if (group == null) {
+                    group = lp.getGroupManager().createAndLoadGroup(groupName).join();
+                }
+
+                int weight = rank.getTier();
+                // Limpiar pesos y prefijos antiguos para evitar duplicados
+                group.data().clear(node -> node instanceof net.luckperms.api.node.types.WeightNode
+                        || node instanceof net.luckperms.api.node.types.PrefixNode);
+
+                // Asignar peso ordenado 1 a 100
+                group.data().add(net.luckperms.api.node.types.WeightNode.builder(weight).build());
+
+                // Prefijo ordenado para TAB y Chat
+                String prefixStr = rank.getDisplayName() + " &8▸ &r";
+                group.data().add(net.luckperms.api.node.types.PrefixNode.builder(prefixStr, weight).build());
+
+                // Permiso de tier
+                group.data().add(net.luckperms.api.node.types.PermissionNode.builder("drakesrankup.tier." + weight).build());
+
+                // Permisos declarados del rango
+                for (String perm : rank.getPermissions()) {
+                    if (perm != null && !perm.isBlank()) {
+                        group.data().add(net.luckperms.api.node.types.PermissionNode.builder(perm.trim()).build());
+                    }
+                }
+
+                lp.getGroupManager().saveGroup(group);
+                configured++;
+            } catch (Exception ex) {
+                plugin.getLogger().warning("Error configurando grupo LP '" + groupName + "': " + ex.getMessage());
+            }
+        }
+
+        if (sender != null) {
+            sender.sendMessage("§a[DrakesRankup] ¡Éxito! Se han configurado y ordenado §e" + configured + " rangos§a en LuckPerms (Pesos 1 al 100).");
+            sender.sendMessage("§7Los prefijos y el orden de tabulador (TAB) se actualizarán automáticamente con las prioridades de peso.");
+        }
+        return configured;
+    }
+
 }

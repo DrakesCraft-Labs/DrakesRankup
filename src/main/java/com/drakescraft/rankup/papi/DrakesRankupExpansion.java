@@ -58,7 +58,17 @@ public class DrakesRankupExpansion extends PlaceholderExpansion {
             case "next_cost":
                 return nextRank != null ? DF.format(nextRank.getCost()) : "0";
             case "progress":
-                return String.valueOf((currentTier * 100) / 50);
+                return String.valueOf((currentTier * 100) / 100);
+            case "rebirth":
+                return String.valueOf(plugin.getRankManager().getRebirthCount(player.getUniqueId()));
+            case "rebirth_badge": {
+                int rb = plugin.getRankManager().getRebirthCount(player.getUniqueId());
+                return rb > 0 ? "§6[✦" + rb + "]" : "";
+            }
+            case "rebirth_multiplier": {
+                int rb = plugin.getRankManager().getRebirthCount(player.getUniqueId());
+                return "+" + (rb * 3) + "%";
+            }
             case "tag":
                 return currentRank != null ? "&8[" + currentRank.getDisplayName() + "&8]" : "";
             case "permanent":

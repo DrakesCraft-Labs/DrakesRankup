@@ -31,46 +31,33 @@ public class TransformationMenu implements InventoryHolder {
 
     @Override
     public Inventory getInventory() {
-        return inv;
+        return this.inv;
     }
 
     public void open() {
-        this.inv = Bukkit.createInventory(this, 54, "§8§l⚡ TRANSFORMACIONES & PODERES");
+        this.inv = Bukkit.createInventory(this, 54, ChatColor.translateAlternateColorCodes('&', "&8⚡ &6&lTRANSFORMACIONES Y HABILIDADES"));
 
-        // Glass background fill
-        ItemStack grayGlass = createItem(Material.GRAY_STAINED_GLASS_PANE, " ");
+        // Fill background with black glass panes
+        ItemStack bg = createItem(Material.BLACK_STAINED_GLASS_PANE, " ");
         for (int i = 0; i < 54; i++) {
-            inv.setItem(i, grayGlass);
+            inv.setItem(i, bg);
         }
 
         Rank rank = plugin.getRankManager().getPlayerRank(player.getUniqueId());
         int tier = (rank != null) ? rank.getTier() : 0;
         PlayerSettings settings = plugin.getRankManager().getPlayerSettings(player.getUniqueId());
         String active = settings.getActiveTransformation();
-        if (active == null || active.isEmpty()) active = "NINGUNA";
 
-        // Slot 4: Player Info Header
-        inv.setItem(4, createItem(Material.NETHER_STAR, "&e&lPERFIL DE TRANSFORMACIÓN",
-                "&7Jugador: &f" + player.getName(),
-                "&7Rango Actual: " + (rank != null ? rank.getDisplayName() : "&7Ninguno") + " &8(Tier " + tier + ")",
-                "&7Transformación Activa: &a" + active,
-                "&7Vuelo de Ki: " + (settings.isKiFlightEnabled() ? "&aHabilitado" : "&cDeshabilitado"),
-                "",
-                "&eHaz clic en una transformación desbloqueada para equiparla."
-        ));
-
-        // Transformations
         // 1. SSJ God (Tier 35)
         inv.setItem(10, buildTransformationItem(
                 tier >= 35,
                 "SSJ_GOD".equalsIgnoreCase(active),
-                Material.RED_DYE,
+                Material.REDSTONE_BLOCK,
                 "&c&lSuper Saiyajin God",
                 35,
                 Arrays.asList(
                         "&8▪ &eTipo: &fKi Divino Carmesí",
-                        "&8▪ &aEfectos Positivos: &fRegeneración y Velocidad Divina por 20s.",
-                        "&8▪ &cContrapartida: &7Requiere cargar Ki agachado (1.8s) inmóvil.",
+                        "&8▪ &aEfectos: &fRegeneración II, Absorción II y Agilidad Divina (5m).",
                         "&8▪ &bActivación: &fSneak (Shift) sostenido hasta detonar."
                 )
         ));
@@ -79,45 +66,41 @@ public class TransformationMenu implements InventoryHolder {
         inv.setItem(11, buildTransformationItem(
                 tier >= 36,
                 "SSJ_BLUE".equalsIgnoreCase(active),
-                Material.CYAN_DYE,
+                Material.LAPIS_BLOCK,
                 "&9&lSuper Saiyajin Blue",
                 36,
                 Arrays.asList(
-                        "&8▪ &eTipo: &fKi Divino de Plasma",
-                        "&8▪ &aEfectos Positivos: &fFuerza I y Velocidad II por 20 segundos.",
-                        "&8▪ &cContrapartida: &7Agotamiento de energía con cooldown de 45s.",
+                        "&8▪ &eTipo: &fKi Divino Azul Super Saiyajin",
+                        "&8▪ &aEfectos: &fFuerza II, Velocidad II y Resistencia I por 5 minutos.",
                         "&8▪ &bActivación: &fSneak (Shift) sostenido hasta detonar."
                 )
         ));
 
-        // 3. Ultra Instinto Dominado (Tier 46)
+        // 3. Ultra Instinto (MUI) (Tier 46)
         inv.setItem(12, buildTransformationItem(
                 tier >= 46,
                 "MUI".equalsIgnoreCase(active),
-                Material.FEATHER,
-                "&f&lUltra Instinto Dominado (MUI)",
+                Material.NETHER_STAR,
+                "&f&lDoctrina Egoísta (MUI)",
                 46,
                 Arrays.asList(
-                        "&8▪ &eTipo: &fDoctrina Egoísta Suprema",
-                        "&8▪ &aEfectos Positivos: &f100% de esquive visual de golpes y flechas por 5s.",
-                        "&8▪ &cContrapartida: &c¡FATIGA MORTAL! Si se usa >2 veces en 2 min,",
-                        "  &7al terminar recibes 4 corazones de daño, Ceguera y Lentitud III.",
+                        "&8▪ &eTipo: &fEstado de los Ángeles",
+                        "&8▪ &aEfectos: &fEvasión total milagrosa de ataques por 60 segundos.",
+                        "&8▪ &cDesgaste: &7El uso repetido en menos de 2m induce fatiga corporal.",
                         "&8▪ &bActivación: &fSneak (Shift) sostenido hasta detonar."
                 )
         ));
 
-        // 4. Mega Instinto / Ultra Ego (Tier 47)
+        // 4. Ultra Ego (Mega Instinto) (Tier 47)
         inv.setItem(13, buildTransformationItem(
                 tier >= 47,
                 "ULTRA_EGO".equalsIgnoreCase(active),
-                Material.PURPLE_DYE,
+                Material.PURPLE_GLAZED_TERRACOTTA,
                 "&5&lMega Instinto (Ultra Ego)",
                 47,
                 Arrays.asList(
-                        "&8▪ &eTipo: &fPoder Hakai de la Destrucción",
-                        "&8▪ &aEfectos Positivos: &fA menor vida, mayor daño destructivo (+60%)",
-                        "  &fy devuelve 3.5 corazones de daño puro al atacante.",
-                        "&8▪ &cContrapartida: &7Recibe +15% de daño en impactos iniciales.",
+                        "&8▪ &eTipo: &fPoder del Dios de la Destrucción",
+                        "&8▪ &aEfectos: &fA menor vida, mayor daño destructivo por 5 minutos.",
                         "&8▪ &bActivación: &fSneak (Shift) sostenido hasta detonar."
                 )
         ));
@@ -126,70 +109,173 @@ public class TransformationMenu implements InventoryHolder {
         inv.setItem(14, buildTransformationItem(
                 tier >= 45,
                 "GOHAN_BEAST".equalsIgnoreCase(active),
-                Material.AMETHYST_SHARD,
+                Material.AMETHYST_CLUSTER,
                 "&d&lGohan Bestia (Beast)",
                 45,
                 Arrays.asList(
-                        "&8▪ &eTipo: &fEvolución Bestial Suprema",
-                        "&8▪ &aEfectos Positivos: &fExplosión crítica devastadora (+75% daño)",
-                        "  &fy Makankosappo con rayos magentas fulminantes.",
-                        "&8▪ &cContrapartida: &cMetabolismo voraz: &7Consume 4 muslos de comida",
-                        "  &fde golpe al activarse e induce Hambre II por 10s.",
+                        "&8▪ &eTipo: &fFuria Híbrida Desatada",
+                        "&8▪ &aEfectos: &f+75% probabilidad crítica y rayos magentas por 5m.",
                         "&8▪ &bActivación: &fSneak (Shift) sostenido hasta detonar."
                 )
         ));
 
-        // 6. Broly LSSJ Berserk (Tier 34)
+        // 6. Broly Berserker (Tier 34)
         inv.setItem(15, buildTransformationItem(
                 tier >= 34,
                 "BROLY_LSSJ".equalsIgnoreCase(active),
-                Material.LIME_DYE,
-                "&a&lBroly Super Saiyajin Legendario",
+                Material.EMERALD_BLOCK,
+                "&a&lBroly Legendario (LSSJ)",
                 34,
                 Arrays.asList(
-                        "&8▪ &eTipo: &fFuria Berserker Ilimitada",
-                        "&8▪ &aEfectos Positivos: &fFuerza III, Resistencia II e inmunidad total al empuje.",
-                        "&8▪ &cContrapartida: &cLentitud I por 6s al apagarse la furia y +20%",
-                        "  &7de vulnerabilidad ante flechas y ataques a distancia.",
+                        "&8▪ &eTipo: &fPoder Berserker Destructivo",
+                        "&8▪ &aEfectos: &fFuerza III, Resistencia II e Inmunidad a empuje (5m).",
                         "&8▪ &bActivación: &fSneak (Shift) sostenido hasta detonar."
                 )
         ));
 
-        // 7. Espada de Haz de Luz de Vegetto (Tier 48)
+        // 7. Espada de Vegetto (Tier 48)
         inv.setItem(16, buildTransformationItem(
                 tier >= 48,
                 "VEGETTO_SWORD".equalsIgnoreCase(active),
                 Material.GOLDEN_SWORD,
-                "&e&lEspada de Haz de Luz (Vegetto)",
+                "&e&lEspada de Luz (Vegetto)",
                 48,
                 Arrays.asList(
-                        "&8▪ &eTipo: &fTécnica Ki Perforante de Fusión",
-                        "&8▪ &aEfectos Positivos: &fDispara un rayo láser de energía dorada",
-                        "  &fque perfora a todos los enemigos a su paso hasta 14 bloques.",
-                        "&8▪ &cContrapartida: &7Cooldown de técnica de 12 segundos.",
-                        "&8▪ &bActivación: &fShift + Clic Derecho empuñando cualquier espada."
+                        "&8▪ &eTipo: &fTécnica de Fusión Saiyajin",
+                        "&8▪ &aEfectos: &fDispara un haz perforante dorado a 14 bloques.",
+                        "&8▪ &bActivación: &fShift + Clic Derecho con espada en mano."
                 )
         ));
 
-        // Row 2: One Piece & Special Powers
-        // 8. Fruta Gomu Gomu (Luffy) (Tier 30)
-        inv.setItem(28, buildTransformationItem(
-                tier >= 30,
-                "GOMU_GOMU".equalsIgnoreCase(active),
-                Material.MAGMA_CREAM,
-                "&c&lFruta del Diablo: Gomu Gomu no Mi",
-                30,
+        // 8. Super Saiyajin 2 (Tier 33)
+        inv.setItem(17, buildTransformationItem(
+                tier >= 33,
+                "SSJ_2".equalsIgnoreCase(active),
+                Material.LIGHTNING_ROD,
+                "&e&lSuper Saiyajin 2",
+                33,
                 Arrays.asList(
-                        "&8▪ &eTipo: &fDespertar Pirata (JoyBoy / Luffy)",
-                        "&8▪ &aEfectos Positivos: &fGear Second con vapor corporal y Velocidad III,",
-                        "  &fmás ráfagas ígneas de golpes Gatling / Red Hawk.",
-                        "&8▪ &cContrapartida: &c¡Maldición del Océano! &7El contacto con el agua",
-                        "  &fte impone Debilidad mortal, Lentitud III y fatiga inmediata.",
+                        "&8▪ &eTipo: &fKi Dorado Ascendido con Bio-Electricidad",
+                        "&8▪ &aEfectos: &fArcos eléctricos permanentes, Fuerza II y Velocidad II (5m).",
                         "&8▪ &bActivación: &fSneak (Shift) sostenido hasta detonar."
                 )
         ));
 
-        // 9. Maestría Santoryu (Zoro) (Tier 24)
+        // 9. Fruta Mera Mera (Tier 55)
+        inv.setItem(19, buildTransformationItem(
+                tier >= 55,
+                "MERA_MERA".equalsIgnoreCase(active),
+                Material.BLAZE_POWDER,
+                "&6&lFruta Mera Mera (Ace / Sabo)",
+                55,
+                Arrays.asList(
+                        "&8▪ &eTipo: &fFruta del Diablo Tipo Logia (Fuego)",
+                        "&8▪ &aEfectos: &fInmunidad a fuego, Puño de Fuego (Hiken) y Entei solar.",
+                        "&8▪ &bActivación: &fClic Derecho (Hiken) / Shift + Clic Der (Entei)."
+                )
+        ));
+
+        // 10. Fruta Ope Ope (Tier 65)
+        inv.setItem(20, buildTransformationItem(
+                tier >= 65,
+                "OPE_OPE".equalsIgnoreCase(active),
+                Material.HEART_OF_THE_SEA,
+                "&b&lFruta Ope Ope (Trafalgar Law)",
+                65,
+                Arrays.asList(
+                        "&8▪ &eTipo: &fFruta de la Operación Quirúrgica",
+                        "&8▪ &aEfectos: &fDomo ROOM y Shambles (intercambio de posición).",
+                        "&8▪ &bActivación: &fClic Derecho (ROOM) / Shift + Clic Der (Shambles)."
+                )
+        ));
+
+        // 11. Fruta Pika Pika (Tier 75)
+        inv.setItem(21, buildTransformationItem(
+                tier >= 75,
+                "PIKA_PIKA".equalsIgnoreCase(active),
+                Material.GLOWSTONE,
+                "&e&lFruta Pika Pika (Kizaru)",
+                75,
+                Arrays.asList(
+                        "&8▪ &eTipo: &fFruta de la Luz Absoluta",
+                        "&8▪ &aEfectos: &fVelocidad fotónica y salto de luz Yata no Kagami.",
+                        "&8▪ &bActivación: &fShift + Clic Izquierdo (Salto de Luz)."
+                )
+        ));
+
+        // 12. Fruta Gura Gura (Tier 85)
+        inv.setItem(22, buildTransformationItem(
+                tier >= 85,
+                "GURA_GURA".equalsIgnoreCase(active),
+                Material.IRON_BLOCK,
+                "&f&lFruta Gura Gura (Barbablanca)",
+                85,
+                Arrays.asList(
+                        "&8▪ &eTipo: &fFruta del Terremoto Sísmico",
+                        "&8▪ &aEfectos: &fGolpe que agrieta el espacio y lanza enemigos por el aire.",
+                        "&8▪ &bActivación: &fClic Izquierdo en combate."
+                )
+        ));
+
+        // 13. Vórtice Magnético (Tier 60)
+        inv.setItem(23, buildTransformationItem(
+                tier >= 60,
+                "JIKI_MAGNET".equalsIgnoreCase(active),
+                Material.LODESTONE,
+                "&b&lVórtice Magnético (Jiki Jiki)",
+                60,
+                Arrays.asList(
+                        "&8▪ &eTipo: &fMagnetismo Polar Atractor",
+                        "&8▪ &aEfectos: &fAtrae al instante todos los ítems en un radio de 200 bloques.",
+                        "&8▪ &bActivación: &fShift + Clic Derecho o comando /rankup magnet."
+                )
+        ));
+
+        // 14. Filos Danzantes / Aura Kill (Tier 70)
+        inv.setItem(24, buildTransformationItem(
+                tier >= 70,
+                "DANCING_BLADES".equalsIgnoreCase(active),
+                Material.DIAMOND_SWORD,
+                "&c&lFilos Danzantes (Aura Kill)",
+                70,
+                Arrays.asList(
+                        "&8▪ &eTipo: &fMaestría Telequinética de Armas",
+                        "&8▪ &aEfectos: &fLas espadas y hachas flotan y golpean solas en 10 bloques.",
+                        "&8▪ &bActivación: &fHaz clic para alternar el Aura Kill autónomo."
+                )
+        ));
+
+        // 15. Sun God Nika (Gear 5) (Tier 88)
+        inv.setItem(25, buildTransformationItem(
+                tier >= 88,
+                "GEAR_FIVE".equalsIgnoreCase(active),
+                Material.NETHER_STAR,
+                "&f&l☀ Sun God Nika (Gear 5)",
+                88,
+                Arrays.asList(
+                        "&8▪ &eTipo: &fGuerrero de la Liberación Shonen",
+                        "&8▪ &aEfectos: &fTambores de júbilo, rebote cartoon sin daño de caída,",
+                        "  &fLanzamiento de Rayos Kaminari y Puño Colosal Bajrang Gun (5m).",
+                        "&8▪ &bActivación: &fShift + Clic Izquierdo (Bajrang) / Clic Izq (Kaminari)."
+                )
+        ));
+
+        // 16. Luffy Gomu Gomu (Gear 2, 3 y 4 Bounceman) (Tier 30)
+        inv.setItem(28, buildTransformationItem(
+                tier >= 30,
+                "GOMU_GOMU".equalsIgnoreCase(active),
+                Material.SLIME_BALL,
+                "&c&lFruta Gomu Gomu (Luffy)",
+                30,
+                Arrays.asList(
+                        "&8▪ &eTipo: &fHombre de Goma",
+                        "&8▪ &aEfectos: &fGear 2 (vapor), Gear 3 (gigante 2.8) y Gear 4 (Bounceman).",
+                        "  &f¡El Gear 4 bota continuamente en el suelo como en el anime!",
+                        "&8▪ &bActivación: &fSneak + Clic Derecho (Gear 3) / Sneak + Clic Izq (Gear 4)."
+                )
+        ));
+
+        // 17. Maestría Santoryu (Zoro) (Tier 24)
         inv.setItem(29, buildTransformationItem(
                 tier >= 24,
                 "SANTORYU".equalsIgnoreCase(active),
@@ -200,25 +286,35 @@ public class TransformationMenu implements InventoryHolder {
                         "&8▪ &eTipo: &fMaestría de Espadachín de Wano",
                         "&8▪ &aEfectos Positivos: &f+25% daño físico permanente con espadas",
                         "  &fy Corte del Dragón Volador de viento a distancia.",
-                        "&8▪ &cContrapartida: &7Requiere blandir espada; técnica con recarga de 8s.",
                         "&8▪ &bActivación: &fClic Derecho con espada en combate."
                 )
         ));
 
-        // 10. Vuelo de Ki Supersónico (Tier 31+)
+        // 18. Kaio-ken Aumentado (Tier 92)
+        inv.setItem(30, buildTransformationItem(
+                tier >= 92,
+                "KAIOKEN".equalsIgnoreCase(active),
+                Material.RED_CANDLE,
+                "&c&lKaio-ken (x3 / x10 / x20)",
+                92,
+                Arrays.asList(
+                        "&8▪ &eTipo: &fMultiplicador Divino Saiyajin",
+                        "&8▪ &aEfectos Positivos: &fVelocidad III, Fuerza II, Salto II y Vuelo Libre (5m).",
+                        "&8▪ &bActivación: &fSneak (Shift) sostenido hasta detonar."
+                )
+        ));
+
+        // 19. Vuelo de Ki Supersónico (Tier 31+)
         inv.setItem(31, createItem(
                 tier >= 31 ? Material.FIREWORK_ROCKET : Material.GUNPOWDER,
                 tier >= 31 ? "&b&l⚡ Vuelo de Ki Supersónico" : "&c🔒 Vuelo de Ki (Requiere Tier 31)",
                 "&8▪ &eTipo: &fPropulsión Aérea Shonen",
-                "&8▪ &aEfectos Positivos: &fVuelo supersónico a 2.5x velocidad con onda sónica.",
-                "&8▪ &cContrapartida: &cAltamente limitado: &7Dura máximo 4 segundos,",
-                "  &7con un tiempo de recarga de 30 segundos (evita vuelo libre ilimitado).",
-                "&8▪ &bActivación: &fDoble toque de espacio o Esprintar + Salto.",
+                "&8▪ &aEfectos: &fSuper impulso a 100 bloques con W + Doble Salto (CD escalonado).",
                 "",
                 tier >= 31 ? (settings.isKiFlightEnabled() ? "&a✔ HABILITADO &7(Clic para alternar)" : "&c✖ DESHABILITADO &7(Clic para activar)") : "&cBloqueado por rango."
         ));
 
-        // 11. Desequipar / Resetear a Aura Base (Slot 40)
+        // Desequipar (Slot 40)
         inv.setItem(40, createItem(Material.BARRIER, "&c&lDesequipar Transformación Activa",
                 "&7Quita la transformación seleccionada y regresa",
                 "&7al aura natural y pasiva de tu rango actual.",
@@ -226,7 +322,7 @@ public class TransformationMenu implements InventoryHolder {
                 "&eClic para desequipar"
         ));
 
-        // 12. Volver al menú de Rangos (Slot 49)
+        // Volver al menú de Rangos (Slot 49)
         inv.setItem(49, createItem(Material.ARROW, "&a◀ Volver al Menú de Rangos", "&7Abrir la interfaz principal de /rankup"));
 
         player.openInventory(this.inv);
@@ -240,8 +336,7 @@ public class TransformationMenu implements InventoryHolder {
         lore.add("");
 
         if (isEquipped) {
-            lore.add("&a✔ ¡EQUIPADA Y LISTA PARA DETONAR!");
-            lore.add("&7Agáchate para iniciar la carga de Ki.");
+            lore.add("&a✔ ¡EQUIPADA Y ACTIVA!");
             return createItem(Material.ENCHANTED_BOOK, name + " &8(&aEQUIPADO&8)", lore);
         } else if (unlocked) {
             lore.add("&e▶ Desbloqueada. Haz clic para equiparla como activa.");
@@ -300,8 +395,17 @@ public class TransformationMenu implements InventoryHolder {
         else if (slot == 14) { newTrans = "GOHAN_BEAST"; reqTier = 45; }
         else if (slot == 15) { newTrans = "BROLY_LSSJ"; reqTier = 34; }
         else if (slot == 16) { newTrans = "VEGETTO_SWORD"; reqTier = 48; }
+        else if (slot == 17) { newTrans = "SSJ_2"; reqTier = 33; }
+        else if (slot == 19) { newTrans = "MERA_MERA"; reqTier = 55; }
+        else if (slot == 20) { newTrans = "OPE_OPE"; reqTier = 65; }
+        else if (slot == 21) { newTrans = "PIKA_PIKA"; reqTier = 75; }
+        else if (slot == 22) { newTrans = "GURA_GURA"; reqTier = 85; }
+        else if (slot == 23) { newTrans = "JIKI_MAGNET"; reqTier = 60; }
+        else if (slot == 24) { newTrans = "DANCING_BLADES"; reqTier = 70; }
+        else if (slot == 25) { newTrans = "GEAR_FIVE"; reqTier = 88; }
         else if (slot == 28) { newTrans = "GOMU_GOMU"; reqTier = 30; }
         else if (slot == 29) { newTrans = "SANTORYU"; reqTier = 24; }
+        else if (slot == 30) { newTrans = "KAIOKEN"; reqTier = 92; }
 
         if (newTrans != null) {
             if (tier < reqTier) {
@@ -313,7 +417,12 @@ public class TransformationMenu implements InventoryHolder {
             plugin.getRankManager().savePlayerData();
             p.playSound(p.getLocation(), Sound.ITEM_ARMOR_EQUIP_NETHERITE, 1.0f, 1.2f);
             p.sendMessage("§a[Transformación] §f¡Has equipado la transformación: §e" + newTrans + "§f!");
-            p.sendMessage("§7Usa Shift sostenido (o los controles de la habilidad) para desatar su poder.");
+            p.sendMessage("§7Usa los controles de la habilidad para desatar su poder.");
+
+            // Activación inmediata para Gear 5 si se selecciona directamente
+            if ("GEAR_FIVE".equalsIgnoreCase(newTrans)) {
+                plugin.getOnePieceListener().activateGear5(p);
+            }
             open();
         }
     }

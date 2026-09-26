@@ -31,13 +31,18 @@ public class RankupMenu implements InventoryHolder {
             "División II: Shinobi & Hechicería",
             "División III: Ruta Pirata & Segadores",
             "División IV: Guerreros Z & Monarca",
-            "División V: Trascendencia Suprema"
+            "División V: Trascendencia Suprema",
+            "División VI: Maldiciones Supremas",
+            "División VII: Shinigami Reiatsu",
+            "División VIII: Monarcas & Demonios",
+            "División IX: Leyendas Cósmicas",
+            "División X: Dioses Multiversales"
     };
 
     public RankupMenu(DrakesRankupPlugin plugin, Player player, int page) {
         this.plugin = plugin;
         this.player = player;
-        this.page = Math.max(0, Math.min(4, page));
+        this.page = Math.max(0, Math.min(9, page));
     }
 
     @Override
@@ -54,12 +59,16 @@ public class RankupMenu implements InventoryHolder {
             inv.setItem(i, glass);
         }
 
-        // Division Tabs (Slots 0 to 4)
-        for (int d = 0; d < 5; d++) {
+        // Division Tabs for current 5-division cluster (0-4 or 5-9)
+        int clusterStart = (page / 5) * 5;
+        int[] tabSlots = {0, 1, 2, 6, 7};
+        for (int i = 0; i < 5; i++) {
+            int d = clusterStart + i;
+            if (d >= 10) break;
             boolean current = (d == page);
             Material tabMat = current ? Material.GOLD_BLOCK : Material.IRON_BARS;
             String prefix = current ? "&6&l▶ " : "&7";
-            inv.setItem(d <= 2 ? d : d + 3, createItem(tabMat, prefix + DIVISION_NAMES[d],
+            inv.setItem(tabSlots[i], createItem(tabMat, prefix + DIVISION_NAMES[d],
                     "&7Niveles: &f" + ((d * 10) + 1) + " al " + ((d * 10) + 10),
                     current ? "&aPestaña activa" : "&eClic para ver esta división"
             ));
@@ -75,7 +84,8 @@ public class RankupMenu implements InventoryHolder {
 
         inv.setItem(4, createItem(Material.PLAYER_HEAD, "&e&l" + player.getName(),
                 "&7Rango actual: " + (currentRank != null ? currentRank.getDisplayName() : "&7Ninguno"),
-                "&7Nivel / Tier: &6" + currentTier + "/50",
+                "&7Nivel / Tier: &6" + currentTier + "/100",
+                "&7Rebirth: &e" + settings.getRebirthCount() + "/50 &7(+" + (settings.getRebirthCount() * 3) + "% daño)", 
                 "&7Monedero: &a$" + MONEY_FORMAT.format(monedero),
                 "&7Bolsa de ascenso: &6$" + MONEY_FORMAT.format(bolsa) + " &8(/rankup bolsa)",
                 "&7Habilidad: " + (currentRank != null && currentRank.getAbilityType() != null ? "&b" + currentRank.getAbilityType().getName() : "&7Ninguna"),
@@ -99,7 +109,7 @@ public class RankupMenu implements InventoryHolder {
         // Center 10 Ranks for Current Division
         int[] slots = {19, 20, 21, 22, 23, 28, 29, 30, 31, 32};
         int startTier = (page * 10) + 1;
-        int endTier = Math.min(startTier + 9, 50);
+        int endTier = Math.min(startTier + 9, 100);
 
         int slotIdx = 0;
         for (int t = startTier; t <= endTier; t++) {
@@ -206,7 +216,7 @@ public class RankupMenu implements InventoryHolder {
 
         // Help & Info Button (Slot 46)
         inv.setItem(46, createItem(Material.BOOK, "&e&lInformación de Rankup",
-                "&750 Rangos Anime Shonen",
+                "&7100 Rangos Anime Shonen",
                 "&7Economía 100% in-game (Dragmas)",
                 "&7Totalmente compatible con VIP Dioses",
                 "",
@@ -235,10 +245,10 @@ public class RankupMenu implements InventoryHolder {
                     afford ? "&a✔ Haz clic para pagar y subir ahora" : "&c✖ No tienes fondos suficientes"
             ));
         } else {
-            inv.setItem(49, createItem(Material.BEACON, "&6&l¡RANGO MAXIMO ALCANZADO!", "&aHas completado los 50 rangos anime de DrakesCraft."));
+            inv.setItem(49, createItem(Material.BEACON, "&6&l¡RANGO MAXIMO ALCANZADO!", "&aHas completado los 100 rangos anime de DrakesCraft. Usa /rebirth para renacer."));
         }
 
-        if (page < 4) {
+        if (page < 9) {
             inv.setItem(50, createItem(Material.ARROW, "&aDivisión Siguiente ▶", "&7Ir a " + DIVISION_NAMES[page + 1]));
         }
 
@@ -324,7 +334,7 @@ public class RankupMenu implements InventoryHolder {
         }
 
         // Next Page
-        if (slot == 50 && page < 4) {
+        if (slot == 50 && page < 9) {
             new RankupMenu(plugin, p, page + 1).open();
             return;
         }
