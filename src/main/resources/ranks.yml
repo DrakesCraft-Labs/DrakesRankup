@@ -163,7 +163,7 @@ ranks:
     particle: SPARK
   meruem:
     tier: 10
-    display-name: '&5&lᴍᴇʀᴜᴇᴍ'
+    display-name: '&5ᴍᴇʀᴜᴇᴍ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪ · ᴄɪᴇɴᴄɪᴀ & ɴᴇɴ'
     cost: 500000
     icon: NETHERITE_HELMET
@@ -235,7 +235,7 @@ ranks:
     particle: SHADOW
   anbu:
     tier: 14
-    display-name: '&8&lᴀɴʙᴜ'
+    display-name: '&8ᴀɴʙᴜ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪɪ · sʜɪɴᴏʙɪ & ʜᴇᴄʜɪᴄᴇʀɪ́ᴀ'
     cost: 1800000
     icon: WITHER_SKELETON_SKULL
@@ -253,7 +253,7 @@ ranks:
     particle: SHADOW
   kage:
     tier: 15
-    display-name: '&6&lᴋᴀɢᴇ'
+    display-name: '&6ᴋᴀɢᴇ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪɪ · sʜɪɴᴏʙɪ & ʜᴇᴄʜɪᴄᴇʀɪ́ᴀ'
     cost: 2400000
     icon: GOLDEN_HELMET
@@ -307,7 +307,7 @@ ranks:
     particle: SHADOW
   yuji:
     tier: 18
-    display-name: '&c&lʏᴜᴊɪ'
+    display-name: '&cʏᴜᴊɪ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪɪ · sʜɪɴᴏʙɪ & ʜᴇᴄʜɪᴄᴇʀɪ́ᴀ'
     cost: 5000000
     icon: CRIMSON_FUNGUS
@@ -325,7 +325,7 @@ ranks:
     particle: SHADOW
   gojo:
     tier: 19
-    display-name: '&b&lɢᴏᴊᴏ'
+    display-name: '&bɢᴏᴊᴏ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪɪ · sʜɪɴᴏʙɪ & ʜᴇᴄʜɪᴄᴇʀɪ́ᴀ'
     cost: 6200000
     icon: END_ROD
@@ -343,7 +343,7 @@ ranks:
     particle: SHADOW
   sukuna:
     tier: 20
-    display-name: '&4&lsᴜᴋᴜɴᴀ'
+    display-name: '&4sᴜᴋᴜɴᴀ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪɪ · sʜɪɴᴏʙɪ & ʜᴇᴄʜɪᴄᴇʀɪ́ᴀ'
     cost: 7500000
     icon: SOUL_CAMPFIRE
@@ -434,7 +434,7 @@ ranks:
     particle: WHITE_SMOKE
   yonkou:
     tier: 25
-    display-name: '&4&lʏᴏɴᴋᴏᴜ'
+    display-name: '&4ʏᴏɴᴋᴏᴜ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪɪɪ · ʀᴜᴛᴀ ᴘɪʀᴀᴛᴀ & sᴇɢᴀᴅᴏʀᴇs'
     cost: 24000000
     icon: NETHERITE_SWORD
@@ -488,7 +488,7 @@ ranks:
     particle: WHITE_SMOKE
   capitan:
     tier: 28
-    display-name: '&f&lᴄᴀᴘɪᴛáɴ'
+    display-name: '&fᴄᴀᴘɪᴛáɴ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪɪɪ · ʀᴜᴛᴀ ᴘɪʀᴀᴛᴀ & sᴇɢᴀᴅᴏʀᴇs'
     cost: 40000000
     icon: WHITE_BANNER
@@ -506,7 +506,7 @@ ranks:
     particle: WHITE_SMOKE
   bankai:
     tier: 29
-    display-name: '&c&lʙᴀɴᴋᴀɪ'
+    display-name: '&cʙᴀɴᴋᴀɪ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪɪɪ · ʀᴜᴛᴀ ᴘɪʀᴀᴛᴀ & sᴇɢᴀᴅᴏʀᴇs'
     cost: 45000000
     icon: DIAMOND_SWORD
@@ -524,7 +524,7 @@ ranks:
     particle: WHITE_SMOKE
   joyboy:
     tier: 30
-    display-name: '&e&lᴊᴏʏʙᴏʏ ︱ ʟᴜғғʏ'
+    display-name: '&eᴊᴏʏʙᴏʏ ︱ ʟᴜғғʏ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪɪɪ · ʀᴜᴛᴀ ᴘɪʀᴀᴛᴀ & sᴇɢᴀᴅᴏʀᴇs'
     cost: 50000000
     icon: SUNFLOWER
@@ -562,7 +562,7 @@ ranks:
     particle: GOLDEN_KI
   supersaiyajin:
     tier: 32
-    display-name: '&e&lsᴜᴘᴇʀsᴀɪʏᴀᴊɪɴ'
+    display-name: '&esᴜᴘᴇʀsᴀɪʏᴀᴊɪɴ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪᴠ · ɢᴜᴇʀʀᴇʀᴏs ᴢ & ᴍᴏɴᴀʀᴄᴀ'
     cost: 85000000
     icon: GLOWSTONE_DUST
@@ -580,7 +580,7 @@ ranks:
     particle: GOLDEN_KI
   ssj2:
     tier: 33
-    display-name: '&e&lssᴊ2'
+    display-name: '&essᴊ2'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪᴠ · ɢᴜᴇʀʀᴇʀᴏs ᴢ & ᴍᴏɴᴀʀᴄᴀ'
     cost: 110000000
     icon: LIGHTNING_ROD
@@ -598,7 +598,7 @@ ranks:
     particle: GOLDEN_KI
   ssj3:
     tier: 34
-    display-name: '&6&lssᴊ3 ︱ ʙʀᴏʟʏ'
+    display-name: '&6ssᴊ3 ︱ ʙʀᴏʟʏ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪᴠ · ɢᴜᴇʀʀᴇʀᴏs ᴢ & ᴍᴏɴᴀʀᴄᴀ'
     cost: 140000000
     icon: GOLD_BLOCK
@@ -617,7 +617,7 @@ ranks:
     particle: GOLDEN_KI
   ssjgod:
     tier: 35
-    display-name: '&c&lssᴊɢᴏᴅ'
+    display-name: '&cssᴊɢᴏᴅ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪᴠ · ɢᴜᴇʀʀᴇʀᴏs ᴢ & ᴍᴏɴᴀʀᴄᴀ'
     cost: 180000000
     icon: REDSTONE_BLOCK
@@ -635,7 +635,7 @@ ranks:
     particle: RED_GOD_KI
   ssjblue:
     tier: 36
-    display-name: '&9&lssᴊʙʟᴜᴇ'
+    display-name: '&9ssᴊʙʟᴜᴇ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪᴠ · ɢᴜᴇʀʀᴇʀᴏs ᴢ & ᴍᴏɴᴀʀᴄᴀ'
     cost: 230000000
     icon: LAPIS_BLOCK
@@ -671,7 +671,7 @@ ranks:
     particle: SHADOW
   cazadors:
     tier: 38
-    display-name: '&6&lᴄᴀᴢᴀᴅᴏʀ-s'
+    display-name: '&6ᴄᴀᴢᴀᴅᴏʀ-s'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪᴠ · ɢᴜᴇʀʀᴇʀᴏs ᴢ & ᴍᴏɴᴀʀᴄᴀ'
     cost: 290000000
     icon: DIAMOND_PICKAXE
@@ -689,7 +689,7 @@ ranks:
     particle: SHADOW
   monarcasombras:
     tier: 39
-    display-name: '&8&lᴍᴏɴᴀʀᴄᴀsᴏᴍʙʀᴀs'
+    display-name: '&8ᴍᴏɴᴀʀᴄᴀsᴏᴍʙʀᴀs'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪᴠ · ɢᴜᴇʀʀᴇʀᴏs ᴢ & ᴍᴏɴᴀʀᴄᴀ'
     cost: 320000000
     icon: OBSIDIAN
@@ -707,7 +707,7 @@ ranks:
     particle: SHADOW
   sungjinwoo:
     tier: 40
-    display-name: '&5&lsᴜɴɢᴊɪɴᴡᴏᴏ'
+    display-name: '&5sᴜɴɢᴊɪɴᴡᴏᴏ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪᴠ · ɢᴜᴇʀʀᴇʀᴏs ᴢ & ᴍᴏɴᴀʀᴄᴀ'
     cost: 350000000
     icon: NETHERITE_INGOT
@@ -725,7 +725,7 @@ ranks:
     particle: SHADOW
   saitama:
     tier: 41
-    display-name: '&e&lsᴀɪᴛᴀᴍᴀ'
+    display-name: '&esᴀɪᴛᴀᴍᴀ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠ · ᴛʀᴀsᴄᴇɴᴅᴇɴᴄɪᴀ sᴜᴘʀᴇᴍᴀ'
     cost: 400000000
     icon: RAW_GOLD
@@ -743,7 +743,7 @@ ranks:
     particle: GOLDEN_KI
   rimuru:
     tier: 42
-    display-name: '&b&lʀɪᴍᴜʀᴜ'
+    display-name: '&bʀɪᴍᴜʀᴜ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠ · ᴛʀᴀsᴄᴇɴᴅᴇɴᴄɪᴀ sᴜᴘʀᴇᴍᴀ'
     cost: 480000000
     icon: SLIME_BALL
@@ -761,7 +761,7 @@ ranks:
     particle: BLUE_GOD_KI
   anos:
     tier: 43
-    display-name: '&4&lᴀɴᴏs'
+    display-name: '&4ᴀɴᴏs'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠ · ᴛʀᴀsᴄᴇɴᴅᴇɴᴄɪᴀ sᴜᴘʀᴇᴍᴀ'
     cost: 580000000
     icon: DRAGON_HEAD
@@ -779,7 +779,7 @@ ranks:
     particle: CURSED_FLAME
   alquimistaestatal:
     tier: 44
-    display-name: '&6&lᴀʟǫᴜɪᴍɪsᴛᴀ'
+    display-name: '&6ᴀʟǫᴜɪᴍɪsᴛᴀ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠ · ᴛʀᴀsᴄᴇɴᴅᴇɴᴄɪᴀ sᴜᴘʀᴇᴍᴀ'
     cost: 700000000
     icon: BEACON
@@ -797,7 +797,7 @@ ranks:
     particle: GOLDEN_KI
   hakari:
     tier: 45
-    display-name: '&d&lɢᴏʜᴀɴ ʙᴇᴀsᴛ ︱ ʜᴀᴋᴀʀɪ'
+    display-name: '&dɢᴏʜᴀɴ ʙᴇᴀsᴛ ︱ ʜᴀᴋᴀʀɪ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠ · ᴛʀᴀsᴄᴇɴᴅᴇɴᴄɪᴀ sᴜᴘʀᴇᴍᴀ'
     cost: 850000000
     icon: AMETHYST_SHARD
@@ -816,7 +816,7 @@ ranks:
     particle: GOLDEN_KI
   ultrainstinto:
     tier: 46
-    display-name: '&f&lᴜʟᴛʀᴀɪɴsᴛɪɴᴛᴏ'
+    display-name: '&fᴜʟᴛʀᴀɪɴsᴛɪɴᴛᴏ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠ · ᴛʀᴀsᴄᴇɴᴅᴇɴᴄɪᴀ sᴜᴘʀᴇᴍᴀ'
     cost: 1000000000
     icon: NETHER_STAR
@@ -835,7 +835,7 @@ ranks:
     particle: SILVER_DIVINE
   beerus:
     tier: 47
-    display-name: '&5&lʙᴇᴇʀᴜs ︱ ᴜʟᴛʀᴀᴇɢᴏ'
+    display-name: '&5ʙᴇᴇʀᴜs ︱ ᴜʟᴛʀᴀᴇɢᴏ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠ · ᴛʀᴀsᴄᴇɴᴅᴇɴᴄɪᴀ sᴜᴘʀᴇᴍᴀ'
     cost: 1150000000
     icon: END_CRYSTAL
@@ -854,7 +854,7 @@ ranks:
     particle: PURPLE_HAKAI
   whis:
     tier: 48
-    display-name: '&b&lᴡʜɪs ︱ ᴠᴇɢᴇᴛᴛᴏ'
+    display-name: '&bᴡʜɪs ︱ ᴠᴇɢᴇᴛᴛᴏ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠ · ᴛʀᴀsᴄᴇɴᴅᴇɴᴄɪᴀ sᴜᴘʀᴇᴍᴀ'
     cost: 1300000000
     icon: ELYTRA
@@ -873,7 +873,7 @@ ranks:
     particle: SILVER_DIVINE
   zeno:
     tier: 49
-    display-name: '&e&lᴢᴇɴᴏ'
+    display-name: '&eᴢᴇɴᴏ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠ · ᴛʀᴀsᴄᴇɴᴅᴇɴᴄɪᴀ sᴜᴘʀᴇᴍᴀ'
     cost: 1400000000
     icon: ENCHANTED_GOLDEN_APPLE
@@ -891,7 +891,7 @@ ranks:
     particle: SUPREME_GOD
   kamisama:
     tier: 50
-    display-name: '&6&l&nᴋᴀᴍɪsᴀᴍᴀ'
+    display-name: '&6ᴋᴀᴍɪsᴀᴍᴀ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠ · ᴛʀᴀsᴄᴇɴᴅᴇɴᴄɪᴀ sᴜᴘʀᴇᴍᴀ'
     cost: 1500000000
     icon: TOTEM_OF_UNDYING
@@ -912,11 +912,12 @@ ranks:
     particle: SUPREME_GOD
   yuji_itadori:
     tier: 51
-    display-name: '&c&lʏᴜᴊɪ ɪᴛᴀᴅᴏʀɪ'
+    display-name: '&cʏᴜᴊɪ ɪᴛᴀᴅᴏʀɪ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪ · ʜᴇᴄʜɪᴄᴇʀɪ́ᴀ & ᴍᴀʟᴅɪᴄɪᴏ́ɴ'
     cost: 2000000000
     icon: IRON_SWORD
     permissions:
+    - essentials.sethome.multiple.yuji_itadori
     - drakesrankup.tier.51
     perks:
     - 'Recipiente de Sukuna'
@@ -930,11 +931,12 @@ ranks:
     particle: CRIMSON_FLASH
   megumi_fushiguro:
     tier: 52
-    display-name: '&9&lᴍᴇɢᴜᴍɪ ғᴜsʜɪɢᴜʀᴏ'
+    display-name: '&9ᴍᴇɢᴜᴍɪ ғᴜsʜɪɢᴜʀᴏ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪ · ʜᴇᴄʜɪᴄᴇʀɪ́ᴀ & ᴍᴀʟᴅɪᴄɪᴏ́ɴ'
     cost: 2500000000
     icon: ENDER_EYE
     permissions:
+    - playervaults.amount.21
     - drakesrankup.tier.52
     perks:
     - 'Técnica de las Diez Sombras'
@@ -948,11 +950,12 @@ ranks:
     particle: SHADOW_AURA
   nobara_kugisaki:
     tier: 53
-    display-name: '&6&lɴᴏʙᴀʀᴀ ᴋᴜɢɪsᴀᴋɪ'
+    display-name: '&6ɴᴏʙᴀʀᴀ ᴋᴜɢɪsᴀᴋɪ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪ · ʜᴇᴄʜɪᴄᴇʀɪ́ᴀ & ᴍᴀʟᴅɪᴄɪᴏ́ɴ'
     cost: 3000000000
     icon: CROSSBOW
     permissions:
+    - essentials.sethome.multiple.nobara_kugisaki
     - drakesrankup.tier.53
     perks:
     - 'Técnica del Muñeco de Paja'
@@ -966,11 +969,12 @@ ranks:
     particle: ORANGE_FLAME
   maki_zenin:
     tier: 54
-    display-name: '&a&lᴍᴀᴋɪ ᴢᴇɴ''''ɪɴ'
+    display-name: '&aᴍᴀᴋɪ ᴢᴇɴ''''ɪɴ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪ · ʜᴇᴄʜɪᴄᴇʀɪ́ᴀ & ᴍᴀʟᴅɪᴄɪᴏ́ɴ'
     cost: 3500000000
     icon: NETHERITE_SWORD
     permissions:
+    - essentials.sethome.multiple.maki_zenin
     - drakesrankup.tier.54
     perks:
     - 'Restricción Celestial Completa'
@@ -984,11 +988,12 @@ ranks:
     particle: GREEN_SPEED
   aoi_todo:
     tier: 55
-    display-name: '&d&lᴀᴏɪ ᴛᴏᴅᴏ'
+    display-name: '&dᴀᴏɪ ᴛᴏᴅᴏ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪ · ʜᴇᴄʜɪᴄᴇʀɪ́ᴀ & ᴍᴀʟᴅɪᴄɪᴏ́ɴ'
     cost: 4000000000
     icon: BELL
     permissions:
+    - playervaults.amount.22
     - drakesrankup.tier.55
     perks:
     - 'Boogie Woogie: Aplaude para permutar posición'
@@ -1002,11 +1007,12 @@ ranks:
     particle: PURPLE_TELEPORT
   nanami_kento:
     tier: 56
-    display-name: '&e&lᴋᴇɴᴛᴏ ɴᴀɴᴀᴍɪ'
+    display-name: '&eᴋᴇɴᴛᴏ ɴᴀɴᴀᴍɪ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪ · ʜᴇᴄʜɪᴄᴇʀɪ́ᴀ & ᴍᴀʟᴅɪᴄɪᴏ́ɴ'
     cost: 4500000000
     icon: SHEARS
     permissions:
+    - essentials.sethome.multiple.nanami_kento
     - drakesrankup.tier.56
     perks:
     - 'Técnica de Proporción 7:3'
@@ -1020,11 +1026,12 @@ ranks:
     particle: YELLOW_SPARK
   suguru_geto:
     tier: 57
-    display-name: '&8&lsᴜɢᴜʀᴜ ɢᴇᴛᴏ'
+    display-name: '&8sᴜɢᴜʀᴜ ɢᴇᴛᴏ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪ · ʜᴇᴄʜɪᴄᴇʀɪ́ᴀ & ᴍᴀʟᴅɪᴄɪᴏ́ɴ'
     cost: 5000000000
     icon: WITHER_SKELETON_SKULL
     permissions:
+    - essentials.sethome.multiple.suguru_geto
     - drakesrankup.tier.57
     perks:
     - 'Manipulación de Maldiciones'
@@ -1038,11 +1045,12 @@ ranks:
     particle: DARK_VORTEX
   yuta_okkotsu:
     tier: 58
-    display-name: '&b&lʏᴜᴛᴀ ᴏᴋᴋᴏᴛsᴜ'
+    display-name: '&bʏᴜᴛᴀ ᴏᴋᴋᴏᴛsᴜ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪ · ʜᴇᴄʜɪᴄᴇʀɪ́ᴀ & ᴍᴀʟᴅɪᴄɪᴏ́ɴ'
     cost: 6000000000
     icon: DIAMOND_SWORD
     permissions:
+    - playervaults.amount.23
     - drakesrankup.tier.58
     perks:
     - 'Rika: Reina de las Maldiciones'
@@ -1056,7 +1064,7 @@ ranks:
     particle: CYAN_RING
   ryomen_sukuna:
     tier: 59
-    display-name: '&4&lʀʏᴏᴍᴇɴ sᴜᴋᴜɴᴀ'
+    display-name: '&4ʀʏᴏᴍᴇɴ sᴜᴋᴜɴᴀ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪ · ʜᴇᴄʜɪᴄᴇʀɪ́ᴀ & ᴍᴀʟᴅɪᴄɪᴏ́ɴ'
     cost: 7500000000
     icon: NETHER_WART
@@ -1074,7 +1082,7 @@ ranks:
     particle: BLOOD_SLASH
   satoru_gojo:
     tier: 60
-    display-name: '&b&l&nɢᴏᴊᴏ sᴀᴛᴏʀᴜ'
+    display-name: '&bɢᴏᴊᴏ sᴀᴛᴏʀᴜ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪ · ʜᴇᴄʜɪᴄᴇʀɪ́ᴀ & ᴍᴀʟᴅɪᴄɪᴏ́ɴ'
     cost: 9000000000
     icon: BEACON
@@ -1092,11 +1100,12 @@ ranks:
     particle: HOLLOW_PURPLE_AURA
   renji_abarai:
     tier: 61
-    display-name: '&c&lʀᴇɴᴊɪ ᴀʙᴀʀᴀɪ'
+    display-name: '&cʀᴇɴᴊɪ ᴀʙᴀʀᴀɪ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪ · sᴏᴄɪᴇᴅᴀᴅ ᴅᴇ ᴀʟᴍᴀs & ᴀʀʀᴀɴᴄᴀʀ'
     cost: 11000000000
     icon: CHAIN
     permissions:
+    - essentials.sethome.multiple.renji_abarai
     - drakesrankup.tier.61
     perks:
     - 'Zabimaru: Rugido de la Serpiente Babosa'
@@ -1110,11 +1119,12 @@ ranks:
     particle: RED_SNAKE
   rukia_kuchiki:
     tier: 62
-    display-name: '&f&lʀᴜᴋɪᴀ ᴋᴜᴄʜɪᴋɪ'
+    display-name: '&fʀᴜᴋɪᴀ ᴋᴜᴄʜɪᴋɪ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪ · sᴏᴄɪᴇᴅᴀᴅ ᴅᴇ ᴀʟᴍᴀs & ᴀʀʀᴀɴᴄᴀʀ'
     cost: 13000000000
     icon: SNOWBALL
     permissions:
+    - playervaults.amount.24
     - drakesrankup.tier.62
     perks:
     - 'Sode no Shirayuki'
@@ -1128,11 +1138,12 @@ ranks:
     particle: WHITE_FROST
   byakuya_kuchiki:
     tier: 63
-    display-name: '&d&lʙʏᴀᴋᴜʏᴀ ᴋᴜᴄʜɪᴋɪ'
+    display-name: '&dʙʏᴀᴋᴜʏᴀ ᴋᴜᴄʜɪᴋɪ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪ · sᴏᴄɪᴇᴅᴀᴅ ᴅᴇ ᴀʟᴍᴀs & ᴀʀʀᴀɴᴄᴀʀ'
     cost: 15000000000
     icon: CHERRY_LEAVES
     permissions:
+    - essentials.sethome.multiple.byakuya_kuchiki
     - drakesrankup.tier.63
     perks:
     - 'Senbonzakura Kageyoshi: Tormenta de Pétalos Cortantes'
@@ -1146,7 +1157,7 @@ ranks:
     particle: CHERRY_PETALS
   kenpachi_zaraki:
     tier: 64
-    display-name: '&4&lᴋᴇɴᴘᴀᴄʜɪ ᴢᴀʀᴀᴋɪ'
+    display-name: '&4ᴋᴇɴᴘᴀᴄʜɪ ᴢᴀʀᴀᴋɪ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪ · sᴏᴄɪᴇᴅᴀᴅ ᴅᴇ ᴀʟᴍᴀs & ᴀʀʀᴀɴᴄᴀʀ'
     cost: 17000000000
     icon: NETHERITE_AXE
@@ -1164,11 +1175,12 @@ ranks:
     particle: YELLOW_BEAST
   shunsui_kyoraku:
     tier: 65
-    display-name: '&5&lsʜᴜɴsᴜɪ ᴋʏᴏ̄ʀᴀᴋᴜ'
+    display-name: '&5sʜᴜɴsᴜɪ ᴋʏᴏ̄ʀᴀᴋᴜ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪ · sᴏᴄɪᴇᴅᴀᴅ ᴅᴇ ᴀʟᴍᴀs & ᴀʀʀᴀɴᴄᴀʀ'
     cost: 19000000000
     icon: TWISTING_VINES
     permissions:
+    - playervaults.amount.25
     - drakesrankup.tier.65
     perks:
     - 'Katen Kyōkotsu: Karamatsu Shinjū'
@@ -1182,11 +1194,12 @@ ranks:
     particle: BLACK_THREAD
   ulquiorra_cifer:
     tier: 66
-    display-name: '&2&lᴜʟǫᴜɪᴏʀʀᴀ ᴄɪғᴇʀ'
+    display-name: '&2ᴜʟǫᴜɪᴏʀʀᴀ ᴄɪғᴇʀ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪ · sᴏᴄɪᴇᴅᴀᴅ ᴅᴇ ᴀʟᴍᴀs & ᴀʀʀᴀɴᴄᴀʀ'
     cost: 22000000000
     icon: DRAGON_BREATH
     permissions:
+    - essentials.sethome.multiple.ulquiorra_cifer
     - drakesrankup.tier.66
     perks:
     - 'Resurrección: Segunda Etapa'
@@ -1200,7 +1213,7 @@ ranks:
     particle: GREEN_CERO
   sosuke_aizen:
     tier: 67
-    display-name: '&5&lsᴏ̄sᴜᴋᴇ ᴀɪᴢᴇɴ'
+    display-name: '&5sᴏ̄sᴜᴋᴇ ᴀɪᴢᴇɴ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪ · sᴏᴄɪᴇᴅᴀᴅ ᴅᴇ ᴀʟᴍᴀs & ᴀʀʀᴀɴᴄᴀʀ'
     cost: 25000000000
     icon: ENDER_EYE
@@ -1218,7 +1231,7 @@ ranks:
     particle: PURPLE_ILLUSION
   yamamoto_genryusai:
     tier: 68
-    display-name: '&6&lʏᴀᴍᴀᴍᴏᴛᴏ ɢᴇɴʀʏᴜ̄sᴀɪ'
+    display-name: '&6ʏᴀᴍᴀᴍᴏᴛᴏ ɢᴇɴʀʏᴜ̄sᴀɪ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪ · sᴏᴄɪᴇᴅᴀᴅ ᴅᴇ ᴀʟᴍᴀs & ᴀʀʀᴀɴᴄᴀʀ'
     cost: 28000000000
     icon: BLAZE_ROD
@@ -1236,11 +1249,12 @@ ranks:
     particle: SOLAR_FIRE
   yhwach_almighty:
     tier: 69
-    display-name: '&e&lʏʜᴡᴀᴄʜ: ᴛʜᴇ ᴀʟᴍɪɢʜᴛʏ'
+    display-name: '&eʏʜᴡᴀᴄʜ: ᴛʜᴇ ᴀʟᴍɪɢʜᴛʏ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪ · sᴏᴄɪᴇᴅᴀᴅ ᴅᴇ ᴀʟᴍᴀs & ᴀʀʀᴀɴᴄᴀʀ'
     cost: 32000000000
     icon: GOLDEN_SWORD
     permissions:
+    - playervaults.amount.26
     - drakesrankup.tier.69
     perks:
     - 'Padre de los Quincy & Soberano del Wandenreich'
@@ -1254,7 +1268,7 @@ ranks:
     particle: GOLDEN_EYES
   ichigo_mugetsu:
     tier: 70
-    display-name: '&8&l&nɪᴄʜɪɢᴏ ᴋᴜʀᴏsᴀᴋɪ: ᴍᴜɢᴇᴛsᴜ'
+    display-name: '&8ɪᴄʜɪɢᴏ ᴋᴜʀᴏsᴀᴋɪ: ᴍᴜɢᴇᴛsᴜ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪ · sᴏᴄɪᴇᴅᴀᴅ ᴅᴇ ᴀʟᴍᴀs & ᴀʀʀᴀɴᴄᴀʀ'
     cost: 36000000000
     icon: NETHERITE_SWORD
@@ -1272,11 +1286,12 @@ ranks:
     particle: BLACK_GETSUGA
   aki_hayakawa:
     tier: 71
-    display-name: '&b&lᴀᴋɪ ʜᴀʏᴀᴋᴀᴡᴀ'
+    display-name: '&bᴀᴋɪ ʜᴀʏᴀᴋᴀᴡᴀ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪɪ · ᴅᴇᴍᴏɴɪᴏs & ᴄᴀᴢᴀᴅᴏʀᴇs ᴅᴇ sᴏᴍʙʀᴀs'
     cost: 40000000000
     icon: SPECTRAL_ARROW
     permissions:
+    - essentials.sethome.multiple.aki_hayakawa
     - drakesrankup.tier.71
     perks:
     - 'Contrato con el Demonio Zorro: ¡Kon!'
@@ -1290,11 +1305,12 @@ ranks:
     particle: BLUE_FOX
   power_blood:
     tier: 72
-    display-name: '&c&lᴘᴏᴡᴇʀ: ᴅᴇᴍᴏɴɪᴏ sᴀɴɢᴜɪ́ɴᴇᴏ'
+    display-name: '&cᴘᴏᴡᴇʀ: ᴅᴇᴍᴏɴɪᴏ sᴀɴɢᴜɪ́ɴᴇᴏ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪɪ · ᴅᴇᴍᴏɴɪᴏs & ᴄᴀᴢᴀᴅᴏʀᴇs ᴅᴇ sᴏᴍʙʀᴀs'
     cost: 44000000000
     icon: REDSTONE
     permissions:
+    - essentials.sethome.multiple.power_blood
     - drakesrankup.tier.72
     perks:
     - 'Manipulación de la Sangre'
@@ -1308,11 +1324,12 @@ ranks:
     particle: BLOOD_BURST
   makima_control:
     tier: 73
-    display-name: '&e&lᴍᴀᴋɪᴍᴀ: ᴅᴇᴍᴏɴɪᴏ ᴅᴇʟ ᴄᴏɴᴛʀᴏʟ'
+    display-name: '&eᴍᴀᴋɪᴍᴀ: ᴅᴇᴍᴏɴɪᴏ ᴅᴇʟ ᴄᴏɴᴛʀᴏʟ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪɪ · ᴅᴇᴍᴏɴɪᴏs & ᴄᴀᴢᴀᴅᴏʀᴇs ᴅᴇ sᴏᴍʙʀᴀs'
     cost: 48000000000
     icon: LEAD
     permissions:
+    - playervaults.amount.27
     - drakesrankup.tier.73
     perks:
     - 'Poder del Control Absoluto'
@@ -1326,7 +1343,7 @@ ranks:
     particle: YELLOW_CHAINS
   denji_chainsaw:
     tier: 74
-    display-name: '&c&lᴅᴇɴᴊɪ: ᴅᴇᴍᴏɴɪᴏ ᴍᴏᴛᴏsɪᴇʀʀᴀ'
+    display-name: '&cᴅᴇɴᴊɪ: ᴅᴇᴍᴏɴɪᴏ ᴍᴏᴛᴏsɪᴇʀʀᴀ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪɪ · ᴅᴇᴍᴏɴɪᴏs & ᴄᴀᴢᴀᴅᴏʀᴇs ᴅᴇ sᴏᴍʙʀᴀs'
     cost: 52000000000
     icon: IRON_BLOCK
@@ -1344,11 +1361,12 @@ ranks:
     particle: CHAINSAW_SPARKS
   cha_hae_in:
     tier: 75
-    display-name: '&e&lᴄʜᴀ ʜᴀᴇ-ɪɴ: ʟᴀ ʙᴀɪʟᴀʀɪɴᴀ'
+    display-name: '&eᴄʜᴀ ʜᴀᴇ-ɪɴ: ʟᴀ ʙᴀɪʟᴀʀɪɴᴀ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪɪ · ᴅᴇᴍᴏɴɪᴏs & ᴄᴀᴢᴀᴅᴏʀᴇs ᴅᴇ sᴏᴍʙʀᴀs'
     cost: 57000000000
     icon: GOLDEN_SWORD
     permissions:
+    - essentials.sethome.multiple.cha_hae_in
     - drakesrankup.tier.75
     perks:
     - 'Espadachina Rango S de Luz'
@@ -1362,11 +1380,12 @@ ranks:
     particle: LIGHT_TRAIL
   beru_shadow:
     tier: 76
-    display-name: '&5&lʙᴇʀᴜ: ʀᴇʏ ʜᴏʀᴍɪɢᴀ ᴅᴇ sᴏᴍʙʀᴀs'
+    display-name: '&5ʙᴇʀᴜ: ʀᴇʏ ʜᴏʀᴍɪɢᴀ ᴅᴇ sᴏᴍʙʀᴀs'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪɪ · ᴅᴇᴍᴏɴɪᴏs & ᴄᴀᴢᴀᴅᴏʀᴇs ᴅᴇ sᴏᴍʙʀᴀs'
     cost: 62000000000
     icon: DRAGON_HEAD
     permissions:
+    - essentials.sethome.multiple.beru_shadow
     - drakesrankup.tier.76
     perks:
     - 'Mariscal del Ejército de las Sombras'
@@ -1380,11 +1399,12 @@ ranks:
     particle: PURPLE_POISON
   igris_commander:
     tier: 77
-    display-name: '&4&lɪɢʀɪs: ᴄᴀʙᴀʟʟᴇʀᴏ ʀᴏᴊᴏ'
+    display-name: '&4ɪɢʀɪs: ᴄᴀʙᴀʟʟᴇʀᴏ ʀᴏᴊᴏ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪɪ · ᴅᴇᴍᴏɴɪᴏs & ᴄᴀᴢᴀᴅᴏʀᴇs ᴅᴇ sᴏᴍʙʀᴀs'
     cost: 67000000000
     icon: SHIELD
     permissions:
+    - playervaults.amount.28
     - drakesrankup.tier.77
     perks:
     - 'Comandante Sombra Sangriento'
@@ -1398,11 +1418,12 @@ ranks:
     particle: RED_LIGHTNING
   bellion_shadow:
     tier: 78
-    display-name: '&8&lʙᴇʟʟɪᴏɴ: ɢʀᴀɴ ᴍᴀʀɪsᴄᴀʟ'
+    display-name: '&8ʙᴇʟʟɪᴏɴ: ɢʀᴀɴ ᴍᴀʀɪsᴄᴀʟ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪɪ · ᴅᴇᴍᴏɴɪᴏs & ᴄᴀᴢᴀᴅᴏʀᴇs ᴅᴇ sᴏᴍʙʀᴀs'
     cost: 72000000000
     icon: NETHER_STAR
     permissions:
+    - essentials.sethome.multiple.bellion_shadow
     - drakesrankup.tier.78
     perks:
     - 'Servidor primordial de Ashborn'
@@ -1416,11 +1437,12 @@ ranks:
     particle: SHADOW_BLADE
   sung_arise:
     tier: 79
-    display-name: '&9&lsᴜɴɢ ᴊɪɴ-ᴡᴏᴏ: ¡ᴀʀɪsᴇ!'
+    display-name: '&9sᴜɴɢ ᴊɪɴ-ᴡᴏᴏ: ¡ᴀʀɪsᴇ!'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪɪ · ᴅᴇᴍᴏɴɪᴏs & ᴄᴀᴢᴀᴅᴏʀᴇs ᴅᴇ sᴏᴍʙʀᴀs'
     cost: 78000000000
     icon: SOUL_CAMPFIRE
     permissions:
+    - essentials.sethome.multiple.sung_arise
     - drakesrankup.tier.79
     perks:
     - 'Comando ¡Levántate! (Arise)'
@@ -1434,7 +1456,7 @@ ranks:
     particle: BLUE_ARISE
   shadow_monarch_ashborn:
     tier: 80
-    display-name: '&5&l&nᴍᴏɴᴀʀᴄᴀ ᴅᴇ ʟᴀs sᴏᴍʙʀᴀs'
+    display-name: '&5ᴍᴏɴᴀʀᴄᴀ ᴅᴇ ʟᴀs sᴏᴍʙʀᴀs'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ᴠɪɪɪ · ᴅᴇᴍᴏɴɪᴏs & ᴄᴀᴢᴀᴅᴏʀᴇs ᴅᴇ sᴏᴍʙʀᴀs'
     cost: 84000000000
     icon: OBSIDIAN
@@ -1452,11 +1474,12 @@ ranks:
     particle: MONARCH_AURA
   killua_godspeed:
     tier: 81
-    display-name: '&b&lᴋɪʟʟᴜᴀ: ɢᴏᴅsᴘᴇᴇᴅ (ᴋᴀɴᴍᴜʀᴜ)'
+    display-name: '&bᴋɪʟʟᴜᴀ: ɢᴏᴅsᴘᴇᴇᴅ (ᴋᴀɴᴍᴜʀᴜ)'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪx · ʟᴇʏᴇɴᴅᴀs ᴄᴏ́sᴍɪᴄᴀs & sᴇɪs ᴄᴀᴍɪɴᴏs'
     cost: 90000000000
     icon: LIGHTNING_ROD
     permissions:
+    - essentials.sethome.multiple.killua_godspeed
     - drakesrankup.tier.81
     perks:
     - 'Modo Kanmuru (Velocidad Divina del Relámpago)'
@@ -1470,11 +1493,12 @@ ranks:
     particle: CYAN_LIGHTNING
   gon_adulto:
     tier: 82
-    display-name: '&e&lɢᴏɴ ғʀᴇᴇᴄss: ᴀᴅᴜʟᴛᴏ'
+    display-name: '&eɢᴏɴ ғʀᴇᴇᴄss: ᴀᴅᴜʟᴛᴏ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪx · ʟᴇʏᴇɴᴅᴀs ᴄᴏ́sᴍɪᴄᴀs & sᴇɪs ᴄᴀᴍɪɴᴏs'
     cost: 96000000000
     icon: ANVIL
     permissions:
+    - playervaults.amount.29
     - drakesrankup.tier.82
     perks:
     - 'Voto Sagrado y Renuncia al Futuro'
@@ -1488,11 +1512,12 @@ ranks:
     particle: GOLDEN_SMASH
   netero_guanyin:
     tier: 83
-    display-name: '&6&lɪsᴀᴀᴄ ɴᴇᴛᴇʀᴏ: ᴄᴇʀᴏ ʜᴀɴᴅ'
+    display-name: '&6ɪsᴀᴀᴄ ɴᴇᴛᴇʀᴏ: ᴄᴇʀᴏ ʜᴀɴᴅ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪx · ʟᴇʏᴇɴᴅᴀs ᴄᴏ́sᴍɪᴄᴀs & sᴇɪs ᴄᴀᴍɪɴᴏs'
     cost: 102000000000
     icon: GOLD_BLOCK
     permissions:
+    - essentials.sethome.multiple.netero_guanyin
     - drakesrankup.tier.83
     perks:
     - 'Bodhisattva Guanyin de las 100 Manos'
@@ -1506,11 +1531,12 @@ ranks:
     particle: GUANYIN_AURA
   meruem_postrose:
     tier: 84
-    display-name: '&a&lᴍᴇʀᴜᴇᴍ: ʀᴇʏ ʜᴏʀᴍɪɢᴀ'
+    display-name: '&aᴍᴇʀᴜᴇᴍ: ʀᴇʏ ʜᴏʀᴍɪɢᴀ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪx · ʟᴇʏᴇɴᴅᴀs ᴄᴏ́sᴍɪᴄᴀs & sᴇɪs ᴄᴀᴍɪɴᴏs'
     cost: 108000000000
     icon: EMERALD_BLOCK
     permissions:
+    - essentials.sethome.multiple.meruem_postrose
     - drakesrankup.tier.84
     perks:
     - 'Fotón de Aura Omnisciente'
@@ -1524,11 +1550,12 @@ ranks:
     particle: EMERALD_PHOTON
   minato_hiraishin:
     tier: 85
-    display-name: '&e&lᴍɪɴᴀᴛᴏ ɴᴀᴍɪᴋᴀᴢᴇ: ʜɪʀᴀɪsʜɪɴ'
+    display-name: '&eᴍɪɴᴀᴛᴏ ɴᴀᴍɪᴋᴀᴢᴇ: ʜɪʀᴀɪsʜɪɴ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪx · ʟᴇʏᴇɴᴅᴀs ᴄᴏ́sᴍɪᴄᴀs & sᴇɪs ᴄᴀᴍɪɴᴏs'
     cost: 115000000000
     icon: ENDER_PEARL
     permissions:
+    - playervaults.amount.30
     - drakesrankup.tier.85
     perks:
     - 'El Relámpago Amarillo de Konoha'
@@ -1542,7 +1569,7 @@ ranks:
     particle: YELLOW_FLASH
   itachi_susanoo:
     tier: 86
-    display-name: '&4&lɪᴛᴀᴄʜɪ ᴜᴄʜɪʜᴀ: ᴀᴍᴀᴛᴇʀᴀsᴜ'
+    display-name: '&4ɪᴛᴀᴄʜɪ ᴜᴄʜɪʜᴀ: ᴀᴍᴀᴛᴇʀᴀsᴜ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪx · ʟᴇʏᴇɴᴅᴀs ᴄᴏ́sᴍɪᴄᴀs & sᴇɪs ᴄᴀᴍɪɴᴏs'
     cost: 122000000000
     icon: MAGMA_BLOCK
@@ -1560,7 +1587,7 @@ ranks:
     particle: BLACK_FLAME
   madara_rikudo:
     tier: 87
-    display-name: '&5&lᴍᴀᴅᴀʀᴀ ᴜᴄʜɪʜᴀ: sᴇɪs ᴄᴀᴍɪɴᴏs'
+    display-name: '&5ᴍᴀᴅᴀʀᴀ ᴜᴄʜɪʜᴀ: sᴇɪs ᴄᴀᴍɪɴᴏs'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪx · ʟᴇʏᴇɴᴅᴀs ᴄᴏ́sᴍɪᴄᴀs & sᴇɪs ᴄᴀᴍɪɴᴏs'
     cost: 129000000000
     icon: CRYING_OBSIDIAN
@@ -1578,7 +1605,7 @@ ranks:
     particle: METEOR_SMOKE
   naruto_baryon:
     tier: 88
-    display-name: '&c&lɴᴀʀᴜᴛᴏ ᴜᴢᴜᴍᴀᴋɪ: ᴍᴏᴅᴏ ʙᴀʀɪᴏ́ɴ'
+    display-name: '&cɴᴀʀᴜᴛᴏ ᴜᴢᴜᴍᴀᴋɪ: ᴍᴏᴅᴏ ʙᴀʀɪᴏ́ɴ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪx · ʟᴇʏᴇɴᴅᴀs ᴄᴏ́sᴍɪᴄᴀs & sᴇɪs ᴄᴀᴍɪɴᴏs'
     cost: 136000000000
     icon: FIRE_CHARGE
@@ -1596,7 +1623,7 @@ ranks:
     particle: ORANGE_TAILS
   luffy_gear5:
     tier: 89
-    display-name: '&f&lʟᴜғғʏ: ɢᴇᴀʀ 5 sᴜɴ ɢᴏᴅ ɴɪᴋᴀ'
+    display-name: '&fʟᴜғғʏ: ɢᴇᴀʀ 5 sᴜɴ ɢᴏᴅ ɴɪᴋᴀ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪx · ʟᴇʏᴇɴᴅᴀs ᴄᴏ́sᴍɪᴄᴀs & sᴇɪs ᴄᴀᴍɪɴᴏs'
     cost: 144000000000
     icon: WHITE_WOOL
@@ -1614,7 +1641,7 @@ ranks:
     particle: WHITE_JOY
   shanks_kamisari:
     tier: 90
-    display-name: '&c&l&nsʜᴀɴᴋs ᴇʟ ᴘᴇʟɪʀʀᴏᴊᴏ: ᴋᴀᴍɪsᴀʀɪ'
+    display-name: '&csʜᴀɴᴋs ᴇʟ ᴘᴇʟɪʀʀᴏᴊᴏ: ᴋᴀᴍɪsᴀʀɪ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ ɪx · ʟᴇʏᴇɴᴅᴀs ᴄᴏ́sᴍɪᴄᴀs & sᴇɪs ᴄᴀᴍɪɴᴏs'
     cost: 152000000000
     icon: NETHERITE_SWORD
@@ -1632,11 +1659,12 @@ ranks:
     particle: CONQUEROR_LIGHTNING
   jiren_universe11:
     tier: 91
-    display-name: '&c&lᴊɪʀᴇɴ ᴇʟ ɢʀɪs'
+    display-name: '&cᴊɪʀᴇɴ ᴇʟ ɢʀɪs'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ x · ᴅɪᴏsᴇs ᴍᴜʟᴛɪᴠᴇʀsᴀʟᴇs & sɪɴɢᴜʟᴀʀɪᴅᴀᴅ'
     cost: 160000000000
     icon: REDSTONE_BLOCK
     permissions:
+    - essentials.sethome.multiple.jiren_universe11
     - drakesrankup.tier.91
     perks:
     - 'Guerrero más fuerte del Universo 11'
@@ -1650,7 +1678,7 @@ ranks:
     particle: HEAT_WAVE
   gogeta_blue:
     tier: 92
-    display-name: '&b&lɢᴏɢᴇᴛᴀ sᴜᴘᴇʀ sᴀɪʏᴀᴊɪɴ ʙʟᴜᴇ'
+    display-name: '&bɢᴏɢᴇᴛᴀ sᴜᴘᴇʀ sᴀɪʏᴀᴊɪɴ ʙʟᴜᴇ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ x · ᴅɪᴏsᴇs ᴍᴜʟᴛɪᴠᴇʀsᴀʟᴇs & sɪɴɢᴜʟᴀʀɪᴅᴀᴅ'
     cost: 168000000000
     icon: SOUL_TORCH
@@ -1668,11 +1696,12 @@ ranks:
     particle: STARDUST_RAINBOW
   vegito_blue:
     tier: 93
-    display-name: '&9&lᴠᴇɢɪᴛᴏ sᴜᴘᴇʀ sᴀɪʏᴀᴊɪɴ ʙʟᴜᴇ'
+    display-name: '&9ᴠᴇɢɪᴛᴏ sᴜᴘᴇʀ sᴀɪʏᴀᴊɪɴ ʙʟᴜᴇ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ x · ᴅɪᴏsᴇs ᴍᴜʟᴛɪᴠᴇʀsᴀʟᴇs & sɪɴɢᴜʟᴀʀɪᴅᴀᴅ'
     cost: 176000000000
     icon: SEA_LANTERN
     permissions:
+    - essentials.sethome.multiple.vegito_blue
     - drakesrankup.tier.93
     perks:
     - 'Fusión Pothala Divina'
@@ -1686,7 +1715,7 @@ ranks:
     particle: BLUE_DIVINE_BURST
   bills_god:
     tier: 94
-    display-name: '&5&lʙɪʟʟs: ᴅɪᴏs ᴅᴇ ʟᴀ ᴅᴇsᴛʀᴜᴄᴄɪᴏ́ɴ'
+    display-name: '&5ʙɪʟʟs: ᴅɪᴏs ᴅᴇ ʟᴀ ᴅᴇsᴛʀᴜᴄᴄɪᴏ́ɴ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ x · ᴅɪᴏsᴇs ᴍᴜʟᴛɪᴠᴇʀsᴀʟᴇs & sɪɴɢᴜʟᴀʀɪᴅᴀᴅ'
     cost: 184000000000
     icon: PURPLE_GLAZED_TERRACOTTA
@@ -1704,7 +1733,7 @@ ranks:
     particle: HAKAI_PURPLE
   whis_angel:
     tier: 95
-    display-name: '&b&lᴡʜɪs: ᴀ́ɴɢᴇʟ ᴅᴇʟ ᴜɴɪᴠᴇʀsᴏ 7'
+    display-name: '&bᴡʜɪs: ᴀ́ɴɢᴇʟ ᴅᴇʟ ᴜɴɪᴠᴇʀsᴏ 7'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ x · ᴅɪᴏsᴇs ᴍᴜʟᴛɪᴠᴇʀsᴀʟᴇs & sɪɴɢᴜʟᴀʀɪᴅᴀᴅ'
     cost: 192000000000
     icon: END_ROD
@@ -1722,11 +1751,12 @@ ranks:
     particle: ANGEL_HALO
   daishinkan_sama:
     tier: 96
-    display-name: '&f&lɢʀᴀɴ sᴀᴄᴇʀᴅᴏᴛᴇ: ᴅᴀɪsʜɪɴᴋᴀɴ'
+    display-name: '&fɢʀᴀɴ sᴀᴄᴇʀᴅᴏᴛᴇ: ᴅᴀɪsʜɪɴᴋᴀɴ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ x · ᴅɪᴏsᴇs ᴍᴜʟᴛɪᴠᴇʀsᴀʟᴇs & sɪɴɢᴜʟᴀʀɪᴅᴀᴅ'
     cost: 200000000000
     icon: CONDUIT
     permissions:
+    - essentials.sethome.multiple.daishinkan_sama
     - drakesrankup.tier.96
     perks:
     - 'Soberano de todos los Ángeles'
@@ -1740,11 +1770,12 @@ ranks:
     particle: CELESTIAL_SPHERES
   zalama_dragon:
     tier: 97
-    display-name: '&e&lᴢᴀʟᴀᴍᴀ: ᴅʀᴀɢᴏ́ɴ ᴅɪᴠɪɴᴏ sᴜᴘᴇʀ'
+    display-name: '&eᴢᴀʟᴀᴍᴀ: ᴅʀᴀɢᴏ́ɴ ᴅɪᴠɪɴᴏ sᴜᴘᴇʀ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ x · ᴅɪᴏsᴇs ᴍᴜʟᴛɪᴠᴇʀsᴀʟᴇs & sɪɴɢᴜʟᴀʀɪᴅᴀᴅ'
     cost: 210000000000
     icon: DRAGON_EGG
     permissions:
+    - essentials.sethome.multiple.zalama_dragon
     - drakesrankup.tier.97
     perks:
     - 'Creador de las Super Esferas del Dragón'
@@ -1758,11 +1789,12 @@ ranks:
     particle: GOLDEN_DRAGON_DUST
   toribot_creator:
     tier: 98
-    display-name: '&6&lᴛᴏʀɪ-ʙᴏᴛ: ᴇʟ ᴄʀᴇᴀᴅᴏʀ'
+    display-name: '&6ᴛᴏʀɪ-ʙᴏᴛ: ᴇʟ ᴄʀᴇᴀᴅᴏʀ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ x · ᴅɪᴏsᴇs ᴍᴜʟᴛɪᴠᴇʀsᴀʟᴇs & sɪɴɢᴜʟᴀʀɪᴅᴀᴅ'
     cost: 22000000000
     icon: ENCHANTED_BOOK
     permissions:
+    - essentials.sethome.multiple.toribot_creator
     - drakesrankup.tier.98
     perks:
     - 'El Creador de Todo el Universo'
@@ -1776,11 +1808,12 @@ ranks:
     particle: CREATOR_PENCIL
   zeno_duo:
     tier: 99
-    display-name: '&d&lᴢᴇɴᴏ-sᴀᴍᴀ: ᴘʀᴇsᴇɴᴛᴇ & ғᴜᴛᴜʀᴏ'
+    display-name: '&dᴢᴇɴᴏ-sᴀᴍᴀ: ᴘʀᴇsᴇɴᴛᴇ & ғᴜᴛᴜʀᴏ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ x · ᴅɪᴏsᴇs ᴍᴜʟᴛɪᴠᴇʀsᴀʟᴇs & sɪɴɢᴜʟᴀʀɪᴅᴀᴅ'
     cost: 235000000000
     icon: TOTEM_OF_UNDYING
     permissions:
+    - essentials.sethome.multiple.zeno_duo
     - drakesrankup.tier.99
     perks:
     - 'Dúo Omni-Rey Universal'
@@ -1794,7 +1827,7 @@ ranks:
     particle: DUAL_OMNI
   zeno_omni_supremo:
     tier: 100
-    display-name: '&6&l&nᴢᴇɴᴏ ᴏᴍɴɪ-sᴜᴘʀᴇᴍᴏ'
+    display-name: '&6ᴢᴇɴᴏ ᴏᴍɴɪ-sᴜᴘʀᴇᴍᴏ'
     division: 'ᴅɪᴠɪsɪᴏ́ɴ x · ᴅɪᴏsᴇs ᴍᴜʟᴛɪᴠᴇʀsᴀʟᴇs & sɪɴɢᴜʟᴀʀɪᴅᴀᴅ'
     cost: 250000000000
     icon: NETHER_STAR

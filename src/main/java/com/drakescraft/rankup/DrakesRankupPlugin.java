@@ -1,5 +1,7 @@
 package com.drakescraft.rankup;
 
+import com.drakescraft.rankup.ability.SeriousPunchHandler;
+
 import com.drakescraft.rankup.ability.DragonBallListener;
 import com.drakescraft.rankup.ability.KineticPushListener;
 import com.drakescraft.rankup.ability.OnePieceListener;
@@ -46,6 +48,9 @@ public class DrakesRankupPlugin extends JavaPlugin {
     private OnePieceListener onePieceListener;
     @Getter
     private SpecialAbilitiesListener specialAbilitiesListener;
+    @Getter
+    private SeriousPunchHandler seriousPunchHandler;
+
     @Getter
     private StaffManager staffManager;
     @Getter
@@ -95,6 +100,9 @@ public class DrakesRankupPlugin extends JavaPlugin {
         dragonBallListener = new DragonBallListener(this);
         onePieceListener = new OnePieceListener(this);
         specialAbilitiesListener = new SpecialAbilitiesListener(this);
+        seriousPunchHandler = new SeriousPunchHandler(this);
+        Bukkit.getPluginManager().registerEvents(seriousPunchHandler, this);
+
 
         Bukkit.getPluginManager().registerEvents(new RankupGuiListener(), this);
         Bukkit.getPluginManager().registerEvents(new TransformationGuiListener(), this);
@@ -134,6 +142,9 @@ public class DrakesRankupPlugin extends JavaPlugin {
         }
         if (rankDecayTask != null) {
             rankDecayTask.cancel();
+        }
+        if (seriousPunchHandler != null) {
+            seriousPunchHandler.restoreAllPending();
         }
         if (rankManager != null) {
             rankManager.savePlayerData();

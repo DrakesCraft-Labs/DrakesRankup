@@ -75,7 +75,7 @@ public final class ProtectionGate {
         return result;
     }
 
-    private boolean isProtected(Location location, Player actor) {
+    public boolean isProtected(Location location, Player actor) {
         try {
             // 1. Verificación en ProtectionStones
             if (protectionStoneLookup != null) {
@@ -124,6 +124,51 @@ public final class ProtectionGate {
             }
             return true; // Fail-closed: ante cualquier duda o error, proteger el terreno
         }
+    }
+
+    
+    public boolean isProtected(Location location) {
+        return isProtected(location, null);
+    }
+
+    public boolean canDestroyBlock(Player actor, org.bukkit.block.Block block) {
+        if (block == null || block.getWorld() == null) return false;
+        org.bukkit.Material type = block.getType();
+        if (type.isAir()) return false;
+
+        // Inmunes absolutos de Minecraft
+        if (type == org.bukkit.Material.BEDROCK
+                || type == org.bukkit.Material.BARRIER
+                || type == org.bukkit.Material.END_PORTAL
+                || type == org.bukkit.Material.END_PORTAL_FRAME
+                || type == org.bukkit.Material.NETHER_PORTAL
+                || type == org.bukkit.Material.REINFORCED_DEEPSLATE
+                || type == org.bukkit.Material.COMMAND_BLOCK
+                || type == org.bukkit.Material.CHAIN_COMMAND_BLOCK
+                || type == org.bukkit.Material.REPEATING_COMMAND_BLOCK
+                || type == org.bukkit.Material.STRUCTURE_BLOCK
+                || type == org.bukkit.Material.STRUCTURE_VOID
+                || type == org.bukkit.Material.JIGSAW) {
+            return false;
+        }
+
+        // Contenedores e inventarios protegidos de jugadores
+        if (type == org.bukkit.Material.CHEST
+                || type == org.bukkit.Material.TRAPPED_CHEST
+                || type == org.bukkit.Material.BARREL
+                || type.name().endsWith("SHULKER_BOX")
+                || type == org.bukkit.Material.HOPPER
+                || type == org.bukkit.Material.DISPENSER
+                || type == org.bukkit.Material.DROPPER
+                || type == org.bukkit.Material.FURNACE
+                || type == org.bukkit.Material.BLAST_FURNACE
+                || type == org.bukkit.Material.SMOKER
+                || type == org.bukkit.Material.BREWING_STAND) {
+            return false;
+        }
+
+        // Proteccion regional (ProtectionStones / WorldGuard)
+        return !isProtected(block.getLocation(), actor);
     }
 
     private Method findProtectionStoneLookup() {

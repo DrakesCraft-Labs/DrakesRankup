@@ -141,19 +141,7 @@ public class RankAbilityListener implements Listener {
                 } catch (Exception ignored) {}
             }
 
-            if (ability == AbilityType.SERIOUS_PUNCH || rank.getTier() >= 50) {
-                if (random.nextDouble() < 0.12) {
-                    Vector blast = player.getLocation().getDirection().normalize().multiply(2.2).setY(0.4);
-                    event.getEntity().setVelocity(blast);
-                    try {
-                        player.getWorld().spawnParticle(Particle.EXPLOSION, hitLoc.clone().add(0, 1.0, 0), 1);
-                        player.getWorld().playSound(hitLoc, Sound.ENTITY_GENERIC_EXPLODE, 0.8f, 1.5f);
-                    } catch (Exception ignored) {}
-                    if (plugin.getProtectionGate() != null) {
-                        plugin.getProtectionGate().applyTerrainExplosion(player, hitLoc, 2.5f, false);
-                    }
-                }
-            }
+            // SERIOUS_PUNCH delegado a SeriousPunchHandler (Golpe Serio & Crater Telurico Saitama/Jiren)
 
             // Habilidades Tiers 51 - 100
             if (ability == AbilityType.DISMANTLE_CLEAVE || rank.getTier() >= 58) {
