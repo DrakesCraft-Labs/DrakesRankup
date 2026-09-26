@@ -240,17 +240,28 @@ public class DrakesRankupPlugin extends JavaPlugin {
             }
         } catch (Throwable ignored) {}
 
-        // Slimefun Infinity Matrix check en el inventario del jugador
+        // Slimefun / Custom items check en el inventario (Infinity Matrix, Flight Gem, etc.)
         try {
             String pUuidStr = player.getUniqueId().toString();
             for (org.bukkit.inventory.ItemStack item : player.getInventory().getContents()) {
-                if (item != null && item.hasItemMeta() && item.getItemMeta().hasLore()) {
-                    java.util.List<String> lore = item.getItemMeta().getLore();
-                    if (lore != null) {
-                        for (String line : lore) {
-                            String stripped = org.bukkit.ChatColor.stripColor(line).trim();
-                            if (stripped.toUpperCase().startsWith("UUID:") && stripped.substring(5).trim().equalsIgnoreCase(pUuidStr)) {
-                                return true;
+                if (item != null && item.hasItemMeta()) {
+                    if (item.getItemMeta().hasDisplayName()) {
+                        String name = org.bukkit.ChatColor.stripColor(item.getItemMeta().getDisplayName()).toUpperCase();
+                        if (name.contains("FLIGHT") || name.contains("VUELO") || name.contains("MATRIX")) {
+                            return true;
+                        }
+                    }
+                    if (item.getItemMeta().hasLore()) {
+                        java.util.List<String> lore = item.getItemMeta().getLore();
+                        if (lore != null) {
+                            for (String line : lore) {
+                                String stripped = org.bukkit.ChatColor.stripColor(line).trim().toUpperCase();
+                                if (stripped.startsWith("UUID:") && stripped.substring(5).trim().equalsIgnoreCase(pUuidStr)) {
+                                    return true;
+                                }
+                                if (stripped.contains("FLIGHT") || stripped.contains("VUELO") || stripped.contains("INFINITY FLIGHT")) {
+                                    return true;
+                                }
                             }
                         }
                     }
