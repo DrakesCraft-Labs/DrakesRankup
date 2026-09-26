@@ -240,6 +240,48 @@ public class DrakesRankupPlugin extends JavaPlugin {
             }
         } catch (Throwable ignored) {}
 
+        // NotEnoughAddons - FlyingBubble check
+        try {
+            org.bukkit.plugin.Plugin nea = getServer().getPluginManager().getPlugin("NotEnoughAddons");
+            if (nea != null && nea.isEnabled()) {
+                Class<?> fblClass = Class.forName("me.fhoz.notenoughaddons.listeners.FlyingBubbleListener");
+                java.lang.reflect.Field field = fblClass.getDeclaredField("bubbledPlayers");
+                field.setAccessible(true);
+                @SuppressWarnings("unchecked")
+                java.util.Set<java.util.UUID> bubbled = (java.util.Set<java.util.UUID>) field.get(null);
+                if (bubbled != null && bubbled.contains(player.getUniqueId())) {
+                    return true;
+                }
+                Class<?> fbClass = Class.forName("me.fhoz.notenoughaddons.items.electric.FlyingBubble");
+                java.lang.reflect.Field fbField = fbClass.getDeclaredField("allEnabledPlayers");
+                fbField.setAccessible(true);
+                @SuppressWarnings("unchecked")
+                java.util.Map<?, java.util.Set<java.util.UUID>> allMap = (java.util.Map<?, java.util.Set<java.util.UUID>>) fbField.get(null);
+                if (allMap != null) {
+                    for (java.util.Set<java.util.UUID> set : allMap.values()) {
+                        if (set != null && set.contains(player.getUniqueId())) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        } catch (Throwable ignored) {}
+
+        // DynaTech - AngelGem check
+        try {
+            org.bukkit.plugin.Plugin dt = getServer().getPluginManager().getPlugin("DynaTech");
+            if (dt != null && dt.isEnabled()) {
+                Class<?> agClass = Class.forName("me.profelements.dynatech.items.tools.AngelGem");
+                java.lang.reflect.Field field = agClass.getDeclaredField("enabledFlightUsers");
+                field.setAccessible(true);
+                @SuppressWarnings("unchecked")
+                java.util.Set<java.util.UUID> set = (java.util.Set<java.util.UUID>) field.get(null);
+                if (set != null && set.contains(player.getUniqueId())) {
+                    return true;
+                }
+            }
+        } catch (Throwable ignored) {}
+
         // Slimefun / Custom items check en el inventario (Infinity Matrix, Flight Gem, etc.)
         try {
             String pUuidStr = player.getUniqueId().toString();
@@ -247,7 +289,7 @@ public class DrakesRankupPlugin extends JavaPlugin {
                 if (item != null && item.hasItemMeta()) {
                     if (item.getItemMeta().hasDisplayName()) {
                         String name = org.bukkit.ChatColor.stripColor(item.getItemMeta().getDisplayName()).toUpperCase();
-                        if (name.contains("FLIGHT") || name.contains("VUELO") || name.contains("MATRIX")) {
+                        if (name.contains("FLIGHT") || name.contains("VUELO") || name.contains("MATRIX") || name.contains("ANGEL") || name.contains("GEMA")) {
                             return true;
                         }
                     }
@@ -259,7 +301,7 @@ public class DrakesRankupPlugin extends JavaPlugin {
                                 if (stripped.startsWith("UUID:") && stripped.substring(5).trim().equalsIgnoreCase(pUuidStr)) {
                                     return true;
                                 }
-                                if (stripped.contains("FLIGHT") || stripped.contains("VUELO") || stripped.contains("INFINITY FLIGHT")) {
+                                if (stripped.contains("FLIGHT") || stripped.contains("VUELO") || stripped.contains("INFINITY FLIGHT") || stripped.contains("ANGEL")) {
                                     return true;
                                 }
                             }
