@@ -210,20 +210,54 @@ public class DrakesRankupPlugin extends JavaPlugin {
      * tiene derecho a volar y su doble-salto no debe convertirse en un dash.
      */
     public boolean hasExternalFlight(org.bukkit.entity.Player player) {
-        if (player.hasPermission("drakesrankup.admin")) return true;
-        if (player.hasPermission("essentials.fly")) return true;
-        if (player.isFlying()) return true;
+        if (player == null || !player.isOnline()) return false;
+        if (player.getGameMode() == org.bukkit.GameMode.CREATIVE || player.getGameMode() == org.bukkit.GameMode.SPECTATOR) return true;
+        if (player.hasPermission("drakesrankup.admin") || player.hasPermission("essentials.fly")
+                || player.hasPermission("cmi.command.fly") || player.hasPermission("bentobox.island.fly")
+                || player.hasPermission("bskyblock.island.fly") || player.hasPermission("tempfly.fly")) {
+            return true;
+        }
         if (getStaffManager() != null && getStaffManager().isAngel(player.getUniqueId())) return true;
+
+        // BentoBox / Isla check
         try {
-            org.bukkit.plugin.Plugin ess = getServer().getPluginManager().getPlugin("Essentials");
-            if (ess != null && ess.isEnabled()) {
-                Object user = ess.getClass().getMethod("getUser", org.bukkit.entity.Player.class).invoke(ess, player);
-                if (user != null
-                        && Boolean.TRUE.equals(user.getClass().getMethod("isFlyModeEnabled").invoke(user))) {
+            org.bukkit.plugin.Plugin bb = getServer().getPluginManager().getPlugin("BentoBox");
+            if (bb != null && bb.isEnabled()) {
+                if (player.hasPermission("bskyblock.island.fly") || player.hasPermission("bentobox.island.fly")) {
                     return true;
                 }
             }
         } catch (Throwable ignored) {}
+
+        // Essentials check
+        try {
+            org.bukkit.plugin.Plugin ess = getServer().getPluginManager().getPlugin("Essentials");
+            if (ess != null && ess.isEnabled()) {
+                Object user = ess.getClass().getMethod("getUser", org.bukkit.entity.Player.class).invoke(ess, player);
+                if (user != null && Boolean.TRUE.equals(user.getClass().getMethod("isFlyModeEnabled").invoke(user))) {
+                    return true;
+                }
+            }
+        } catch (Throwable ignored) {}
+
+        // Slimefun Infinity Matrix check en el inventario del jugador
+        try {
+            String pUuidStr = player.getUniqueId().toString();
+            for (org.bukkit.inventory.ItemStack item : player.getInventory().getContents()) {
+                if (item != null && item.hasItemMeta() && item.getItemMeta().hasLore()) {
+                    java.util.List<String> lore = item.getItemMeta().getLore();
+                    if (lore != null) {
+                        for (String line : lore) {
+                            String stripped = org.bukkit.ChatColor.stripColor(line).trim();
+                            if (stripped.toUpperCase().startsWith("UUID:") && stripped.substring(5).trim().equalsIgnoreCase(pUuidStr)) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Throwable ignored) {}
+
         return false;
     }
 

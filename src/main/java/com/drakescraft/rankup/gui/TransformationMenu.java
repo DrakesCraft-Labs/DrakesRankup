@@ -366,6 +366,9 @@ public class TransformationMenu implements InventoryHolder {
             if (plugin.getDragonBallListener() != null) {
                 plugin.getDragonBallListener().revertTransformations(p);
             }
+            if (plugin.getOnePieceListener() != null) {
+                plugin.getOnePieceListener().revertTransformations(p);
+            }
             p.setFlySpeed(0.10f);
             if (!plugin.hasExternalFlight(p) && p.getGameMode() != org.bukkit.GameMode.CREATIVE && p.getGameMode() != org.bukkit.GameMode.SPECTATOR) {
                 p.setFlying(false);

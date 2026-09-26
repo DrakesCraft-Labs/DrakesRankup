@@ -123,6 +123,15 @@ public class DragonBallListener implements Listener {
         BukkitTask task = chargingTasks.remove(uuid);
         if (task != null) task.cancel();
 
+        player.removePotionEffect(PotionEffectType.STRENGTH);
+        player.removePotionEffect(PotionEffectType.SPEED);
+        player.removePotionEffect(PotionEffectType.JUMP_BOOST);
+        player.removePotionEffect(PotionEffectType.RESISTANCE);
+        player.removePotionEffect(PotionEffectType.REGENERATION);
+        player.removePotionEffect(PotionEffectType.ABSORPTION);
+        player.removePotionEffect(PotionEffectType.SLOWNESS);
+        player.removePotionEffect(PotionEffectType.HUNGER);
+
         player.setFlySpeed(0.10f);
         if (!plugin.hasExternalFlight(player) && player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
             player.setFlying(false);
@@ -350,6 +359,10 @@ public class DragonBallListener implements Listener {
             plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
                 activeSSJ2.remove(uuid);
                 if (player.isOnline()) {
+                    player.removePotionEffect(PotionEffectType.STRENGTH);
+                    player.removePotionEffect(PotionEffectType.SPEED);
+                    player.removePotionEffect(PotionEffectType.JUMP_BOOST);
+                    player.removePotionEffect(PotionEffectType.RESISTANCE);
                     player.sendMessage("§e[Rankup] El estado de Super Saiyajin 2 ha concluido.");
                 }
             }, 6000L);
@@ -423,6 +436,8 @@ public class DragonBallListener implements Listener {
         activeKaioken.remove(uuid);
         activeSSJ2.remove(uuid);
                 if (player.isOnline()) {
+                    player.removePotionEffect(PotionEffectType.STRENGTH);
+                    player.removePotionEffect(PotionEffectType.RESISTANCE);
                     // Negative side effect: Slowness post-rage
                     player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 120, 0));
                     player.sendMessage("§c[Broly LSSJ] §7La cólera berserker se disipa: sufres agotamiento muscular (Lentitud).");
@@ -441,6 +456,9 @@ public class DragonBallListener implements Listener {
             plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
                 activeSSJBlue.remove(uuid);
                 if (player.isOnline()) {
+                    player.removePotionEffect(PotionEffectType.STRENGTH);
+                    player.removePotionEffect(PotionEffectType.SPEED);
+                    player.removePotionEffect(PotionEffectType.RESISTANCE);
                     player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 80, 0)); // coste: ki agotado
                     player.sendMessage("§9[Rankup] El Super Saiyajin Blue se disipa: ki agotado (Lentitud).");
                 }
@@ -458,6 +476,9 @@ public class DragonBallListener implements Listener {
             plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
                 activeSSJGod.remove(uuid);
                 if (player.isOnline()) {
+                    player.removePotionEffect(PotionEffectType.REGENERATION);
+                    player.removePotionEffect(PotionEffectType.SPEED);
+                    player.removePotionEffect(PotionEffectType.ABSORPTION);
                     player.sendMessage("§c[Rankup] El ki divino del Super Saiyajin God se ha disipado.");
                 }
             }, 700L);
@@ -498,6 +519,9 @@ public class DragonBallListener implements Listener {
                 activeKaioken.remove(uuid);
         activeSSJ2.remove(uuid);
                 if (player.isOnline()) {
+                    player.removePotionEffect(PotionEffectType.SPEED);
+                    player.removePotionEffect(PotionEffectType.STRENGTH);
+                    player.removePotionEffect(PotionEffectType.JUMP_BOOST);
                     player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 100, 0));
                     player.sendMessage("§c[Rankup] El Kaio-ken concluye: tus fibras musculares descansan.");
                 }
@@ -747,13 +771,15 @@ public class DragonBallListener implements Listener {
         if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) return;
         if (!plugin.isWorldAllowed(player.getWorld())) return;
 
+        // Si el jugador cuenta con vuelo externo legítimo (Infinity Matrix, Essentials fly, Isla fly),
+        // permitir que Bukkit/Slimefun gestione el vuelo estándar normalmente.
+        if (plugin.hasExternalFlight(player)) return;
+
         UUID uuid = player.getUniqueId();
         PlayerSettings settings = plugin.getRankManager().getPlayerSettings(uuid);
         if (!settings.isAbilitiesEnabled() || !settings.isKiFlightEnabled()) {
-            if (!plugin.hasExternalFlight(player) && player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
-                player.setFlying(false);
-                player.setAllowFlight(false);
-            }
+            player.setFlying(false);
+            player.setAllowFlight(false);
             if (player.getFlySpeed() != 0.10f) {
                 player.setFlySpeed(0.10f);
             }
@@ -767,10 +793,8 @@ public class DragonBallListener implements Listener {
         boolean eligible = (tier >= 31 || hasTransform || hasStaff);
 
         if (!eligible) {
-            if (!plugin.hasExternalFlight(player) && player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
-                player.setFlying(false);
-                player.setAllowFlight(false);
-            }
+            player.setFlying(false);
+            player.setAllowFlight(false);
             return;
         }
 
@@ -868,10 +892,11 @@ public class DragonBallListener implements Listener {
         if (!plugin.isWorldAllowed(player.getWorld())) return;
 
         UUID uuid = player.getUniqueId();
+        boolean hasExternal = plugin.hasExternalFlight(player);
         PlayerSettings settings = plugin.getRankManager().getPlayerSettings(uuid);
 
         if (!settings.isAbilitiesEnabled() || !settings.isKiFlightEnabled()) {
-            if (!plugin.hasExternalFlight(player) && player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
+            if (!hasExternal) {
                 if (player.isFlying()) {
                     player.setFlying(false);
                 }
@@ -896,20 +921,22 @@ public class DragonBallListener implements Listener {
         boolean hasStaff = (player.hasPermission("drakesrankup.staff") || plugin.getStaffManager().isAngel(uuid));
         boolean eligible = (tier >= 31 || hasTransform || hasStaff);
 
-        if (eligible && !plugin.hasExternalFlight(player)) {
-            long now = System.currentTimeMillis();
-            long ready = kiFlightCooldown.getOrDefault(uuid, 0L);
-            if (now >= ready) {
-                if (!player.getAllowFlight()) {
-                    player.setAllowFlight(true);
+        if (!hasExternal) {
+            if (eligible) {
+                long now = System.currentTimeMillis();
+                long ready = kiFlightCooldown.getOrDefault(uuid, 0L);
+                if (now >= ready) {
+                    if (!player.getAllowFlight()) {
+                        player.setAllowFlight(true);
+                    }
                 }
-            }
-        } else if (!eligible && !plugin.hasExternalFlight(player)) {
-            if (player.getAllowFlight()) {
-                player.setAllowFlight(false);
-            }
-            if (player.isFlying()) {
-                player.setFlying(false);
+            } else {
+                if (player.getAllowFlight()) {
+                    player.setAllowFlight(false);
+                }
+                if (player.isFlying()) {
+                    player.setFlying(false);
+                }
             }
         }
 

@@ -200,6 +200,25 @@ public class OnePieceListener implements Listener {
         player.sendActionBar(Component.text("§2⚔ ¡ESTILO TRES ESPADAS: CORTE DEL DRAGÓN VOLADOR! §7(Recarga: 8s)"));
     }
 
+    public void revertTransformations(Player player) {
+        if (player == null) return;
+        UUID uuid = player.getUniqueId();
+        activeGearSecond.remove(uuid);
+        activeGear3.remove(uuid);
+        activeGear4.remove(uuid);
+        activeGear5.remove(uuid);
+        resetScale(player);
+
+        player.removePotionEffect(PotionEffectType.SPEED);
+        player.removePotionEffect(PotionEffectType.JUMP_BOOST);
+        player.removePotionEffect(PotionEffectType.STRENGTH);
+        player.removePotionEffect(PotionEffectType.RESISTANCE);
+        player.removePotionEffect(PotionEffectType.REGENERATION);
+        player.removePotionEffect(PotionEffectType.SLOWNESS);
+        player.removePotionEffect(PotionEffectType.WEAKNESS);
+    }
+
+
     // ==========================================
     // 1. GEAR 4 (BOUNCEMAN: REBOTE REALISTA CONTINUO + 4 MINUTOS)
     // ==========================================
@@ -260,6 +279,11 @@ public class OnePieceListener implements Listener {
             activeGear4.remove(uuid);
             resetScale(player);
             if (player.isOnline()) {
+                player.removePotionEffect(PotionEffectType.SPEED);
+                player.removePotionEffect(PotionEffectType.JUMP_BOOST);
+                player.removePotionEffect(PotionEffectType.STRENGTH);
+                player.removePotionEffect(PotionEffectType.RESISTANCE);
+                player.removePotionEffect(PotionEffectType.REGENERATION);
                 player.sendMessage("§4[Rankup] El Gear 4 ha concluido: el haki consumido se disipa.");
             }
         }, 4800L);
@@ -304,6 +328,11 @@ public class OnePieceListener implements Listener {
         plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
             activeGear5.remove(uuid);
             if (player.isOnline()) {
+                player.removePotionEffect(PotionEffectType.SPEED);
+                player.removePotionEffect(PotionEffectType.JUMP_BOOST);
+                player.removePotionEffect(PotionEffectType.STRENGTH);
+                player.removePotionEffect(PotionEffectType.RESISTANCE);
+                player.removePotionEffect(PotionEffectType.REGENERATION);
                 player.sendMessage("§f[Rankup] El Gear 5 se apaga: el Guerrero de la Liberación descansa.");
             }
         }, 6000L);
