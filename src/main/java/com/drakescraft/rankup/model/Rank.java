@@ -32,6 +32,6 @@ public class Rank {
                 AbilityType abilityType, String particleType) {
         this(tier, id, displayName, division, cost, icon, permissions, perks, rewardCommands,
                 hasKineticPush, pushMultiplier, pushCooldownSeconds, abilityType, particleType,
-                (tier <= 10 || tier % 10 == 0 || tier == 50), Math.max(1000.0, cost * 0.05));
+                (tier <= 10 || tier % 10 == 0 || tier == 100), Math.max(1000.0, cost * 0.05));
     }
 }

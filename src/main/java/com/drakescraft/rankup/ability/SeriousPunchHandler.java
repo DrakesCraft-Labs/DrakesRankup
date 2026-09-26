@@ -9,6 +9,8 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.bukkit.damage.DamageSource;
+import org.bukkit.damage.DamageType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -19,6 +21,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -29,6 +33,10 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 /**
  * Habilidad Legendaria: GOLPE SERIO / PUÑO DE LA MUERTE (DEATH PUNCH - SAITAMA & JIREN).
  * - Provoca daño real y masivo a montañas y terreno (cono sónico colosal).
+ * - Daño Verdadero (True Damage) y Perforación de Armadura:
+ *   * Utiliza DamageType.SONIC_BOOM para ignorar defensas vanilla y encantamientos de armadura.
+ *   * Rompe escudos instantáneamente con cooldown prolongado (8 segundos).
+ *   * Suelo de impacto letal para penetrar sets de Slimefun Infinity / Pociones de Resistencia IV.
  * - Umbral Telúrico (400 bloques):
  *   * Si la destrucción es <= 400 bloques: Los bloques se regeneran progresivamente con el tiempo.
  *   * Si la destrucción supera 400 bloques: "¡Que se quede así nomás!" La destrucción es PERMANENTE,
@@ -116,8 +124,8 @@ public class SeriousPunchHandler implements Listener {
     }
 
     /**
-     * Ejecuta el golpe serio estilo Saitama vs Genos.
-     * Crea un cono supersónico masivo que ahueca montañas y perfora el terreno.
+     * Ejecuta el golpe serio estilo Saitama vs Genos / Boros.
+     * Crea un cono supersónico masivo que ahueca montañas y perfora el terreno con daño verdadero.
      */
     public void executeSeriousDeathPunch(Player player, Location origin, Vector dir, Entity directTarget) {
         World world = origin.getWorld();
@@ -185,26 +193,70 @@ public class SeriousPunchHandler implements Listener {
             }
         }
 
-        // Daño cinético masivo a entidades en el cono
+        // Daño cinético masivo a entidades en el cono con Daño Verdadero (Anti-Infinity & Armor-Piercing)
         int rebirths = plugin.getRankManager().getRebirthCount(player.getUniqueId());
-        double entityDamage = 45.0 + (rebirths * 2.5);
 
-        for (Entity e : world.getNearbyEntities(origin.clone().add(dir.clone().multiply(16.0)), 20.0, 15.0, 20.0)) {
+        DamageSource sonicSource = DamageSource.builder(DamageType.SONIC_BOOM)
+                .withCausingEntity(player)
+                .withDirectEntity(player)
+                .withDamageLocation(origin)
+                .build();
+
+        for (Entity e : world.getNearbyEntities(origin.clone().add(dir.clone().multiply(16.0)), 22.0, 16.0, 22.0)) {
             if (e.equals(player)) continue;
             if (e instanceof Tameable t && player.getUniqueId().equals(t.getOwnerUniqueId())) continue;
 
             if (e instanceof LivingEntity living) {
-                // Comprobar si está en el cono
+                // Comprobar si está en el cono de impacto o es el objetivo directo
                 Vector toTarget = living.getLocation().toVector().subtract(origin.toVector());
                 double dot = toTarget.normalize().dot(dir);
-                if (dot > 0.65 || e.equals(directTarget)) {
-                    living.damage(entityDamage, player);
-                    Vector launch = dir.clone().multiply(2.8).setY(0.65);
+                if (dot > 0.60 || e.equals(directTarget)) {
+                    // 1. Romper escudos si es un jugador bloqueando
+                    if (living instanceof Player targetPlayer) {
+                        if (targetPlayer.isBlocking() ||
+                            targetPlayer.getInventory().getItemInMainHand().getType() == Material.SHIELD ||
+                            targetPlayer.getInventory().getItemInOffHand().getType() == Material.SHIELD) {
+                            targetPlayer.setCooldown(Material.SHIELD, 160); // 8s de desactivación total de escudo
+                            targetPlayer.playSound(targetPlayer.getLocation(), Sound.ITEM_SHIELD_BREAK, 2.0f, 0.8f);
+                            targetPlayer.sendActionBar(Component.text("§c🛡️ ¡ESCUDO DESTROZADO POR EL GOLPE SERIO!"));
+                        }
+                    }
+
+                    // 2. Daño Verdadero (Sonic Boom ignora armadura y encantamientos vanilla)
+                    // Daño colosal: 75 HP (37.5 corazones) base + 5 por cada rebirth + 35% de su salud actual
+                    double prevHealth = living.getHealth();
+                    double calculatedDamage = 75.0 + (rebirths * 5.0) + (prevHealth * 0.35);
+
+                    living.damage(calculatedDamage, sonicSource);
+
+                    // 3. Suelo de Daño Verdadero Garantizado (Anti-Resistance / Anti-Infinity god effects)
+                    // Si la víctima tiene Resistencia IV o reducción extrema de Slimefun Infinity:
+                    // Garantizar un impacto mínimo directo que no pueda ser anulado
+                    double damageDone = prevHealth - living.getHealth();
+                    double minGuaranteedDamage = 40.0 + (rebirths * 3.5); // 20+ corazones mínimos garantizados
+                    if (damageDone < minGuaranteedDamage && !living.isDead()) {
+                        double remainingHp = Math.max(1.0, living.getHealth() - (minGuaranteedDamage - damageDone));
+                        living.setHealth(remainingHp);
+                    }
+
+                    // 4. Efectos de aturdimiento de onda expansiva
+                    living.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60, 0, false, false, false));
+                    living.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 80, 2, false, false, false));
+
+                    // 5. Impulso cinético violento
+                    Vector launch = dir.clone().multiply(3.2).setY(0.80);
                     living.setVelocity(launch);
+
                     try {
-                        world.spawnParticle(Particle.EXPLOSION, living.getLocation().add(0, 1.0, 0), 2);
-                        world.playSound(living.getLocation(), Sound.ENTITY_WARDEN_SONIC_BOOM, 1.2f, 1.4f);
+                        world.spawnParticle(Particle.EXPLOSION_EMITTER, living.getLocation().add(0, 1.0, 0), 2);
+                        world.spawnParticle(Particle.SONIC_BOOM, living.getLocation().add(0, 1.0, 0), 2);
+                        world.playSound(living.getLocation(), Sound.ENTITY_WARDEN_SONIC_BOOM, 2.0f, 0.7f);
                     } catch (Exception ignored) {}
+
+                    if (living instanceof Player targetPlayer) {
+                        targetPlayer.sendTitle("§c§l💥 ¡GOLPE SERIO!", "§fRecibiste la onda de choque de Saitama", 5, 35, 10);
+                        targetPlayer.sendActionBar(Component.text("§c💥 ¡GOLPE SERIO! Onda de choque devastó tus defensas."));
+                    }
                 }
             }
         }

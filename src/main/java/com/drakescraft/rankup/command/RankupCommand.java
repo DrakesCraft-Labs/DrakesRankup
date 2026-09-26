@@ -35,6 +35,13 @@ public class RankupCommand implements CommandExecutor, TabCompleter {
             }
         }
 
+        if (label.equalsIgnoreCase("ranks") || label.equalsIgnoreCase("rangos")) {
+            if (sender instanceof Player player) {
+                new RankupMenu(plugin, player, 0).open();
+                return true;
+            }
+        }
+
         if (args.length == 0) {
             if (!(sender instanceof Player player)) {
                 sender.sendMessage("§cEste comando solo puede ser ejecutado por un jugador.");
@@ -145,11 +152,20 @@ public class RankupCommand implements CommandExecutor, TabCompleter {
         }
 
         if (sub.equals("max")) {
-            if (!(sender instanceof Player player)) {
-                sender.sendMessage("§cEste comando solo puede ser ejecutado por un jugador.");
+            Player target;
+            if (args.length >= 2 && (sender.hasPermission("drakesrankup.admin") || sender.isOp())) {
+                target = Bukkit.getPlayer(args[1]);
+                if (target == null) {
+                    sender.sendMessage("§cJugador '" + args[1] + "' no encontrado u offline.");
+                    return true;
+                }
+            } else if (sender instanceof Player p) {
+                target = p;
+            } else {
+                sender.sendMessage("§cUso desde consola: /rankup admin max <jugador> o /rankup admin set <jugador> max");
                 return true;
             }
-            plugin.getRankManager().processRankupMax(player);
+            plugin.getRankManager().processRankupMax(target);
             return true;
         }
 
@@ -238,6 +254,8 @@ public class RankupCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
 
+            int maxTier = plugin.getRankManager().getMaxTier();
+
             if (args.length >= 2) {
                 if (args[1].equalsIgnoreCase("reset")) {
                     plugin.getStaffManager().resetTestTier(player);
@@ -252,13 +270,13 @@ public class RankupCommand implements CommandExecutor, TabCompleter {
                     if (r != null) targetTier = r.getTier();
                 }
 
-                if (targetTier >= 1 && targetTier <= 50) {
+                if (targetTier >= 1 && targetTier <= maxTier) {
                     plugin.getStaffManager().setTestTier(player, targetTier);
                     return true;
                 }
             }
 
-            player.sendMessage("§cUso: /rankup test <1-50 | id_rango> §7o §e/rankup test reset");
+            player.sendMessage("§cUso: /rankup test <1-" + maxTier + " | id_rango> §7o §e/rankup test reset");
             return true;
         }
 
@@ -273,13 +291,14 @@ public class RankupCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
             int tier = plugin.getRankManager().getPlayerTier(targetPlayer.getUniqueId());
+            int maxTier = plugin.getRankManager().getMaxTier();
             Rank rank = plugin.getRankManager().getPlayerRank(targetPlayer.getUniqueId());
             Rank next = plugin.getRankManager().getNextRank(targetPlayer.getUniqueId());
 
             sender.sendMessage("§8§m--------------------------------------------------");
             sender.sendMessage(" §e§lFICHA TECNICA · RANKUP ANIME");
             sender.sendMessage(" §7Jugador: §f" + targetPlayer.getName());
-            sender.sendMessage(" §7Nivel actual: §a" + tier + " §7/ §e50");
+            sender.sendMessage(" §7Nivel actual: §a" + tier + " §7/ §e" + maxTier);
             sender.sendMessage(" §7Rango: §b" + (rank != null ? rank.getDisplayName() : "§7Sin Rango"));
             sender.sendMessage(" §7División: §8" + (rank != null ? rank.getDivision() : "§7Ninguna"));
             sender.sendMessage(" §7Habilidad: §e" + (rank != null ? rank.getAbilityType().getName() : "§7Ninguna"));
@@ -327,41 +346,75 @@ public class RankupCommand implements CommandExecutor, TabCompleter {
                 sender.sendMessage("§aBolsa de ascenso de §e" + args[2] + " §afijada en §6$" + RankupMenu.MONEY_FORMAT.format(monto));
                 return true;
             }
-            if (args.length >= 4 && args[1].equalsIgnoreCase("set")) {
+            if (args.length >= 3 && args[1].equalsIgnoreCase("max")) {
                 Player target = Bukkit.getPlayer(args[2]);
                 if (target == null) {
-                    sender.sendMessage("§cJugador no encontrado.");
+                    sender.sendMessage("§cJugador '" + args[2] + "' no encontrado u offline.");
                     return true;
                 }
-                try {
-                    int newTier = Integer.parseInt(args[3]);
-                    int prevTier = plugin.getRankManager().getPlayerTier(target.getUniqueId());
-                    int clampedTier = Math.max(0, Math.min(50, newTier));
-                    plugin.getRankManager().setPlayerTier(target.getUniqueId(), clampedTier);
-                    plugin.getRankManager().resetMaintenance(target.getUniqueId());
-                    Rank newRank = plugin.getRankManager().getRankByTier(clampedTier);
-                    plugin.getRankManager().applyLuckPermsRank(target, prevTier, newRank);
-                    sender.sendMessage("§a[Rankup] Nivel de " + target.getName() + " establecido en " + clampedTier + ".");
-                    target.sendMessage("§a[Rankup] Tu nivel de rango ha sido actualizado a " + clampedTier + " por un administrador.");
-                } catch (NumberFormatException e) {
-                    sender.sendMessage("§cEl nivel debe ser un número entre 0 y 50.");
+                int maxTier = plugin.getRankManager().getMaxTier();
+                int prevTier = plugin.getRankManager().getPlayerTier(target.getUniqueId());
+                plugin.getRankManager().setPlayerTier(target.getUniqueId(), maxTier);
+                plugin.getRankManager().resetMaintenance(target.getUniqueId());
+                Rank newRank = plugin.getRankManager().getRankByTier(maxTier);
+                plugin.getRankManager().applyLuckPermsRank(target, prevTier, newRank);
+                sender.sendMessage("§a[Rankup] Nivel de " + target.getName() + " maximizado a " + maxTier + " (" + (newRank != null ? newRank.getDisplayName() : "Max") + ").");
+                target.sendMessage("§a[Rankup] ¡Has sido elevado al Rango Máximo (" + maxTier + ") por un administrador!");
+                return true;
+            }
+            if (args.length >= 4 && args[1].equalsIgnoreCase("set")) {
+                org.bukkit.OfflinePlayer target = Bukkit.getOfflinePlayer(args[2]);
+                if (target == null || (!target.hasPlayedBefore() && !target.isOnline())) {
+                    sender.sendMessage("§cJugador '" + args[2] + "' no encontrado en los registros.");
+                    return true;
                 }
+                int maxTier = plugin.getRankManager().getMaxTier();
+                int newTier;
+                if (args[3].equalsIgnoreCase("max")) {
+                    newTier = maxTier;
+                } else {
+                    try {
+                        newTier = Integer.parseInt(args[3]);
+                    } catch (NumberFormatException e) {
+                        sender.sendMessage("§cEl nivel debe ser un número entre 0 y " + maxTier + " (o 'max').");
+                        return true;
+                    }
+                }
+                int prevTier = plugin.getRankManager().getPlayerTier(target.getUniqueId());
+                int clampedTier = Math.max(0, Math.min(maxTier, newTier));
+                plugin.getRankManager().setPlayerTier(target.getUniqueId(), clampedTier);
+                plugin.getRankManager().resetMaintenance(target.getUniqueId());
+                Rank newRank = plugin.getRankManager().getRankByTier(clampedTier);
+
+                Player online = target.getPlayer();
+                if (online != null && online.isOnline()) {
+                    plugin.getRankManager().applyLuckPermsRank(online, prevTier, newRank);
+                    online.sendMessage("§a[Rankup] Tu nivel de rango ha sido actualizado a " + clampedTier + " (" + (newRank != null ? newRank.getDisplayName() : "Sin Rango") + ") por un administrador.");
+                } else {
+                    plugin.getRankManager().reconcileLuckPermsOffline(target.getUniqueId(), clampedTier);
+                }
+                sender.sendMessage("§a[Rankup] Nivel de " + (target.getName() != null ? target.getName() : args[2]) + " establecido en " + clampedTier + " (" + (newRank != null ? newRank.getDisplayName() : "Sin Rango") + ").");
                 return true;
             }
             if (args.length >= 3 && args[1].equalsIgnoreCase("reset")) {
-                Player target = Bukkit.getPlayer(args[2]);
-                if (target == null) {
-                    sender.sendMessage("§cJugador no encontrado.");
+                org.bukkit.OfflinePlayer target = Bukkit.getOfflinePlayer(args[2]);
+                if (target == null || (!target.hasPlayedBefore() && !target.isOnline())) {
+                    sender.sendMessage("§cJugador '" + args[2] + "' no encontrado.");
                     return true;
                 }
                 int prevTier = plugin.getRankManager().getPlayerTier(target.getUniqueId());
                 plugin.getRankManager().setPlayerTier(target.getUniqueId(), 0);
-                plugin.getRankManager().applyLuckPermsRank(target, prevTier, null);
-                sender.sendMessage("§a[Rankup] Progreso de " + target.getName() + " reiniciado a 0.");
-                target.sendMessage("§c[Rankup] Tu progreso de rangos ha sido reiniciado.");
+                Player online = target.getPlayer();
+                if (online != null && online.isOnline()) {
+                    plugin.getRankManager().applyLuckPermsRank(online, prevTier, null);
+                    online.sendMessage("§c[Rankup] Tu progreso de rangos ha sido reiniciado por un administrador.");
+                } else {
+                    plugin.getRankManager().reconcileLuckPermsOffline(target.getUniqueId(), 0);
+                }
+                sender.sendMessage("§a[Rankup] Progreso de " + (target.getName() != null ? target.getName() : args[2]) + " reiniciado a 0.");
                 return true;
             }
-            sender.sendMessage("§cUso: /rankup admin <set <jugador> <nivel> | reset <jugador> | reload>");
+            sender.sendMessage("§cUso: /rankup admin <set <jugador> <nivel|max> | reset <jugador> | max <jugador> | reload>");
             return true;
         }
 
@@ -370,14 +423,15 @@ public class RankupCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(" §6/rankup kit §7- Reclama el kit diario de tu división anime con objetos custom");
         sender.sendMessage(" §6/rankup maintain §7(o /rankup mantener) - Alimenta el Núcleo y renueva la estabilidad");
         sender.sendMessage(" §6/rankup max §7- Sube al rango máximo que puedas pagar");
-        sender.sendMessage(" §6/rankup gui §7- Abre el menú visual de las 5 divisiones");
+        sender.sendMessage(" §6/rankup gui §7(o /ranks) - Abre el menú visual de las 10 divisiones");
         sender.sendMessage(" §6/rankup magnet §7- Activa el Vórtice Magnético (200 bloques)");
         sender.sendMessage(" §6/rankup blades §7- Activa Filos Danzantes / Aura Kill");
         sender.sendMessage(" §6/rankup conqueror §7- Desata el Haki del Conquistador Haoshoku");
         sender.sendMessage(" §6/rankup info §7- Consulta tus habilidades, estabilidad y progreso");
         sender.sendMessage(" §6/rankup toggle [particulas|empuje|habilidades|vuelo] §7- Ajustes personales");
         if (sender.hasPermission("drakesrankup.staff")) {
-            sender.sendMessage(" §b/rankup test <1-50> §7- Modo Staff de pruebas de rango instantáneo");
+            int maxTier = plugin.getRankManager().getMaxTier();
+            sender.sendMessage(" §b/rankup test <1-" + maxTier + "> §7- Modo Staff de pruebas de rango instantáneo");
             sender.sendMessage(" §b/angel §7(o /zenosama) - Modo Ángel invulnerable con Ultra Instinto perpetuo");
         }
         return true;
@@ -394,9 +448,9 @@ public class RankupCommand implements CommandExecutor, TabCompleter {
         } else if (args.length == 2 && args[0].equalsIgnoreCase("toggle")) {
             list.addAll(Arrays.asList("empuje", "particulas", "habilidades", "vuelo", "ki"));
         } else if (args.length == 2 && args[0].equalsIgnoreCase("test")) {
-            list.addAll(Arrays.asList("reset", "1", "10", "20", "30", "35", "36", "46", "47", "50"));
+            list.addAll(Arrays.asList("reset", "1", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100"));
         } else if (args.length == 2 && args[0].equalsIgnoreCase("admin")) {
-            list.addAll(Arrays.asList("set", "reset", "reload"));
+            list.addAll(Arrays.asList("set", "reset", "max", "reload", "bolsa"));
         }
         return list;
     }

@@ -204,6 +204,10 @@ public class RankManager {
         return playerTiers.getOrDefault(uuid, 0);
     }
 
+    public int getMaxTier() {
+        return ranksByTier.isEmpty() ? 100 : Collections.max(ranksByTier.keySet());
+    }
+
     public Rank getPlayerRank(UUID uuid) {
         int tier = getPlayerTier(uuid);
         return ranksByTier.get(tier);
@@ -355,6 +359,7 @@ public class RankManager {
             } else {
                 bolsas.put(uuid, resto);
             }
+            savePlayerData();
             plugin.getLogger().info("[Bolsa] " + player.getName() + " pago " + MONEY_FORMAT.format(delBolsa)
                     + " de la bolsa y " + MONEY_FORMAT.format(delMonedero) + " del monedero.");
         }
@@ -621,6 +626,8 @@ public class RankManager {
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&',
                             "&7Tip: el monedero tope en 100M; junta el resto en tu bolsa de ascenso con &e/rankup bolsa depositar <monto>&7."));
                 }
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                        "&eUsa &6/ranks &eo &6/rankup gui &epara ver los requisitos y divisiones en el menú."));
                 return false;
             }
             if (!cobrarAscenso(player, next.getCost())) {

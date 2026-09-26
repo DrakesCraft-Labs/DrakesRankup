@@ -74,6 +74,13 @@ public class RankupMenu implements InventoryHolder {
             ));
         }
 
+        // Fast cluster switch buttons (Slots 3 and 5)
+        if (page < 5) {
+            inv.setItem(5, createItem(Material.COMPASS, "&e&lDivisiones VI - X ▶", "&7Clic para explorar las divisiones del Tier 51 al 100"));
+        } else {
+            inv.setItem(3, createItem(Material.COMPASS, "&e&l◀ Divisiones I - V", "&7Clic para volver a las divisiones del Tier 1 al 50"));
+        }
+
         // Player Info (Slot 4)
         Rank currentRank = plugin.getRankManager().getPlayerRank(player.getUniqueId());
         int currentTier = currentRank != null ? currentRank.getTier() : 0;
@@ -253,7 +260,7 @@ public class RankupMenu implements InventoryHolder {
         }
 
         // Rankup Kit Button (Slot 51)
-        int div = currentTier > 0 ? Math.min(5, ((currentTier - 1) / 10) + 1) : 0;
+        int div = currentTier > 0 ? Math.min(10, ((currentTier - 1) / 10) + 1) : 0;
         boolean canClaimKit = div > 0 && plugin.getKitManager() != null && plugin.getKitManager().canClaim(player.getUniqueId(), div);
         long remMs = (div > 0 && plugin.getKitManager() != null) ? plugin.getKitManager().getRemainingCooldownMs(player.getUniqueId(), div) : 0;
         long h = remMs / (1000 * 60 * 60);
@@ -284,13 +291,27 @@ public class RankupMenu implements InventoryHolder {
     public void handleClick(InventoryClickEvent e, Player p) {
         int slot = e.getRawSlot();
 
-        // Division Tabs
+        // Division Tabs for current cluster
+        int clusterStart = (page / 5) * 5;
         int[] tabSlots = {0, 1, 2, 6, 7};
-        for (int d = 0; d < 5; d++) {
-            if (slot == tabSlots[d]) {
-                new RankupMenu(plugin, p, d).open();
+        for (int i = 0; i < 5; i++) {
+            if (slot == tabSlots[i]) {
+                int targetDiv = clusterStart + i;
+                if (targetDiv < 10) {
+                    new RankupMenu(plugin, p, targetDiv).open();
+                }
                 return;
             }
+        }
+
+        // Jump between Clusters (Slot 5: 0-4 -> 5, Slot 3: 5-9 -> 0)
+        if (slot == 5 && page < 5) {
+            new RankupMenu(plugin, p, 5).open();
+            return;
+        }
+        if (slot == 3 && page >= 5) {
+            new RankupMenu(plugin, p, 0).open();
+            return;
         }
 
         // Settings Toggle (Slot 8)
