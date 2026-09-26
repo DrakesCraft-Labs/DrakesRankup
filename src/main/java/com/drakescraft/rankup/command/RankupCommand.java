@@ -196,13 +196,35 @@ public class RankupCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
 
-            if (feature.startsWith("habil") || feature.equals("abilities")) {
-                s.setAbilitiesEnabled(!s.isAbilitiesEnabled());
-                player.sendMessage("§7Habilidades pasivas de rango: " + (s.isAbilitiesEnabled() ? "§aActivadas" : "§cDesactivadas"));
+            if (feature.startsWith("vuel") || feature.equals("flight") || feature.equals("ki")) {
+                boolean newState = !s.isKiFlightEnabled();
+                s.setKiFlightEnabled(newState);
+                plugin.getRankManager().savePlayerData();
+                player.setFlySpeed(0.10f);
+                if (!newState && !plugin.hasExternalFlight(player) && player.getGameMode() != org.bukkit.GameMode.CREATIVE && player.getGameMode() != org.bukkit.GameMode.SPECTATOR) {
+                    player.setFlying(false);
+                    player.setAllowFlight(false);
+                }
+                player.sendMessage("§7Vuelo de Ki supersónico: " + (newState ? "§aActivado" : "§cDesactivado (Velocidad normal restaurada)"));
                 return true;
             }
 
-            player.sendMessage("§cOpción no válida. Usa: /rankup toggle <empuje | particulas | habilidades>");
+            if (feature.startsWith("habil") || feature.equals("abilities")) {
+                boolean newState = !s.isAbilitiesEnabled();
+                s.setAbilitiesEnabled(newState);
+                plugin.getRankManager().savePlayerData();
+                if (!newState) {
+                    player.setFlySpeed(0.10f);
+                    if (!plugin.hasExternalFlight(player) && player.getGameMode() != org.bukkit.GameMode.CREATIVE && player.getGameMode() != org.bukkit.GameMode.SPECTATOR) {
+                        player.setFlying(false);
+                        player.setAllowFlight(false);
+                    }
+                }
+                player.sendMessage("§7Habilidades pasivas de rango: " + (newState ? "§aActivadas" : "§cDesactivadas (Velocidad restaurada)"));
+                return true;
+            }
+
+            player.sendMessage("§cOpción no válida. Usa: /rankup toggle <empuje | particulas | habilidades | vuelo>");
             return true;
         }
 
@@ -353,7 +375,7 @@ public class RankupCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(" §6/rankup blades §7- Activa Filos Danzantes / Aura Kill");
         sender.sendMessage(" §6/rankup conqueror §7- Desata el Haki del Conquistador Haoshoku");
         sender.sendMessage(" §6/rankup info §7- Consulta tus habilidades, estabilidad y progreso");
-        sender.sendMessage(" §6/rankup toggle [particulas|empuje|habilidades] §7- Ajustes personales");
+        sender.sendMessage(" §6/rankup toggle [particulas|empuje|habilidades|vuelo] §7- Ajustes personales");
         if (sender.hasPermission("drakesrankup.staff")) {
             sender.sendMessage(" §b/rankup test <1-50> §7- Modo Staff de pruebas de rango instantáneo");
             sender.sendMessage(" §b/angel §7(o /zenosama) - Modo Ángel invulnerable con Ultra Instinto perpetuo");
@@ -370,7 +392,7 @@ public class RankupCommand implements CommandExecutor, TabCompleter {
                 list.add("test");
             }
         } else if (args.length == 2 && args[0].equalsIgnoreCase("toggle")) {
-            list.addAll(Arrays.asList("empuje", "particulas", "habilidades"));
+            list.addAll(Arrays.asList("empuje", "particulas", "habilidades", "vuelo", "ki"));
         } else if (args.length == 2 && args[0].equalsIgnoreCase("test")) {
             list.addAll(Arrays.asList("reset", "1", "10", "20", "30", "35", "36", "46", "47", "50"));
         } else if (args.length == 2 && args[0].equalsIgnoreCase("admin")) {

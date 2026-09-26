@@ -93,6 +93,7 @@ public class DrakesRankupPlugin extends JavaPlugin {
         TransformationCommand transCmd = new TransformationCommand(this);
         if (getCommand("transform") != null) {
             getCommand("transform").setExecutor(transCmd);
+            getCommand("transform").setTabCompleter(transCmd);
         }
 
         // Register event listeners

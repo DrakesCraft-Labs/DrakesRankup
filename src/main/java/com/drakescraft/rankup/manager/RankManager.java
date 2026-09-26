@@ -137,6 +137,8 @@ public class RankManager {
                     if (particleLevel < 0) particleLevel = particles ? 2 : 0;
                     boolean push = playersConfig.getBoolean(uuidStr + ".kinetic-push", true);
                     boolean abilities = playersConfig.getBoolean(uuidStr + ".abilities", true);
+                    boolean kiFlight = playersConfig.getBoolean(uuidStr + ".ki-flight", true);
+                    String activeTrans = playersConfig.getString(uuidStr + ".active-transformation", null);
                     int rebirths = playersConfig.getInt(uuidStr + ".rebirths", 0);
                     long expiry = playersConfig.getLong(uuidStr + ".maintenance-expiry", 0L);
                     double bolsa = playersConfig.getDouble(uuidStr + ".bolsa", 0.0);
@@ -147,6 +149,8 @@ public class RankManager {
                     }
                     PlayerSettings loaded = new PlayerSettings(particles, push, abilities);
                     loaded.setParticleLevel(particleLevel);
+                    loaded.setKiFlightEnabled(kiFlight);
+                    loaded.setActiveTransformation(activeTrans);
                     loaded.setRebirthCount(rebirths);
                     playerSettings.put(uuid, loaded);
                     if (expiry > 0) {
@@ -171,6 +175,8 @@ public class RankManager {
             playersConfig.set(path + ".particle-level", s.getParticleLevel());
             playersConfig.set(path + ".kinetic-push", s.isKineticPushEnabled());
             playersConfig.set(path + ".abilities", s.isAbilitiesEnabled());
+            playersConfig.set(path + ".ki-flight", s.isKiFlightEnabled());
+            playersConfig.set(path + ".active-transformation", s.getActiveTransformation());
             playersConfig.set(path + ".rebirths", s.getRebirthCount());
             Long expiry = maintenanceExpiries.get(entry.getKey());
             if (expiry != null && expiry > 0) {

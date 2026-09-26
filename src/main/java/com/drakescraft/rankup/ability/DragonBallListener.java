@@ -122,6 +122,12 @@ public class DragonBallListener implements Listener {
         activeSSJ2.remove(uuid);
         BukkitTask task = chargingTasks.remove(uuid);
         if (task != null) task.cancel();
+
+        player.setFlySpeed(0.10f);
+        if (!plugin.hasExternalFlight(player) && player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
+            player.setFlying(false);
+            player.setAllowFlight(false);
+        }
     }
 
     @EventHandler
@@ -742,14 +748,31 @@ public class DragonBallListener implements Listener {
         if (!plugin.isWorldAllowed(player.getWorld())) return;
 
         UUID uuid = player.getUniqueId();
+        PlayerSettings settings = plugin.getRankManager().getPlayerSettings(uuid);
+        if (!settings.isAbilitiesEnabled() || !settings.isKiFlightEnabled()) {
+            if (!plugin.hasExternalFlight(player) && player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
+                player.setFlying(false);
+                player.setAllowFlight(false);
+            }
+            if (player.getFlySpeed() != 0.10f) {
+                player.setFlySpeed(0.10f);
+            }
+            return;
+        }
+
         Rank rank = plugin.getRankManager().getPlayerRank(uuid);
         int tier = (rank != null) ? rank.getTier() : 0;
-        PlayerSettings settings = plugin.getRankManager().getPlayerSettings(uuid);
-
         boolean hasTransform = isAnyTransformationActive(uuid);
-        boolean eligible = (tier >= 15 && settings.isKiFlightEnabled()) || hasTransform || (player.hasPermission("drakesrankup.staff") || plugin.getStaffManager().isAngel(uuid));
+        boolean hasStaff = (player.hasPermission("drakesrankup.staff") || plugin.getStaffManager().isAngel(uuid));
+        boolean eligible = (tier >= 31 || hasTransform || hasStaff);
 
-        if (!eligible) return;
+        if (!eligible) {
+            if (!plugin.hasExternalFlight(player) && player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
+                player.setFlying(false);
+                player.setAllowFlight(false);
+            }
+            return;
+        }
 
         event.setCancelled(true);
         player.setFlying(false);
@@ -823,13 +846,14 @@ public class DragonBallListener implements Listener {
                     } catch (Exception ignored) {}
                 }
 
-                if (ticks >= 200) { // 10 segundos exactos (200 ticks)
+                if (ticks >= 200 || !settings.isKiFlightEnabled() || !settings.isAbilitiesEnabled()) { // 10s o cancelacion por toggle
                     cancel();
                     if (player.isOnline()) {
                         player.setFlySpeed(0.10f); // Restaurar velocidad por defecto
                         if (!plugin.hasExternalFlight(player) && player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
                             player.setFlying(false);
-                            player.sendMessage("§e[Impulso Sónico] §7Propulsión sónica de 10s completada (Inmunidad a caídas: activa).");
+                            player.setAllowFlight(false);
+                            player.sendMessage("§e[Impulso Sónico] §7Propulsión sónica finalizada. Vuelo normal restaurado.");
                         }
                     }
                 }
@@ -844,12 +868,33 @@ public class DragonBallListener implements Listener {
         if (!plugin.isWorldAllowed(player.getWorld())) return;
 
         UUID uuid = player.getUniqueId();
-        Rank rank = plugin.getRankManager().getPlayerRank(uuid);
-        int tier = (rank != null) ? rank.getTier() : 0;
         PlayerSettings settings = plugin.getRankManager().getPlayerSettings(uuid);
 
+        if (!settings.isAbilitiesEnabled() || !settings.isKiFlightEnabled()) {
+            if (!plugin.hasExternalFlight(player) && player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
+                if (player.isFlying()) {
+                    player.setFlying(false);
+                }
+                if (player.getAllowFlight()) {
+                    player.setAllowFlight(false);
+                }
+            }
+            if (player.getFlySpeed() != 0.10f) {
+                player.setFlySpeed(0.10f);
+            }
+            Location from = event.getFrom();
+            Location to = event.getTo();
+            if (to != null && (from.getX() != to.getX() || from.getY() != to.getY() || from.getZ() != to.getZ())) {
+                spawnMovementTrail(player, uuid);
+            }
+            return;
+        }
+
+        Rank rank = plugin.getRankManager().getPlayerRank(uuid);
+        int tier = (rank != null) ? rank.getTier() : 0;
         boolean hasTransform = isAnyTransformationActive(uuid);
-        boolean eligible = (tier >= 15 && settings.isKiFlightEnabled()) || hasTransform || (player.hasPermission("drakesrankup.staff") || plugin.getStaffManager().isAngel(uuid));
+        boolean hasStaff = (player.hasPermission("drakesrankup.staff") || plugin.getStaffManager().isAngel(uuid));
+        boolean eligible = (tier >= 31 || hasTransform || hasStaff);
 
         if (eligible && !plugin.hasExternalFlight(player)) {
             long now = System.currentTimeMillis();
@@ -858,6 +903,13 @@ public class DragonBallListener implements Listener {
                 if (!player.getAllowFlight()) {
                     player.setAllowFlight(true);
                 }
+            }
+        } else if (!eligible && !plugin.hasExternalFlight(player)) {
+            if (player.getAllowFlight()) {
+                player.setAllowFlight(false);
+            }
+            if (player.isFlying()) {
+                player.setFlying(false);
             }
         }
 

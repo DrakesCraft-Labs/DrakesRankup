@@ -363,23 +363,37 @@ public class TransformationMenu implements InventoryHolder {
         if (slot == 40) {
             settings.setActiveTransformation(null);
             plugin.getRankManager().savePlayerData();
+            if (plugin.getDragonBallListener() != null) {
+                plugin.getDragonBallListener().revertTransformations(p);
+            }
+            p.setFlySpeed(0.10f);
+            if (!plugin.hasExternalFlight(p) && p.getGameMode() != org.bukkit.GameMode.CREATIVE && p.getGameMode() != org.bukkit.GameMode.SPECTATOR) {
+                p.setFlying(false);
+                p.setAllowFlight(false);
+            }
             p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 0.8f);
-            p.sendMessage("§b[Transformación] §7Has desequipado tu transformación. Aura restablecida a la base de tu rango.");
+            p.sendMessage("§b[Transformación] §7Has desequipado tu transformación. Aura y vuelo restablecidos a la base de tu rango.");
             open();
             return;
         }
 
         // Toggle Ki Flight (Slot 31)
         if (slot == 31) {
-            if (tier < 31) {
+            if (tier < 31 && !settings.isKiFlightEnabled() && !p.hasPermission("drakesrankup.staff") && !plugin.getStaffManager().isAngel(p.getUniqueId())) {
                 p.sendMessage("§c[Rankup] Necesitas alcanzar el Tier 31 (Saiyajin) para usar el Vuelo de Ki.");
                 p.playSound(p.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
                 return;
             }
-            settings.setKiFlightEnabled(!settings.isKiFlightEnabled());
+            boolean newState = !settings.isKiFlightEnabled();
+            settings.setKiFlightEnabled(newState);
             plugin.getRankManager().savePlayerData();
+            p.setFlySpeed(0.10f);
+            if (!newState && !plugin.hasExternalFlight(p) && p.getGameMode() != org.bukkit.GameMode.CREATIVE && p.getGameMode() != org.bukkit.GameMode.SPECTATOR) {
+                p.setFlying(false);
+                p.setAllowFlight(false);
+            }
             p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
-            p.sendMessage("§b[Rankup] §7Vuelo de Ki supersónico: " + (settings.isKiFlightEnabled() ? "§aHabilitado" : "§cDeshabilitado"));
+            p.sendMessage("§b[Rankup] §7Vuelo de Ki supersónico: " + (newState ? "§aHabilitado" : "§cDeshabilitado (Velocidad normal restaurada)"));
             open();
             return;
         }
