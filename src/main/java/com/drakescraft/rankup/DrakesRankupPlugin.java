@@ -144,6 +144,9 @@ public class DrakesRankupPlugin extends JavaPlugin {
         if (rankDecayTask != null) {
             rankDecayTask.cancel();
         }
+        if (specialAbilitiesListener != null) {
+            specialAbilitiesListener.cleanupAll();
+        }
         if (seriousPunchHandler != null) {
             seriousPunchHandler.restoreAllPending();
         }

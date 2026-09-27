@@ -20,7 +20,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -47,6 +49,7 @@ public class SeriousPunchHandler implements Listener {
 
     private final DrakesRankupPlugin plugin;
     private final Map<UUID, Long> cooldowns = new HashMap<>();
+    private final Set<UUID> executingPunches = ConcurrentHashMap.newKeySet();
 
     // Umbral de bloques destruidos para regeneración vs permanencia
     public static final int PERMANENT_CRATER_THRESHOLD = 400;
@@ -92,6 +95,16 @@ public class SeriousPunchHandler implements Listener {
         if (!(event.getDamager() instanceof Player player)) return;
         if (!hasSeriousPunch(player)) return;
 
+        // Evitar que el puño serio se active por auras pasivas, espadas danzantes o habilidades indirectas
+        if (event.getEntity().hasMetadata("DRAKES_ABILITY_DAMAGE")) return;
+        if (event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK &&
+            event.getCause() != EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK) {
+            return;
+        }
+
+        // Reentrancy guard
+        if (executingPunches.contains(player.getUniqueId())) return;
+
         long remaining = getCooldownRemainingMs(player);
         if (remaining > 0) return; // Si está en cooldown, no activa el golpe masivo
 
@@ -108,6 +121,8 @@ public class SeriousPunchHandler implements Listener {
         Player player = event.getPlayer();
         if (!player.isSneaking()) return;
         if (!hasSeriousPunch(player)) return;
+
+        if (executingPunches.contains(player.getUniqueId())) return;
 
         long remaining = getCooldownRemainingMs(player);
         if (remaining > 0) {
@@ -128,198 +143,208 @@ public class SeriousPunchHandler implements Listener {
      * Crea un cono supersónico masivo que ahueca montañas y perfora el terreno con daño verdadero.
      */
     public void executeSeriousDeathPunch(Player player, Location origin, Vector dir, Entity directTarget) {
-        World world = origin.getWorld();
-        if (world == null) return;
+        UUID uuid = player.getUniqueId();
+        if (!executingPunches.add(uuid)) return;
 
-        ProtectionGate gate = plugin.getProtectionGate();
-        boolean actorInClaim = gate != null && gate.isProtected(origin, player);
+        try {
+            World world = origin.getWorld();
+            if (world == null) return;
 
-        // Sonidos y explosión inicial al detonar el puño
-        world.playSound(origin, Sound.ENTITY_GENERIC_EXPLODE, 2.0f, 0.6f);
-        world.playSound(origin, Sound.ENTITY_WARDEN_SONIC_BOOM, 2.0f, 0.8f);
-        world.playSound(origin, Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 1.8f, 0.7f);
+            ProtectionGate gate = plugin.getProtectionGate();
+            boolean actorInClaim = gate != null && gate.isProtected(origin, player);
 
-        player.sendTitle("§c§l¡GOLPE SERIO!", "§fPUÑO DE LA MUERTE §8(ᴅᴇᴀᴛʜ ᴘᴜɴᴄʜ)", 5, 40, 10);
-        player.sendActionBar(Component.text("§c💥 ¡GOLPE SERIO! §7Onda de choque supersónica desplegada."));
+            // Sonidos y explosión inicial al detonar el puño
+            world.playSound(origin, Sound.ENTITY_GENERIC_EXPLODE, 2.0f, 0.6f);
+            world.playSound(origin, Sound.ENTITY_WARDEN_SONIC_BOOM, 2.0f, 0.8f);
+            world.playSound(origin, Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 1.8f, 0.7f);
 
-        // Lista de bloques que serán destruidos
-        List<BlockState> candidateBlocks = new ArrayList<>();
-        Set<Location> visitedLocs = new HashSet<>();
+            player.sendTitle("§c§l¡GOLPE SERIO!", "§fPUÑO DE LA MUERTE §8(ᴅᴇᴀᴛʜ ᴘᴜɴᴄʜ)", 5, 40, 10);
+            player.sendActionBar(Component.text("§c💥 ¡GOLPE SERIO! §7Onda de choque supersónica desplegada."));
 
-        double maxDistance = 34.0;
-        double step = 1.5;
+            // Lista de bloques que serán destruidos
+            List<BlockState> candidateBlocks = new ArrayList<>();
+            Set<Location> visitedLocs = new HashSet<>();
 
-        // Trazado del cono expansivo
-        for (double d = 2.0; d <= maxDistance; d += step) {
-            Location center = origin.clone().add(dir.clone().multiply(d));
-            double radius = 1.8 + (d * 0.22); // Aumenta hasta ~9.2 bloques de ancho
+            double maxDistance = 34.0;
+            double step = 1.5;
 
-            // Efectos visuales a lo largo del eje central
-            try {
-                if (((int)(d / step)) % 2 == 0) {
-                    world.spawnParticle(Particle.SONIC_BOOM, center, 1);
-                    world.spawnParticle(Particle.EXPLOSION_EMITTER, center, 1);
-                }
-                world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, center, 8, radius * 0.4, radius * 0.4, radius * 0.4, 0.05);
-                world.spawnParticle(Particle.SWEEP_ATTACK, center, 3, 0.5, 0.5, 0.5, 0);
-                world.spawnParticle(Particle.FLASH, center, 1);
-            } catch (Exception ignored) {}
+            // Trazado del cono expansivo
+            for (double d = 2.0; d <= maxDistance; d += step) {
+                Location center = origin.clone().add(dir.clone().multiply(d));
+                double radius = 1.8 + (d * 0.22); // Aumenta hasta ~9.2 bloques de ancho
 
-            // Si el actor está en un claim ajeno, no rompe terreno
-            if (actorInClaim) continue;
+                // Efectos visuales a lo largo del eje central
+                try {
+                    if (((int)(d / step)) % 2 == 0) {
+                        world.spawnParticle(Particle.SONIC_BOOM, center, 1);
+                        world.spawnParticle(Particle.EXPLOSION_EMITTER, center, 1);
+                    }
+                    world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, center, 8, radius * 0.4, radius * 0.4, radius * 0.4, 0.05);
+                    world.spawnParticle(Particle.SWEEP_ATTACK, center, 3, 0.5, 0.5, 0.5, 0);
+                    world.spawnParticle(Particle.FLASH, center, 1);
+                } catch (Exception ignored) {}
 
-            // Escanear cilindro/esfera en este radio
-            int rCeil = (int) Math.ceil(radius);
-            for (int dx = -rCeil; dx <= rCeil; dx++) {
-                for (int dy = -rCeil; dy <= rCeil; dy++) {
-                    for (int dz = -rCeil; dz <= rCeil; dz++) {
-                        double distSq = dx * dx + dy * dy + dz * dz;
-                        if (distSq > radius * radius) continue;
+                // Si el actor está en un claim ajeno, no rompe terreno
+                if (actorInClaim) continue;
 
-                        Block b = center.clone().add(dx, dy, dz).getBlock();
-                        Location bLoc = b.getLocation();
-                        if (visitedLocs.contains(bLoc)) continue;
-                        visitedLocs.add(bLoc);
+                // Escanear cilindro/esfera en este radio
+                int rCeil = (int) Math.ceil(radius);
+                for (int dx = -rCeil; dx <= rCeil; dx++) {
+                    for (int dy = -rCeil; dy <= rCeil; dy++) {
+                        for (int dz = -rCeil; dz <= rCeil; dz++) {
+                            double distSq = dx * dx + dy * dy + dz * dz;
+                            if (distSq > radius * radius) continue;
 
-                        if (gate != null && !gate.canDestroyBlock(player, b)) {
-                            continue; // Protegido por claims, o bedrock, portal, contenedor
-                        }
+                            Block b = center.clone().add(dx, dy, dz).getBlock();
+                            Location bLoc = b.getLocation();
+                            if (visitedLocs.contains(bLoc)) continue;
+                            visitedLocs.add(bLoc);
 
-                        if (!b.getType().isAir()) {
-                            candidateBlocks.add(b.getState());
+                            if (gate != null && !gate.canDestroyBlock(player, b)) {
+                                continue; // Protegido por claims, o bedrock, portal, contenedor
+                            }
+
+                            if (!b.getType().isAir()) {
+                                candidateBlocks.add(b.getState());
+                            }
                         }
                     }
                 }
             }
-        }
 
-        // Daño cinético masivo a entidades en el cono con Daño Verdadero (Anti-Infinity & Armor-Piercing)
-        int rebirths = plugin.getRankManager().getRebirthCount(player.getUniqueId());
+            // Daño cinético masivo a entidades en el cono con Daño Verdadero (Anti-Infinity & Armor-Piercing)
+            int rebirths = plugin.getRankManager().getRebirthCount(player.getUniqueId());
 
-        DamageSource sonicSource = DamageSource.builder(DamageType.SONIC_BOOM)
-                .withCausingEntity(player)
-                .withDirectEntity(player)
-                .withDamageLocation(origin)
-                .build();
+            DamageSource sonicSource = DamageSource.builder(DamageType.SONIC_BOOM)
+                    .withCausingEntity(player)
+                    .withDirectEntity(player)
+                    .withDamageLocation(origin)
+                    .build();
 
-        for (Entity e : world.getNearbyEntities(origin.clone().add(dir.clone().multiply(16.0)), 22.0, 16.0, 22.0)) {
-            if (e.equals(player)) continue;
-            if (e instanceof Tameable t && player.getUniqueId().equals(t.getOwnerUniqueId())) continue;
+            for (Entity e : world.getNearbyEntities(origin.clone().add(dir.clone().multiply(16.0)), 22.0, 16.0, 22.0)) {
+                if (e.equals(player)) continue;
+                if (!e.isValid() || !e.getLocation().isChunkLoaded()) continue;
+                if (e instanceof Tameable t && player.getUniqueId().equals(t.getOwnerUniqueId())) continue;
 
-            if (e instanceof LivingEntity living) {
-                // Comprobar si está en el cono de impacto o es el objetivo directo
-                Vector toTarget = living.getLocation().toVector().subtract(origin.toVector());
-                double dot = toTarget.normalize().dot(dir);
-                if (dot > 0.60 || e.equals(directTarget)) {
-                    // 1. Romper escudos si es un jugador bloqueando
-                    if (living instanceof Player targetPlayer) {
-                        if (targetPlayer.isBlocking() ||
-                            targetPlayer.getInventory().getItemInMainHand().getType() == Material.SHIELD ||
-                            targetPlayer.getInventory().getItemInOffHand().getType() == Material.SHIELD) {
-                            targetPlayer.setCooldown(Material.SHIELD, 160); // 8s de desactivación total de escudo
-                            targetPlayer.playSound(targetPlayer.getLocation(), Sound.ITEM_SHIELD_BREAK, 2.0f, 0.8f);
-                            targetPlayer.sendActionBar(Component.text("§c🛡️ ¡ESCUDO DESTROZADO POR EL GOLPE SERIO!"));
+                if (e instanceof LivingEntity living) {
+                    // Comprobar si está en el cono de impacto o es el objetivo directo
+                    Vector toTarget = living.getLocation().toVector().subtract(origin.toVector());
+                    double dot = toTarget.normalize().dot(dir);
+                    if (dot > 0.60 || e.equals(directTarget)) {
+                        // 1. Romper escudos si es un jugador bloqueando
+                        if (living instanceof Player targetPlayer) {
+                            if (targetPlayer.isBlocking() ||
+                                targetPlayer.getInventory().getItemInMainHand().getType() == Material.SHIELD ||
+                                targetPlayer.getInventory().getItemInOffHand().getType() == Material.SHIELD) {
+                                targetPlayer.setCooldown(Material.SHIELD, 160); // 8s de desactivación total de escudo
+                                targetPlayer.playSound(targetPlayer.getLocation(), Sound.ITEM_SHIELD_BREAK, 2.0f, 0.8f);
+                                targetPlayer.sendActionBar(Component.text("§c🛡️ ¡ESCUDO DESTROZADO POR EL GOLPE SERIO!"));
+                            }
                         }
-                    }
 
-                    // 2. Daño Verdadero (Sonic Boom ignora armadura y encantamientos vanilla)
-                    // Daño colosal: 75 HP (37.5 corazones) base + 5 por cada rebirth + 35% de su salud actual
-                    double prevHealth = living.getHealth();
-                    double calculatedDamage = 75.0 + (rebirths * 5.0) + (prevHealth * 0.35);
+                        // 2. Daño Verdadero (Sonic Boom ignora armadura y encantamientos vanilla)
+                        double prevHealth = living.getHealth();
+                        double calculatedDamage = 75.0 + (rebirths * 5.0) + (prevHealth * 0.35);
 
-                    living.damage(calculatedDamage, sonicSource);
+                        try {
+                            living.setMetadata("DRAKES_ABILITY_DAMAGE", new FixedMetadataValue(plugin, true));
+                            living.damage(calculatedDamage, sonicSource);
+                        } finally {
+                            living.removeMetadata("DRAKES_ABILITY_DAMAGE", plugin);
+                        }
 
-                    // 3. Suelo de Daño Verdadero Garantizado (Anti-Resistance / Anti-Infinity god effects)
-                    // Si la víctima tiene Resistencia IV o reducción extrema de Slimefun Infinity:
-                    // Garantizar un impacto mínimo directo que no pueda ser anulado
-                    double damageDone = prevHealth - living.getHealth();
-                    double minGuaranteedDamage = 40.0 + (rebirths * 3.5); // 20+ corazones mínimos garantizados
-                    if (damageDone < minGuaranteedDamage && !living.isDead()) {
-                        double remainingHp = Math.max(1.0, living.getHealth() - (minGuaranteedDamage - damageDone));
-                        living.setHealth(remainingHp);
-                    }
+                        // 3. Suelo de Daño Verdadero Garantizado (Anti-Resistance / Anti-Infinity god effects)
+                        double damageDone = prevHealth - living.getHealth();
+                        double minGuaranteedDamage = 40.0 + (rebirths * 3.5); // 20+ corazones mínimos garantizados
+                        if (damageDone < minGuaranteedDamage && !living.isDead()) {
+                            double remainingHp = Math.max(1.0, living.getHealth() - (minGuaranteedDamage - damageDone));
+                            living.setHealth(remainingHp);
+                        }
 
-                    // 4. Efectos de aturdimiento de onda expansiva
-                    living.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60, 0, false, false, false));
-                    living.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 80, 2, false, false, false));
+                        // 4. Efectos de aturdimiento de onda expansiva
+                        living.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60, 0, false, false, false));
+                        living.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 80, 2, false, false, false));
 
-                    // 5. Impulso cinético violento
-                    Vector launch = dir.clone().multiply(3.2).setY(0.80);
-                    living.setVelocity(launch);
+                        // 5. Impulso cinético violento
+                        Vector launch = dir.clone().multiply(3.2).setY(0.80);
+                        living.setVelocity(launch);
 
-                    try {
-                        world.spawnParticle(Particle.EXPLOSION_EMITTER, living.getLocation().add(0, 1.0, 0), 2);
-                        world.spawnParticle(Particle.SONIC_BOOM, living.getLocation().add(0, 1.0, 0), 2);
-                        world.playSound(living.getLocation(), Sound.ENTITY_WARDEN_SONIC_BOOM, 2.0f, 0.7f);
-                    } catch (Exception ignored) {}
+                        try {
+                            world.spawnParticle(Particle.EXPLOSION_EMITTER, living.getLocation().add(0, 1.0, 0), 2);
+                            world.spawnParticle(Particle.SONIC_BOOM, living.getLocation().add(0, 1.0, 0), 2);
+                            world.playSound(living.getLocation(), Sound.ENTITY_WARDEN_SONIC_BOOM, 2.0f, 0.7f);
+                        } catch (Exception ignored) {}
 
-                    if (living instanceof Player targetPlayer) {
-                        targetPlayer.sendTitle("§c§l💥 ¡GOLPE SERIO!", "§fRecibiste la onda de choque de Saitama", 5, 35, 10);
-                        targetPlayer.sendActionBar(Component.text("§c💥 ¡GOLPE SERIO! Onda de choque devastó tus defensas."));
+                        if (living instanceof Player targetPlayer) {
+                            targetPlayer.sendTitle("§c§l💥 ¡GOLPE SERIO!", "§fRecibiste la onda de choque de Saitama", 5, 35, 10);
+                            targetPlayer.sendActionBar(Component.text("§c💥 ¡GOLPE SERIO! Onda de choque devastó tus defensas."));
+                        }
                     }
                 }
             }
-        }
 
-        int totalBlocks = candidateBlocks.size();
-        if (totalBlocks == 0) return;
+            int totalBlocks = candidateBlocks.size();
+            if (totalBlocks == 0) return;
 
-        // Destruir físicamente los bloques
-        for (BlockState state : candidateBlocks) {
-            Block b = state.getBlock();
-            b.setType(Material.AIR, false);
-        }
+            // Destruir físicamente los bloques
+            for (BlockState state : candidateBlocks) {
+                Block b = state.getBlock();
+                b.setType(Material.AIR, false);
+            }
 
-        // Evaluar Umbral Telúrico (400 bloques)
-        if (totalBlocks <= PERMANENT_CRATER_THRESHOLD) {
-            // MODO REGENERACIÓN: Se restaura progresivamente tras 12 segundos
-            player.sendActionBar(Component.text("§e[Saitama] §7Cráter telúrico (" + totalBlocks + " bloques) en fase de regeneración temporal."));
+            // Evaluar Umbral Telúrico (400 bloques)
+            if (totalBlocks <= PERMANENT_CRATER_THRESHOLD) {
+                // MODO REGENERACIÓN: Se restaura progresivamente tras 12 segundos
+                player.sendActionBar(Component.text("§e[Saitama] §7Cráter telúrico (" + totalBlocks + " bloques) en fase de regeneración temporal."));
 
-            // Ordenar de abajo hacia arriba (menor Y a mayor Y) para que la montaña se reconstruya con naturalidad
-            candidateBlocks.sort(Comparator.comparingInt(BlockState::getY));
+                // Ordenar de abajo hacia arriba para que la montaña se reconstruya con naturalidad
+                candidateBlocks.sort(Comparator.comparingInt(BlockState::getY));
 
-            UUID queueId = UUID.randomUUID();
-            Queue<BlockState> queue = new ConcurrentLinkedQueue<>(candidateBlocks);
-            activeRegenQueues.put(queueId, queue);
+                UUID queueId = UUID.randomUUID();
+                Queue<BlockState> queue = new ConcurrentLinkedQueue<>(candidateBlocks);
+                activeRegenQueues.put(queueId, queue);
 
-            // Programar reconstrucción progresiva tras 12 segundos (240 ticks)
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            Queue<BlockState> q = activeRegenQueues.get(queueId);
-                            if (q == null || q.isEmpty()) {
-                                activeRegenQueues.remove(queueId);
-                                cancel();
-                                return;
+                // Programar reconstrucción progresiva tras 12 segundos (240 ticks)
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                Queue<BlockState> q = activeRegenQueues.get(queueId);
+                                if (q == null || q.isEmpty()) {
+                                    activeRegenQueues.remove(queueId);
+                                    cancel();
+                                    return;
+                                }
+
+                                // Regenerar 12 bloques por pulso (cada 2 ticks)
+                                for (int i = 0; i < 12; i++) {
+                                    BlockState bs = q.poll();
+                                    if (bs == null) break;
+
+                                    Block b = bs.getBlock();
+                                    bs.update(true, false);
+
+                                    try {
+                                        b.getWorld().spawnParticle(Particle.BLOCK, b.getLocation().add(0.5, 0.5, 0.5), 4, 0.2, 0.2, 0.2, bs.getBlockData());
+                                        if (i == 0) {
+                                            b.getWorld().playSound(b.getLocation(), Sound.BLOCK_STONE_PLACE, 0.6f, 1.2f);
+                                        }
+                                    } catch (Exception ignored) {}
+                                }
                             }
-
-                            // Regenerar 12 bloques por pulso (cada 2 ticks)
-                            for (int i = 0; i < 12; i++) {
-                                BlockState bs = q.poll();
-                                if (bs == null) break;
-
-                                Block b = bs.getBlock();
-                                bs.update(true, false);
-
-                                try {
-                                    b.getWorld().spawnParticle(Particle.BLOCK, b.getLocation().add(0.5, 0.5, 0.5), 4, 0.2, 0.2, 0.2, bs.getBlockData());
-                                    if (i == 0) {
-                                        b.getWorld().playSound(b.getLocation(), Sound.BLOCK_STONE_PLACE, 0.6f, 1.2f);
-                                    }
-                                } catch (Exception ignored) {}
-                            }
-                        }
-                    }.runTaskTimer(plugin, 1L, 2L);
-                }
-            }.runTaskLater(plugin, 240L); // 12 segundos de retardo
-        } else {
-            // MODO CRÁTER PERMANENTE ("si pasa de cierta cantidad de bloques la destruccion que se quede asi nomas")
-            world.playSound(origin, Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 2.0f, 0.5f);
-            player.sendTitle("§c§l💥 ¡CRÁTER PERMANENTE!", "§e" + totalBlocks + " bloques devastados · Se queda así nomás", 10, 60, 20);
-            Bukkit.broadcast(Component.text("§6[Rankup] §c¡El Golpe Serio de §e" + player.getName() + " §cha alterado permanentemente la geografía! §7(" + totalBlocks + " bloques destruidos)"));
+                        }.runTaskTimer(plugin, 1L, 2L);
+                    }
+                }.runTaskLater(plugin, 240L); // 12 segundos de retardo
+            } else {
+                // MODO CRÁTER PERMANENTE
+                world.playSound(origin, Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 2.0f, 0.5f);
+                player.sendTitle("§c§l💥 ¡CRÁTER PERMANENTE!", "§e" + totalBlocks + " bloques devastados · Se queda así nomás", 10, 60, 20);
+                Bukkit.broadcast(Component.text("§6[Rankup] §c¡El Golpe Serio de §e" + player.getName() + " §cha alterado permanentemente la geografía! §7(" + totalBlocks + " bloques destruidos)"));
+            }
+        } finally {
+            executingPunches.remove(uuid);
         }
     }
 

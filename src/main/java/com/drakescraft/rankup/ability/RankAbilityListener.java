@@ -4,25 +4,20 @@ import com.drakescraft.rankup.DrakesRankupPlugin;
 import com.drakescraft.rankup.model.AbilityType;
 import com.drakescraft.rankup.model.PlayerSettings;
 import com.drakescraft.rankup.model.Rank;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
-import org.bukkit.Color;
-import net.kyori.adventure.text.Component;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerToggleSprintEvent;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,64 +34,72 @@ public class RankAbilityListener implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-    public void onBlockBreak(BlockBreakEvent event) {
-        Player player = event.getPlayer();
-        if (!plugin.isWorldAllowed(player.getWorld())) return;
-        Rank rank = plugin.getRankManager().getPlayerRank(player.getUniqueId());
-        if (rank == null) return;
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onEntityDamage(EntityDamageEvent event) {
+        if (!plugin.isWorldAllowed(event.getEntity().getWorld())) return;
 
-        PlayerSettings settings = plugin.getRankManager().getPlayerSettings(player.getUniqueId());
-        if (!settings.isAbilitiesEnabled()) return;
+        if (event.getEntity() instanceof Player player) {
+            Rank rank = plugin.getRankManager().getPlayerRank(player.getUniqueId());
+            if (rank == null) return;
+            PlayerSettings settings = plugin.getRankManager().getPlayerSettings(player.getUniqueId());
+            if (!settings.isAbilitiesEnabled()) return;
 
-        if (rank.getAbilityType() == AbilityType.DOUBLE_DROP || rank.getTier() >= 44) {
-            String typeName = event.getBlock().getType().name();
-            if (typeName.contains("ORE") || typeName.contains("RAW") || typeName.contains("LOG")) {
-                if (random.nextDouble() < 0.18) {
-                    try {
-                        for (ItemStack drop : event.getBlock().getDrops(player.getInventory().getItemInMainHand())) {
-                            event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), drop);
-                        }
-                        player.getWorld().spawnParticle(Particle.HAPPY_VILLAGER, event.getBlock().getLocation().add(0.5, 0.5, 0.5), 8, 0.2, 0.2, 0.2, 0.02);
-                        player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 0.5f, 1.8f);
-                    } catch (Exception ignored) {}
+            AbilityType ability = rank.getAbilityType();
+
+            // Pasivas defensivas por daño ambiental
+            if (event.getCause() == EntityDamageEvent.DamageCause.FALL) {
+                if (ability == AbilityType.FEATHER_STEP || rank.getTier() >= 5) {
+                    event.setDamage(event.getDamage() * 0.5);
                 }
             }
-        }
-    }
 
-    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-    public void onSprint(PlayerToggleSprintEvent event) {
-        if (!event.isSprinting()) return;
-        Player player = event.getPlayer();
-        if (!plugin.isWorldAllowed(player.getWorld())) return;
-        Rank rank = plugin.getRankManager().getPlayerRank(player.getUniqueId());
-        if (rank == null) return;
+            if (event.getCause() == EntityDamageEvent.DamageCause.FIRE 
+                    || event.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK 
+                    || event.getCause() == EntityDamageEvent.DamageCause.LAVA) {
+                if (ability == AbilityType.HAKAI_AURA || rank.getTier() >= 47 || ability == AbilityType.ZANKA_NO_TACHI) {
+                    event.setCancelled(true);
+                    player.setFireTicks(0);
+                }
+            }
 
-        PlayerSettings settings = plugin.getRankManager().getPlayerSettings(player.getUniqueId());
-        if (!settings.isAbilitiesEnabled()) return;
+            if (rank.getTier() >= 15) {
+                event.setDamage(event.getDamage() * 0.90);
+            }
 
-        if (rank.getAbilityType() == AbilityType.ELECTRIC_SPEED || rank.getTier() >= 7) {
-            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 60, 0, false, false, false));
-            try {
-                player.getWorld().spawnParticle(Particle.ELECTRIC_SPARK, player.getLocation().add(0, 0.2, 0), 4, 0.2, 0.1, 0.2, 0.05);
-            } catch (Exception ignored) {}
-        }
-    }
+            if (ability == AbilityType.KYOKA_SUIGETSU || rank.getTier() >= 48) {
+                if (random.nextDouble() < 0.20) {
+                    event.setCancelled(true);
+                    try {
+                        Location loc = player.getLocation();
+                        player.getWorld().spawnParticle(Particle.DRAGON_BREATH, loc.add(0, 1.0, 0), 15, 0.3, 0.5, 0.3, 0.02);
+                        player.playSound(loc, Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1.0f, 1.5f);
+                        player.sendActionBar(Component.text("§b⚡ ¡ILUSIÓN KYOKA SUIGETSU! §7Ataque enemigo desviado."));
+                    } catch (Exception ignored) {}
+                    return;
+                }
+            }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onMove(PlayerMoveEvent event) {
-        Player player = event.getPlayer();
-        if (!plugin.isWorldAllowed(player.getWorld())) return;
-        Rank rank = plugin.getRankManager().getPlayerRank(player.getUniqueId());
-        if (rank == null) return;
+            if (ability == AbilityType.ULTRA_INSTINCT || rank.getTier() >= 49) {
+                if (random.nextDouble() < 0.15) {
+                    event.setCancelled(true);
+                    try {
+                        Location dloc = player.getLocation().add(0, 0.9, 0);
+                        player.getWorld().spawnParticle(Particle.CLOUD, dloc, 14, 0.3, 0.3, 0.3, 0.03);
+                        player.getWorld().spawnParticle(Particle.ELECTRIC_SPARK, dloc, 6, 0.25, 0.4, 0.25, 0.02);
+                        player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 0.7f, 1.9f);
+                        player.sendActionBar(Component.text("§f⚡ §7Esquive instintivo"));
+                    } catch (Exception ignored) {}
+                    return;
+                }
+            }
 
-        PlayerSettings settings = plugin.getRankManager().getPlayerSettings(player.getUniqueId());
-        if (!settings.isAbilitiesEnabled()) return;
+            if (rank.getTier() >= 25) {
+                if (player.getWorld().isDayTime() && !player.getWorld().hasStorm()) {
+                    event.setDamage(event.getDamage() * 0.85);
+                }
+            }
 
-        if (rank.getAbilityType() == AbilityType.WATER_GRACE || (rank.getTier() >= 21 && rank.getTier() <= 24)) {
-            if (player.isInWater()) {
-                player.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, 120, 0, false, false, false));
+            if (ability == AbilityType.WATER_GRACE || rank.getTier() >= 10) {
                 player.addPotionEffect(new PotionEffect(PotionEffectType.DOLPHINS_GRACE, 120, 0, false, false, false));
             }
         }
@@ -108,6 +111,13 @@ public class RankAbilityListener implements Listener {
 
         // Atacante es un Jugador
         if (event.getDamager() instanceof Player player) {
+            // Protección contra bucles infinitos y activación por auras/daño indirecto
+            if (event.getEntity().hasMetadata("DRAKES_ABILITY_DAMAGE")) return;
+            if (event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK &&
+                event.getCause() != EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK) {
+                return;
+            }
+
             Rank rank = plugin.getRankManager().getPlayerRank(player.getUniqueId());
             if (rank == null) return;
             PlayerSettings settings = plugin.getRankManager().getPlayerSettings(player.getUniqueId());
@@ -141,8 +151,6 @@ public class RankAbilityListener implements Listener {
                 } catch (Exception ignored) {}
             }
 
-            // SERIOUS_PUNCH delegado a SeriousPunchHandler (Golpe Serio & Crater Telurico Saitama/Jiren)
-
             // Habilidades Tiers 51 - 100
             if (ability == AbilityType.DISMANTLE_CLEAVE || rank.getTier() >= 58) {
                 if (random.nextDouble() < 0.20) {
@@ -175,8 +183,14 @@ public class RankAbilityListener implements Listener {
                 if (random.nextDouble() < 0.18) {
                     event.setDamage(event.getDamage() * 1.5);
                     for (Entity nearby : hitLoc.getWorld().getNearbyEntities(hitLoc, 5.0, 3.0, 5.0)) {
+                        if (!nearby.isValid() || !nearby.getLocation().isChunkLoaded()) continue;
                         if (nearby instanceof LivingEntity target && !nearby.equals(player)) {
-                            target.damage(8.0, player);
+                            try {
+                                target.setMetadata("DRAKES_ABILITY_DAMAGE", new FixedMetadataValue(plugin, true));
+                                target.damage(8.0, player);
+                            } finally {
+                                target.removeMetadata("DRAKES_ABILITY_DAMAGE", plugin);
+                            }
                             target.setVelocity(target.getLocation().toVector().subtract(hitLoc.toVector()).normalize().multiply(1.3).setY(0.5));
                         }
                     }
@@ -220,47 +234,6 @@ public class RankAbilityListener implements Listener {
             if (!settings.isAbilitiesEnabled()) return;
 
             AbilityType ability = rank.getAbilityType();
-
-            if (ability == AbilityType.MUGEN_DEFENSE || rank.getTier() >= 46) {
-                if (event.getDamager() instanceof Projectile proj) {
-                    if (random.nextDouble() < 0.25) {
-                        event.setCancelled(true);
-                        proj.remove();
-                        try {
-                            player.getWorld().spawnParticle(Particle.END_ROD, player.getLocation().add(0, 1.2, 0), 15, 0.3, 0.3, 0.3, 0.05);
-                            player.playSound(player.getLocation(), Sound.ITEM_SHIELD_BLOCK, 1.0f, 1.2f);
-                        } catch (Exception ignored) {}
-                        return;
-                    }
-                }
-            }
-
-            if (ability == AbilityType.KYOKA_SUIGETSU || rank.getTier() >= 69) {
-                if (random.nextDouble() < 0.20) {
-                    event.setCancelled(true);
-                    try {
-                        Location loc = player.getLocation();
-                        player.getWorld().spawnParticle(Particle.DRAGON_BREATH, loc.add(0, 1.0, 0), 15, 0.3, 0.5, 0.3, 0.02);
-                        player.playSound(loc, Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1.0f, 1.5f);
-                        player.sendActionBar(Component.text("§b⚡ ¡ILUSIÓN KYOKA SUIGETSU! §7Ataque enemigo desviado."));
-                    } catch (Exception ignored) {}
-                    return;
-                }
-            }
-
-            if (ability == AbilityType.ULTRA_INSTINCT || rank.getTier() >= 49) {
-                if (random.nextDouble() < 0.15) {
-                    event.setCancelled(true);
-                    try {
-                        Location dloc = player.getLocation().add(0, 0.9, 0);
-                        player.getWorld().spawnParticle(Particle.CLOUD, dloc, 14, 0.3, 0.3, 0.3, 0.03);
-                        player.getWorld().spawnParticle(Particle.ELECTRIC_SPARK, dloc, 6, 0.25, 0.4, 0.25, 0.02);
-                        player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 0.7f, 1.9f);
-                        player.sendActionBar(Component.text("§f⚡ §7Esquive instintivo"));
-                    } catch (Exception ignored) {}
-                    return;
-                }
-            }
 
             if (ability == AbilityType.HAKI_CONQUEROR || rank.getTier() >= 30) {
                 Location loc = player.getLocation();
@@ -309,7 +282,12 @@ public class RankAbilityListener implements Listener {
 
             if (ability == AbilityType.HAKAI_AURA || rank.getTier() >= 47) {
                 if (event.getDamager() instanceof LivingEntity damager) {
-                    damager.damage(3.0, player);
+                    try {
+                        damager.setMetadata("DRAKES_ABILITY_DAMAGE", new FixedMetadataValue(plugin, true));
+                        damager.damage(3.0, player);
+                    } finally {
+                        damager.removeMetadata("DRAKES_ABILITY_DAMAGE", plugin);
+                    }
                     try {
                         damager.getWorld().spawnParticle(Particle.WITCH, damager.getLocation().add(0, 1.0, 0), 15, 0.2, 0.3, 0.2, 0.05);
                     } catch (Exception ignored) {}
@@ -352,27 +330,6 @@ public class RankAbilityListener implements Listener {
                         }
                     }, 500L);
                 } catch (Exception ignored) {}
-            }
-        }
-    }
-
-    @EventHandler
-    public void onDamage(EntityDamageEvent event) {
-        if (event.getEntity() instanceof Player player) {
-            if (!plugin.isWorldAllowed(player.getWorld())) return;
-            Rank rank = plugin.getRankManager().getPlayerRank(player.getUniqueId());
-            if (rank == null) return;
-            PlayerSettings settings = plugin.getRankManager().getPlayerSettings(player.getUniqueId());
-            if (!settings.isAbilitiesEnabled()) return;
-
-            if (event.getCause() == EntityDamageEvent.DamageCause.FALL && (rank.getAbilityType() == AbilityType.FEATHER_STEP || rank.getTier() >= 5)) {
-                event.setDamage(event.getDamage() * 0.5);
-            }
-
-            if ((rank.getAbilityType() == AbilityType.HAKAI_AURA || rank.getTier() >= 47 || rank.getAbilityType() == AbilityType.ZANKA_NO_TACHI) && 
-               (event.getCause() == EntityDamageEvent.DamageCause.FIRE || event.getCause() == EntityDamageEvent.DamageCause.LAVA || event.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK)) {
-                event.setCancelled(true);
-                player.setFireTicks(0);
             }
         }
     }
