@@ -629,7 +629,9 @@ public class OnePieceListener implements Listener {
 
                     for (double d = 0; d < 30.0; d += 1.5) {
                         Location beam = player.getEyeLocation().add(dir.clone().multiply(d));
-                        beam.getWorld().spawnParticle(Particle.FIREWORK, beam, 2, 0.1, 0.1, 0.1, 0.02);
+                        // FIREWORK now requires a Color payload on Paper 1.21.11; END_ROD keeps
+                        // the same bright trail without passing an invalid particle parameter.
+                        beam.getWorld().spawnParticle(Particle.END_ROD, beam, 2, 0.1, 0.1, 0.1, 0.02);
                         beam.getWorld().spawnParticle(Particle.ELECTRIC_SPARK, beam, 3, 0.1, 0.1, 0.1, 0.05);
                     }
 
