@@ -167,8 +167,57 @@ public final class ProtectionGate {
             return false;
         }
 
+        // Bloques de Slimefun (máquinas, cargo, etc.): jamás romperlos con habilidades.
+        // Romperlos con setType corrompe la data del bloque en Slimefun (dupe/pérdida).
+        if (isSlimefunBlock(block)) {
+            return false;
+        }
+
         // Proteccion regional (ProtectionStones / WorldGuard)
         return !isProtected(block.getLocation(), actor);
+    }
+
+    // Cache reflexivo del lookup de Slimefun (no hay dependencia de compilación).
+    // Se intenta la API moderna (StorageCacheUtils.hasBlock(Location)) y, si no,
+    // la legacy (BlockStorage.hasBlockInfo(Block)), que existe en Slimefun4-Drake.
+    private Method slimefunHasBlockByLocation;
+    private Method slimefunHasBlockByBlock;
+    private boolean slimefunResolved;
+
+    /** True si el bloque está registrado por Slimefun (máquina/addon), vía reflexión. */
+    private boolean isSlimefunBlock(org.bukkit.block.Block block) {
+        if (!slimefunResolved) {
+            slimefunResolved = true;
+            for (String cls : new String[]{
+                    "io.github.thebusybiscuit.slimefun4.api.storage.StorageCacheUtils",
+                    "io.github.thebusybiscuit.slimefun4.utils.itemstack.StorageCacheUtils"}) {
+                try {
+                    slimefunHasBlockByLocation = Class.forName(cls).getMethod("hasBlock", Location.class);
+                    break;
+                } catch (ReflectiveOperationException | LinkageError ignored) {
+                    slimefunHasBlockByLocation = null;
+                }
+            }
+            try {
+                slimefunHasBlockByBlock = Class.forName("me.mrCookieSlime.Slimefun.api.BlockStorage")
+                        .getMethod("hasBlockInfo", org.bukkit.block.Block.class);
+            } catch (ReflectiveOperationException | LinkageError ignored) {
+                slimefunHasBlockByBlock = null;
+            }
+        }
+        try {
+            if (slimefunHasBlockByLocation != null) {
+                Object r = slimefunHasBlockByLocation.invoke(null, block.getLocation());
+                if (r instanceof Boolean b && b) return true;
+            }
+            if (slimefunHasBlockByBlock != null) {
+                Object r = slimefunHasBlockByBlock.invoke(null, block);
+                if (r instanceof Boolean b && b) return true;
+            }
+        } catch (ReflectiveOperationException | LinkageError ignored) {
+            // Slimefun no disponible: no bloquea la habilidad.
+        }
+        return false;
     }
 
     private Method findProtectionStoneLookup() {
